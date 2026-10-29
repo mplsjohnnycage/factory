@@ -13,11 +13,13 @@
 
 Public PKCE client id — same as OpenAccess `factory.port_client_id`. **Never** set `PORT_OBSERVATORY_CLIENT_ID`.
 
-## Recommended
+## Required for non-localhost Port login
 
-| Key | When | Notes |
-|-----|------|-------|
-| `NEXT_PUBLIC_DEVOS_URL` | Stable production / custom domain | Origin used for `redirect_uri`; must match a registered Port URI |
+| Key | Value | Targets | Type |
+|-----|-------|---------|------|
+| `NEXT_PUBLIC_DEVOS_URL` | `https://factory-developer-os.vercel.app` | production, preview, development | plain |
+
+Origin used for Port `redirect_uri`. Must match a registered Factory External Interface URI. Production code also hard-pins this canonical host when the env is missing so redeploys never mint `VERCEL_URL` allowlist hosts.
 
 ## Defaults (code; override only for US / non-prod Auth0)
 

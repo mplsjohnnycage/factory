@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
   CALLBACK_PATH,
+  CANONICAL_DEVOS_ORIGIN,
   DEFAULT_AUTH0_DOMAIN,
   DEFAULT_PORT_API_BASE,
   OBSERVATORY_FORBIDDEN_ENV,
@@ -9,6 +10,7 @@ import {
   exchangePortToken,
   pkceChallengeS256,
   randomUrlSafeString,
+  resolveDevOsOrigin,
   resolvePortOAuthConfig,
 } from "../src/lib/port-oauth.js";
 
@@ -34,6 +36,56 @@ describe("Port OAuth config + PKCE", () => {
     assert.match(loc, /audience=/);
     assert.match(loc, /redirect_uri=/);
     assert.match(loc, /api%2Fauth%2Fcallback/);
+  });
+
+  it("prefers NEXT_PUBLIC_DEVOS_URL over VERCEL_URL", () => {
+    assert.equal(
+      resolveDevOsOrigin({
+        NEXT_PUBLIC_DEVOS_URL: "https://factory-developer-os.vercel.app/",
+        VERCEL_URL: "factory-developer-deadbeef-johnnyc.vercel.app",
+        VERCEL: "1",
+        VERCEL_ENV: "production",
+      }),
+      CANONICAL_DEVOS_ORIGIN,
+    );
+  });
+
+  it("pins production to canonical origin — never VERCEL_URL", () => {
+    const origin = resolveDevOsOrigin({
+      VERCEL: "1",
+      VERCEL_ENV: "production",
+      VERCEL_URL: "factory-developer-4vf3fb75w-johnnyc.vercel.app",
+      NODE_ENV: "production",
+    });
+    assert.equal(origin, CANONICAL_DEVOS_ORIGIN);
+
+    const config = resolvePortOAuthConfig({
+      PORT_FACTORY_CLIENT_ID: "factory-client-abc",
+      VERCEL: "1",
+      VERCEL_ENV: "production",
+      VERCEL_URL: "factory-developer-4vf3fb75w-johnnyc.vercel.app",
+      NODE_ENV: "production",
+    });
+    assert.equal(
+      config.redirectUri,
+      `${CANONICAL_DEVOS_ORIGIN}${CALLBACK_PATH}`,
+    );
+    assert.doesNotMatch(config.redirectUri, /4vf3fb75w/);
+  });
+
+  it("pins preview to canonical origin — never VERCEL_URL", () => {
+    assert.equal(
+      resolveDevOsOrigin({
+        VERCEL: "1",
+        VERCEL_ENV: "preview",
+        VERCEL_URL: "factory-developer-preview-johnnyc.vercel.app",
+      }),
+      CANONICAL_DEVOS_ORIGIN,
+    );
+  });
+
+  it("defaults to localhost off Vercel", () => {
+    assert.equal(resolveDevOsOrigin({}), "http://localhost:3000");
   });
 
   it("refuses Observatory client env", () => {

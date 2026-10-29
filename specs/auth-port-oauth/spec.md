@@ -62,6 +62,12 @@ Scenario: Developer OS callback path matches live redirects
   Then the path is /api/auth/callback
   And the handler exchanges the authorization code with PKCE (no client_secret)
 
+Scenario: Production redirect_uri uses stable Dev OS origin
+  Given Developer OS runs on Vercel production without a baked NEXT_PUBLIC_DEVOS_URL
+  When GET /api/auth/port/login builds the Auth0 authorize redirect
+  Then redirect_uri origin is https://factory-developer-os.vercel.app
+  And redirect_uri does not use the ephemeral VERCEL_URL deployment host
+
 Scenario: PBI-010 OpenAccess inventory item 10
   Given /.well-known/openaccess.json exists
   When scripts/validate-well-known.mjs runs

@@ -36,6 +36,7 @@ External Developer OS for humans — intent, approvals UI, live progress, and co
 - Port OAuth login + callback Route Handlers compile; Factory client id via `PORT_FACTORY_CLIENT_ID` only.
 - Callback path is `/api/auth/callback` (exact match to Port + OpenAccess redirect_uris).
 - Callback performs Authorization Code + PKCE token exchange (no stub; no `client_secret`).
+- Production `redirect_uri` origin is pinned to the stable Dev OS host (`NEXT_PUBLIC_DEVOS_URL` or canonical `factory-developer-os.vercel.app`) — never ephemeral `VERCEL_URL` deployment hosts.
 - Rivet native stream reconnects from last `sequence` (gap replay + live; no duplicates).
 - Port sign-in Route Handler targets the intended Factory client redirects and does not reuse Observatory or Clerk.
 
@@ -46,6 +47,7 @@ External Developer OS for humans — intent, approvals UI, live progress, and co
 - Observatory client id configured as Factory auth fails Contract review.
 - No CopilotKit / AG-UI on the kernel streaming path.
 - OAuth callback must not remain at `/api/auth/port/callback` (redirect_uri drift).
+- Production Port OAuth must not emit `https://${VERCEL_URL}/api/auth/callback` as `redirect_uri`.
 
 ### Scenarios
 
