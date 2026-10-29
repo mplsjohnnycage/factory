@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;color:#1c1e22;background:radial-gradient(50% 45% at 10% 8%,#f2d9bd 0%,rgba(242,217,189,0) 62%),radial-gradient(50% 50% at 90% 14%,#bcd4f0 0%,rgba(188,212,240,0) 62%),radial-gradient(60% 55% at 45% 100%,#c6e2d8 0%,rgba(198,226,216,0) 62%),radial-gradient(35% 35% at 70% 60%,#e4d6ee 0%,rgba(228,214,238,0) 70%),#e6ebf1;background-attachment:fixed}a{color:#2f6fe0}a:hover{color:#1f4fae}@keyframes dcFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div style="padding:{{ pad }};height:{{ wrapH }};box-sizing:border-box;display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+<sc-for list="{{ frames }}" as="f" hint-placeholder-count="2">
+<div style="width:{{ f.w }};height:{{ f.ho }};display:flex;flex-direction:column;gap:12px">
+  <sc-if value="{{ showLabel }}" hint-placeholder-val="{{ true }}"><div style="display:flex;gap:8px;font-size:13px;font-weight:600;color:#6b717c"><span>GitHub</span><span style="font-weight:400;color:#9aa0aa">{{ f.label }}</span></div></sc-if>
+  <div style="height:{{ f.h }};display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;border-radius:30px;background:linear-gradient(160deg,rgba(255,255,255,0.5),rgba(255,255,255,0.25) 50%,rgba(255,255,255,0.40));backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);-webkit-backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);border:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.45),inset 0 0 20px rgba(255,255,255,.22),0 1px 2px rgba(20,30,50,.06),0 28px 70px rgba(30,45,70,.18)">
+    <div style="padding:18px 20px 12px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+        <div style="font-size:20px;font-weight:600;letter-spacing:-.01em">GitHub</div>
+        <div onClick="{{ cycleRepo }}" style="font-size:13px;color:#6b717c;cursor:pointer"><span style="font-family:'JetBrains Mono';color:#1c1e22">{{ repo }}</span> ▾ · main</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6b717c;padding-top:6px;white-space:nowrap"><span style="width:6px;height:6px;border-radius:50%;background:#1f9d55"></span>Connected</div>
+    </div>
+    <div style="padding:0 20px 12px">
+      <div style="display:flex;padding:3px;border-radius:999px;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 3px rgba(20,30,50,.1),inset 0 0 0 1px rgba(255,255,255,.4)">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3"><div onClick="{{ t.go }}" style="flex:1;text-align:center;padding:6px 4px;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;background:{{ t.bg }};box-shadow:{{ t.sh }};transition:background .2s,box-shadow .2s">{{ t.label }}</div></sc-for>
+      </div>
+    </div>
+    <div style="flex:1;min-height:0;overflow:auto;padding:0 12px 10px">
+      <sc-if value="{{ isPrs }}" hint-placeholder-val="{{ true }}">
+        <div style="animation:dcFade .22s ease">
+          <sc-for list="{{ prs }}" as="p" hint-placeholder-count="4">
+            <div style="border-radius:12px;background:{{ p.bg }};box-shadow:{{ p.sh }};margin-bottom:2px">
+              <div onClick="{{ p.go }}" style="display:flex;align-items:flex-start;gap:10px;padding:10px;cursor:pointer">
+                <span style="flex:none;margin-top:5px;width:8px;height:8px;border-radius:50%;background:{{ p.cc }}"></span>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                  <div style="font-size:14px;line-height:1.3"><span style="color:#9aa0aa">#{{ p.n }}</span> {{ p.title }}</div>
+                  <div style="display:flex;gap:6px;font:400 11px 'JetBrains Mono';color:#6b717c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><span>{{ p.branch }} → main</span></div>
+                </div>
+                <div style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-size:12px;color:#9aa0aa"><span>{{ p.author }}</span><span>{{ p.age }}</span></div>
+              </div>
+              <sc-if value="{{ p.open }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:0 10px 12px 28px;display:flex;flex-direction:column;gap:10px;animation:dcFade .22s ease">
+                  <div style="font-size:13px;color:#4a505a;line-height:1.45;text-wrap:pretty">{{ p.desc }}</div>
+                  <div style="display:flex;flex-direction:column;gap:4px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.28);box-shadow:inset 0 1px 2px rgba(20,30,50,.06)">
+                    <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b717c"><span>Head SHA</span><span onClick="{{ copySha }}" style="color:#2f6fe0;cursor:pointer">Copy</span></div>
+                    <div style="font:400 12px 'JetBrains Mono';word-break:break-all">{{ p.sha }}</div>
+                  </div>
+                  <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#6b717c"><span>{{ p.files }} files changed</span><span style="color:{{ p.rc }}">{{ p.review }}</span><span onClick="{{ toChecks }}" style="color:#2f6fe0;cursor:pointer">{{ p.checks }}</span></div>
+                  <div style="display:flex;flex-direction:column;gap:2px;font:400 11px/1.6 'JetBrains Mono';color:#6b717c">
+                    <sc-for list="{{ p.fileList }}" as="fl" hint-placeholder-count="3"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ fl }}</span></sc-for>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:6px">
+                    <div style="padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 1px 3px rgba(20,30,50,.08);font-size:13px;font-weight:500;cursor:pointer">Open on GitHub</div>
+                    <div onClick="{{ askMerge }}" style="padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 1px 3px rgba(20,30,50,.08);font-size:13px;font-weight:500;cursor:pointer">Merge…</div>
+                  </div>
+                  <sc-if value="{{ merging }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:12px;border-radius:12px;background:rgba(194,122,0,.08);box-shadow:inset 0 0 0 .5px rgba(194,122,0,.3);display:flex;flex-direction:column;gap:10px;animation:dcFade .22s ease">
+                      <div style="font-size:13px;line-height:1.45;text-wrap:pretty">Accept is Port policy plus green checks on this exact SHA. Merging is a separate step and does not count as accept.</div>
+                      <div style="display:flex;gap:6px;justify-content:flex-end"><div onClick="{{ cancelMerge }}" style="padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 1px 3px rgba(20,30,50,.08);font-size:13px;font-weight:500;cursor:pointer">Cancel</div><div onClick="{{ doMerge }}" style="padding:6px 11px;border-radius:9px;background:{{ mergeBg }};color:{{ mergeFg }};font-size:13px;font-weight:500;cursor:pointer">{{ mergeLabel }}</div></div>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isChecks }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 8px;display:flex;flex-direction:column;gap:10px;animation:dcFade .22s ease">
+          <div style="padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.34);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.45);display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b717c"><span>#{{ cur.n }} · exact SHA</span><span style="color:{{ cur.cc }}">{{ cur.checks }}</span></div>
+            <div style="font:500 13px 'JetBrains Mono';word-break:break-all">{{ cur.sha }}</div>
+            <div style="font-size:12px;color:#9aa0aa;line-height:1.4">Results apply to this SHA only. A force-push or rebase invalidates them.</div>
+          </div>
+          <div style="display:flex;flex-direction:column">
+            <sc-for list="{{ runs }}" as="r" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:.5px solid rgba(20,30,50,.06);font-size:13px">
+                <span style="flex:none;width:8px;height:8px;border-radius:50%;background:{{ r.c }}"></span>
+                <span style="flex:1;min-width:0;font-family:'JetBrains Mono';font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</span>
+                <span style="flex:none;color:{{ r.c }}">{{ r.concl }}</span>
+                <span style="flex:none;font-size:12px;color:#9aa0aa">{{ r.dur }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:flex-end"><div onClick="{{ refreshChecks }}" style="padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 1px 3px rgba(20,30,50,.08);font-size:13px;font-weight:500;cursor:pointer">Request checks refresh</div></div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isRepos }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 8px;animation:dcFade .22s ease">
+          <sc-for list="{{ repos }}" as="rp" hint-placeholder-count="3">
+            <div onClick="{{ rp.go }}" style="display:flex;align-items:center;gap:10px;padding:12px 2px;border-bottom:.5px solid rgba(20,30,50,.06);cursor:pointer">
+              <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font:500 13px 'JetBrains Mono'">{{ rp.name }}</span><span style="font-size:12px;color:#6b717c">default main · {{ rp.prs }} open PRs</span></div>
+              <span style="font-size:12px;color:{{ rp.c }}">{{ rp.mark }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.55);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#6b717c">
+      <span>{{ footNote }}</span>
+      <span onClick="{{ refresh }}" style="color:#2f6fe0;cursor:pointer">Refresh</span>
+    </div>
+  </div>
+  <sc-if value="{{ showLabel }}" hint-placeholder-val="{{ true }}"><div style="font:400 11px/1.6 'JetBrains Mono';color:#8a909a">tools: list_repos · get_repo · list_pull_requests · get_pull_request · list_check_runs_for_sha · get_commit_status · list_workflow_runs · rerequest_checks · create_pull_request_comment (confirm)</div></sc-if>
+</div>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { tab: 'Pull requests', repo: 0, sel: 128, merge: false, merged: false, note: '' };
+  REPOS = ['acme/web-app', 'acme/api-service', 'acme/shared-lib'];
+  CC = { success: '#1f9d55', pending: '#c27a00', failure: '#d0393e' };
+  P = [
+    { n: 128, title: 'Cross-repo edge cache', author: 'mh', branch: 'feat/edge-cache', age: '14m', ci: 'success', sha: 'a41c9e2f7d0b3c58e916a2b4d7f01c3e5a9b8d62', files: 9, review: 'Approved', desc: 'Caches Polygraph cross-repo edges per SHA so the atlas loads without re-querying api-service.', fileList: ['src/atlas/edgeCache.ts', 'src/atlas/useEdges.ts', 'src/hooks/useCatalog.ts'] },
+    { n: 131, title: 'Beads overlay toggle', author: 'jl', branch: 'feat/beads-overlay', age: '2m', ci: 'pending', sha: '3d8e1b7c0a4f92e6b1d58c3a7f0e2d9b4c6a1f85', files: 4, review: 'Review required', desc: 'Adds the readiness overlay to graph nodes, fed by bd ready.', fileList: ['src/atlas/BeadsOverlay.tsx', 'src/atlas/Hud.tsx'] },
+    { n: 127, title: 'Split CatalogRouter', author: 'rk', branch: 'refactor/router', age: '1d', ci: 'failure', sha: 'c09f5aa1e3b7d2c4f8a6e0b9d1c3f5a7e2b4d6c8', files: 12, review: 'Changes requested', desc: 'Moves search routes into their own router. Typecheck fails on TitleModel import.', fileList: ['routes/catalog.ts', 'routes/search.ts', 'models/title.ts'] },
+    { n: 124, title: 'Bump shared-lib to 2.4.0', author: 'deps-bot', branch: 'deps/shared-lib-2.4.0', age: '2d', ci: 'success', sha: '7be03d14c9a2f6e8b0d3a5c7e1f9b2d4a6c8e0f2', files: 2, review: 'Approved', desc: 'Picks up retry() jitter and formatTime() locale fix.', fileList: ['package.json', 'pnpm-lock.yaml'] },
+  ];
+  RUNS = { success: [['build', 'success', '1m 12s'], ['typecheck', 'success', '38s'], ['test · web', 'success', '2m 04s'], ['e2e · atlas', 'success', '3m 40s'], ['atlas-contract', 'success', '21s'], ['lint', 'success', '17s']],
+    pending: [['build', 'success', '1m 09s'], ['typecheck', 'success', '36s'], ['test · web', 'in progress', ''], ['e2e · atlas', 'queued', ''], ['atlas-contract', 'queued', ''], ['lint', 'success', '15s']],
+    failure: [['build', 'success', '1m 15s'], ['typecheck', 'failure', '41s'], ['test · web', 'skipped', ''], ['e2e · atlas', 'skipped', ''], ['atlas-contract', 'failure', '22s'], ['lint', 'success', '16s']] };
+  frames() {
+    const e = !!this.props.embedded;
+    return e ? [{ w: '100%', h: '100%', ho: '100%', label: '' }] : [{ w: '480px', h: '640px', ho: 'auto', label: 'Desktop · 480' }, { w: '360px', h: '640px', ho: 'auto', label: 'Narrow · 360' }];
+  }
+  note(m) { this.setState({ note: m }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ note: '' }), 1800); }
+  checksLabel(p) { const r = this.RUNS[p.ci]; const ok = r.filter(x => x[1] === 'success').length; return p.ci === 'pending' ? ok + '/' + r.length + ' checks · running' : p.ci === 'failure' ? (r.filter(x => x[1] === 'failure').length) + ' failing checks' : ok + '/' + r.length + ' checks passed'; }
+  renderVals() {
+    const e = !!this.props.embedded, st = this.state;
+    const seg = on => ({ bg: on ? 'rgba(255,255,255,.78)' : 'transparent', sh: on ? 'inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.6),0 3px 10px rgba(30,45,70,.14)' : 'none' });
+    const tabs = ['Pull requests', 'Checks', 'Repos'].map(l => ({ label: l, ...seg(l === st.tab), go: () => this.setState({ tab: l }) }));
+    const RC = { Approved: '#1f9d55', 'Review required': '#6b717c', 'Changes requested': '#d0393e' };
+    const prs = this.P.map(p => { const on = p.n === st.sel; return { ...p, open: on, cc: this.CC[p.ci], rc: RC[p.review], checks: this.checksLabel(p),
+      bg: on ? 'rgba(255,255,255,.46)' : 'transparent', sh: on ? 'inset 0 1px 0 rgba(255,255,255,.95),inset 0 0 0 1px rgba(255,255,255,.5),0 6px 18px rgba(30,45,70,.1)' : 'none',
+      go: () => this.setState({ sel: on ? null : p.n, merge: false, merged: false }) }; });
+    const cur = this.P.find(p => p.n === st.sel) || this.P[0];
+    const runs = this.RUNS[cur.ci].map(([name, concl, dur]) => ({ name, concl, dur, c: concl === 'success' ? '#1f9d55' : concl === 'failure' ? '#d0393e' : concl === 'skipped' ? '#9aa0aa' : '#c27a00' }));
+    const canMerge = cur.ci === 'success' && cur.review === 'Approved';
+    const repos = this.REPOS.map((name, i) => ({ name, prs: [4, 2, 1][i], mark: i === st.repo ? 'Selected' : '', c: '#2f6fe0', go: () => this.setState({ repo: i, tab: 'Pull requests' }) }));
+    return {
+      frames: this.frames(), pad: e ? '0' : '64px', wrapH: e ? '100%' : 'auto', showLabel: !e, tabs, repo: this.REPOS[st.repo],
+      cycleRepo: () => this.setState({ repo: (st.repo + 1) % 3 }),
+      isPrs: st.tab === 'Pull requests', isChecks: st.tab === 'Checks', isRepos: st.tab === 'Repos',
+      prs, cur: { ...cur, cc: this.CC[cur.ci], checks: this.checksLabel(cur) }, runs, repos,
+      toChecks: () => this.setState({ tab: 'Checks' }), copySha: () => this.note('SHA copied'),
+      merging: st.merge, askMerge: () => this.setState({ merge: true }), cancelMerge: () => this.setState({ merge: false }),
+      mergeLabel: st.merged ? 'Merge requested' : canMerge ? 'Merge' : 'Checks not green', mergeBg: canMerge && !st.merged ? '#1c1e22' : 'rgba(118,118,128,.12)', mergeFg: canMerge && !st.merged ? '#fff' : '#9aa0aa',
+      doMerge: () => { if (canMerge) { this.setState({ merged: true }); this.note('Merge requested · #' + cur.n); } },
+      refreshChecks: () => this.note('Checks re-requested for ' + cur.sha.slice(0, 7)), refresh: () => this.note('Refreshed'),
+      footNote: st.note || (this.P.length + ' open pull requests'),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;color:#1c1e22;background:radial-gradient(50% 45% at 10% 8%,#f2d9bd 0%,rgba(242,217,189,0) 62%),radial-gradient(50% 50% at 90% 14%,#bcd4f0 0%,rgba(188,212,240,0) 62%),radial-gradient(60% 55% at 45% 100%,#c6e2d8 0%,rgba(198,226,216,0) 62%),radial-gradient(35% 35% at 70% 60%,#e4d6ee 0%,rgba(228,214,238,0) 70%),#e6ebf1;background-attachment:fixed}a{color:#2f6fe0}a:hover{color:#1f4fae}@keyframes dcFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div style="padding:{{ pad }};height:{{ wrapH }};box-sizing:border-box;display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+<sc-for list="{{ frames }}" as="f" hint-placeholder-count="2">
+<div style="width:{{ f.w }};height:{{ f.ho }};display:flex;flex-direction:column;gap:12px">
+  <sc-if value="{{ showLabel }}" hint-placeholder-val="{{ true }}"><div style="display:flex;gap:8px;font-size:13px;font-weight:600;color:#6b717c"><span>Convex</span><span style="font-weight:400;color:#9aa0aa">{{ f.label }}</span></div></sc-if>
+  <div style="height:{{ f.h }};display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;border-radius:30px;background:linear-gradient(160deg,rgba(255,255,255,0.5),rgba(255,255,255,0.25) 50%,rgba(255,255,255,0.40));backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);-webkit-backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);border:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.45),inset 0 0 20px rgba(255,255,255,.22),0 1px 2px rgba(20,30,50,.06),0 28px 70px rgba(30,45,70,.18)">
+    <div style="padding:18px 20px 12px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+        <div style="font-size:20px;font-weight:600;letter-spacing:-.01em">Convex</div>
+        <div style="font-size:13px;color:#6b717c;display:flex;gap:6px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono'">atlas-catalog</span><span>· dev</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6b717c;padding-top:6px;white-space:nowrap"><span style="width:6px;height:6px;border-radius:50%;background:#1f9d55"></span>Synced 4s ago</div>
+    </div>
+    <div style="padding:0 20px 12px">
+      <div style="display:flex;padding:3px;border-radius:999px;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 3px rgba(20,30,50,.1),inset 0 0 0 1px rgba(255,255,255,.4)">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2"><div onClick="{{ t.go }}" style="flex:1;text-align:center;padding:6px 4px;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;background:{{ t.bg }};box-shadow:{{ t.sh }};transition:background .2s,box-shadow .2s">{{ t.label }}</div></sc-for>
+      </div>
+    </div>
+    <sc-if value="{{ isTables }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;gap:6px;overflow-x:auto;padding:0 20px 10px;flex:none">
+        <sc-for list="{{ tables }}" as="tb" hint-placeholder-count="5"><div onClick="{{ tb.go }}" style="flex:none;display:flex;gap:6px;align-items:baseline;padding:6px 10px;border-radius:9px;cursor:pointer;background:{{ tb.bg }};box-shadow:{{ tb.sh }}"><span style="font:500 12px 'JetBrains Mono'">{{ tb.name }}</span><span style="font-size:11px;color:#9aa0aa">{{ tb.count }}</span></div></sc-for>
+      </div>
+      <div style="flex:1;min-height:0;overflow:auto;padding:0 12px 8px">
+        <sc-if value="{{ noDoc }}" hint-placeholder-val="{{ true }}">
+          <div style="animation:dcFade .22s ease">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,.9fr);gap:10px;padding:6px 10px;font:500 11px 'JetBrains Mono';color:#9aa0aa">
+              <sc-for list="{{ cols }}" as="c" hint-placeholder-count="3"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c }}</span></sc-for>
+            </div>
+            <sc-for list="{{ docs }}" as="d" hint-placeholder-count="4">
+              <div onClick="{{ d.go }}" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,.9fr);gap:10px;padding:10px;border-radius:10px;cursor:pointer;font-size:13px;transition:background .15s,transform .15s" style-hover="background:rgba(255,255,255,.85);transform:translateY(-1px)">
+                <span style="font:400 12px 'JetBrains Mono';color:#6b717c;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ d.a }}</span>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ d.b }}</span>
+                <span style="color:#4a505a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ d.c }}</span>
+              </div>
+            </sc-for>
+            <div style="padding:12px 10px;font-size:13px;color:#2f6fe0;cursor:pointer">Load more</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ hasDoc }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:0 8px;display:flex;flex-direction:column;gap:12px;animation:dcFade .22s ease">
+            <div style="display:flex;align-items:center;gap:8px"><span onClick="{{ back }}" style="font-size:13px;color:#2f6fe0;cursor:pointer">‹ {{ tableName }}</span><span style="margin-left:auto;font-size:12px;color:#9aa0aa">Read-only</span></div>
+            <div style="display:flex;flex-direction:column;border-radius:12px;background:rgba(255,255,255,.34);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.45)">
+              <sc-for list="{{ fields }}" as="fl" hint-placeholder-count="4"><div style="display:flex;gap:12px;padding:9px 12px;border-bottom:.5px solid rgba(20,30,50,.06);font-size:13px"><span style="flex:none;width:110px;font:400 12px 'JetBrains Mono';color:#6b717c">{{ fl.k }}</span><span style="min-width:0;word-break:break-word">{{ fl.v }}</span></div></sc-for>
+            </div>
+            <pre style="margin:0;padding:12px;border-radius:12px;background:rgba(255,255,255,.28);box-shadow:inset 0 1px 2px rgba(20,30,50,.06);font:400 11px/1.55 'JetBrains Mono';color:#4a505a;white-space:pre-wrap;word-break:break-word">{{ json }}</pre>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+    <sc-if value="{{ isFns }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;min-height:0;overflow:auto;padding:0 12px 8px;animation:dcFade .22s ease">
+        <sc-for list="{{ fns }}" as="fn" hint-placeholder-count="5">
+          <div style="border-radius:12px;background:{{ fn.bg }};box-shadow:{{ fn.sh }};margin-bottom:2px">
+            <div onClick="{{ fn.go }}" style="display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer">
+              <span style="flex:1;min-width:0;font:500 13px 'JetBrains Mono';overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ fn.name }}</span>
+              <span style="font-size:12px;color:{{ fn.kc }}">{{ fn.kind }}</span>
+            </div>
+            <sc-if value="{{ fn.open }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:0 10px 12px;display:flex;flex-direction:column;gap:8px;animation:dcFade .22s ease">
+                <div style="font-size:12px;color:#6b717c">Args (JSON)</div>
+                <textarea value="{{ args }}" onChange="{{ onArgs }}" style="height:56px;resize:none;border:none;outline:none;border-radius:10px;padding:10px;background:rgba(255,255,255,.28);box-shadow:inset 0 1px 2px rgba(20,30,50,.06);font:400 12px/1.5 'JetBrains Mono';color:#1c1e22"></textarea>
+                <sc-if value="{{ needConfirm }}" hint-placeholder-val="{{ false }}"><div style="padding:10px 12px;border-radius:10px;background:rgba(194,122,0,.08);box-shadow:inset 0 0 0 .5px rgba(194,122,0,.3);font-size:13px;line-height:1.4">Run <span style="font-family:'JetBrains Mono'">{{ fn.name }}</span> on dev? This {{ fn.kind }} can write data.</div></sc-if>
+                <div style="display:flex;gap:6px;justify-content:flex-end">
+                  <sc-if value="{{ needConfirm }}" hint-placeholder-val="{{ false }}"><div onClick="{{ cancelRun }}" style="padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 1px 3px rgba(20,30,50,.08);font-size:13px;font-weight:500;cursor:pointer">Cancel</div></sc-if>
+                  <div onClick="{{ run }}" style="padding:6px 14px;border-radius:999px;background:#1c1e22;color:#fff;font-size:13px;font-weight:500;cursor:pointer">{{ runLabel }}</div>
+                </div>
+                <sc-if value="{{ hasResult }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:4px;animation:dcFade .22s ease"><div style="font-size:12px;color:#6b717c">{{ resultMeta }}</div><pre style="margin:0;padding:10px;border-radius:10px;background:rgba(255,255,255,.28);box-shadow:inset 0 1px 2px rgba(20,30,50,.06);font:400 11px/1.55 'JetBrains Mono';color:#4a505a;white-space:pre-wrap;word-break:break-word">{{ result }}</pre></div></sc-if>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+    <div style="border-top:1px solid rgba(255,255,255,.55);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#6b717c">
+      <span>{{ footNote }}</span>
+      <span style="color:#2f6fe0;cursor:pointer">Open dashboard</span>
+    </div>
+  </div>
+  <sc-if value="{{ showLabel }}" hint-placeholder-val="{{ true }}"><div style="font:400 11px/1.6 'JetBrains Mono';color:#8a909a">tools: get_deployment_info · list_tables · list_documents · get_document · search_documents · run_query · run_mutation (confirm)</div></sc-if>
+</div>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { tab: 'Tables', table: 'titles', doc: null, fn: 'titles:list', args: '{ "limit": 3 }', confirm: false, result: null };
+  T = {
+    titles: { count: '1,284', cols: ['_id', 'name', 'runtimeMs'], docs: [
+      { _id: 'jd7f3k2q9x', name: 'The Long Field', runtimeMs: 6120000, repo: 'web-app', _creationTime: 'Oct 27, 09:14' },
+      { _id: 'jd71m0c4pa', name: 'Night Ferry', runtimeMs: 5340000, repo: 'web-app', _creationTime: 'Oct 26, 18:02' },
+      { _id: 'jd75tq88vn', name: 'Salt Roads', runtimeMs: 7020000, repo: 'web-app', _creationTime: 'Oct 26, 11:47' },
+      { _id: 'jd7a9e1wzr', name: 'Glasshouse', runtimeMs: 4980000, repo: 'web-app', _creationTime: 'Oct 25, 08:30' }] },
+    repos: { count: '3', cols: ['_id', 'slug', 'defaultBranch'], docs: [
+      { _id: 'k57r0web', slug: 'web-app', defaultBranch: 'main', indexedAt: 'Oct 28, 08:55' },
+      { _id: 'k57r1api', slug: 'api-service', defaultBranch: 'main', indexedAt: 'Oct 28, 08:55' },
+      { _id: 'k57r2lib', slug: 'shared-lib', defaultBranch: 'main', indexedAt: 'Oct 28, 08:51' }] },
+    symbols: { count: '14,902', cols: ['_id', 'name', 'kind'], docs: [
+      { _id: 'm91s4c2a', name: 'useCatalog', kind: 'function', repo: 'web-app', path: 'src/hooks/useCatalog.ts' },
+      { _id: 'm91s7r0t', name: 'CatalogRouter', kind: 'component', repo: 'api-service', path: 'routes/catalog.ts' },
+      { _id: 'm91s9d1n', name: 'Duration', kind: 'type', repo: 'shared-lib', path: 'src/time/duration.ts' },
+      { _id: 'm91sb3ry', name: 'retry', kind: 'function', repo: 'shared-lib', path: 'src/net/retry.ts' }] },
+    edges: { count: '31,077', cols: ['_id', 'from', 'to'], docs: [
+      { _id: 'e3x0aa1', from: 'useCatalog', to: 'CatalogRouter', crossRepo: true, source: 'polygraph' },
+      { _id: 'e3x0ab7', from: 'listTitles', to: 'formatTime', crossRepo: true, source: 'polygraph' },
+      { _id: 'e3x0ac2', from: 'fetchTitles', to: 'DockView', crossRepo: false, source: 'trail-code' }] },
+    sessions: { count: '212', cols: ['_id', 'repo', 'status'], docs: [
+      { _id: 's8q2w1', repo: 'web-app', status: 'running', attempt: 'att_19c' },
+      { _id: 's8q2v9', repo: 'api-service', status: 'closed', attempt: 'att_18f' }] },
+  };
+  F = [
+    { name: 'titles:list', kind: 'query', args: '{ "limit": 3 }' },
+    { name: 'titles:get', kind: 'query', args: '{ "id": "jd7f3k2q9x" }' },
+    { name: 'edges:byRepo', kind: 'query', args: '{ "repo": "web-app" }' },
+    { name: 'titles:upsert', kind: 'mutation', args: '{ "name": "Night Ferry", "runtimeMs": 5340000 }' },
+    { name: 'atlas:reindex', kind: 'action', args: '{ "repo": "shared-lib" }' },
+  ];
+  KC = { query: '#2f6fe0', mutation: '#c27a00', action: '#b3262b' };
+  frames() {
+    const e = !!this.props.embedded;
+    return e ? [{ w: '100%', h: '100%', ho: '100%', label: '' }] : [{ w: '480px', h: '640px', ho: 'auto', label: 'Desktop · 480' }, { w: '360px', h: '640px', ho: 'auto', label: 'Narrow · 360' }];
+  }
+  run(fn) {
+    const t0 = performance.now();
+    const out = fn.kind === 'query' ? JSON.stringify(this.T.titles.docs.slice(0, 2).map(d => ({ _id: d._id, name: d.name })), null, 2)
+      : fn.kind === 'mutation' ? JSON.stringify({ _id: 'jd71m0c4pa', updated: true }, null, 2) : JSON.stringify({ scheduled: true, jobId: 'job_7Qe1' }, null, 2);
+    this.setState({ confirm: false, result: { out, ms: Math.round(30 + Math.random() * 30 + (performance.now() - t0)) } });
+  }
+  renderVals() {
+    const e = !!this.props.embedded, st = this.state;
+    const seg = (l, on, go) => ({ label: l, bg: on ? 'rgba(255,255,255,.78)' : 'transparent', sh: on ? 'inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.6),0 3px 10px rgba(30,45,70,.14)' : 'none', go });
+    const tabs = ['Tables', 'Functions'].map(l => seg(l, l === st.tab, () => this.setState({ tab: l })));
+    const tables = Object.keys(this.T).map(k => ({ name: k, count: this.T[k].count, ...seg(k, k === st.table, () => this.setState({ table: k, doc: null })) }));
+    const tb = this.T[st.table];
+    const docs = tb.docs.map((d, i) => ({ a: d[tb.cols[0]], b: String(d[tb.cols[1]]), c: String(d[tb.cols[2]]), go: () => this.setState({ doc: i }) }));
+    const doc = st.doc != null ? tb.docs[st.doc] : null;
+    const fn = this.F.find(f => f.name === st.fn);
+    const fns = this.F.map(f => ({ ...f, kc: this.KC[f.kind], open: f.name === st.fn, bg: f.name === st.fn ? 'rgba(255,255,255,.46)' : 'transparent', sh: f.name === st.fn ? 'inset 0 1px 0 rgba(255,255,255,.95),inset 0 0 0 1px rgba(255,255,255,.5),0 6px 18px rgba(30,45,70,.1)' : 'none',
+      go: () => this.setState({ fn: f.name, args: f.args, confirm: false, result: null }) }));
+    const write = fn && fn.kind !== 'query';
+    return {
+      frames: this.frames(), pad: e ? '0' : '64px', wrapH: e ? '100%' : 'auto', showLabel: !e, tabs, tables,
+      isTables: st.tab === 'Tables', isFns: st.tab === 'Functions', cols: tb.cols, docs, tableName: st.table,
+      noDoc: !doc, hasDoc: !!doc, back: () => this.setState({ doc: null }),
+      fields: doc ? Object.keys(doc).map(k => ({ k, v: String(doc[k]) })) : [], json: doc ? JSON.stringify(doc, null, 2) : '',
+      fns, args: st.args, onArgs: ev => this.setState({ args: ev.target.value }), needConfirm: st.confirm,
+      runLabel: st.confirm ? 'Run ' + fn.kind : 'Run',
+      run: () => { if (write && !st.confirm) this.setState({ confirm: true }); else this.run(fn); },
+      cancelRun: () => this.setState({ confirm: false }),
+      hasResult: !!st.result, result: st.result ? st.result.out : '', resultMeta: st.result ? 'Result · ' + st.result.ms + ' ms' : '',
+      footNote: st.tab === 'Tables' ? '5 tables · read-only' : this.F.length + ' functions',
+    };
+  }
+}
+</script>
+</body>
+</html>

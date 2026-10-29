@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>image-slot:not([data-filled]){opacity:0 !important;transition:opacity .15s}image-slot:not([data-filled]):hover,image-slot[data-over]{opacity:1 !important}body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;color:#1c1e22;background:#dfe3e8;-webkit-font-smoothing:antialiased}a{color:#2f6fe0}a:hover{color:#1f4fae}@keyframes dcFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}@keyframes dcSettle{from{opacity:0;transform:translateY(10px) scale(.99)}to{opacity:1;transform:none}}@keyframes dcFolder{from{opacity:0;transform:scale(.06)}60%{opacity:1}to{opacity:1;transform:none}}@keyframes dcPop{from{opacity:0;transform:translateX(-50%) scale(.97)}to{opacity:1;transform:translateX(-50%) scale(1)}}</style>
+</helmet>
+<section style="padding:72px;display:flex;flex-wrap:wrap;gap:72px;align-items:flex-start">
+<div id="1a" style="display:flex;flex-direction:column;gap:14px">
+  <div style="display:flex;align-items:center;gap:10px"><span style="font:600 13px 'JetBrains Mono';background:#1c1e22;color:#fff;padding:3px 9px;border-radius:6px">1a</span><span style="font-size:16px;font-weight:500">Code Atlas v5</span></div>
+  <div data-screen-label="Code Atlas v5" style="position:relative;width:1440px;height:900px;border-radius:24px;overflow:hidden;background:radial-gradient(45% 40% at 8% 6%,#f1d6b8 0%,rgba(241,214,184,0) 62%),radial-gradient(45% 45% at 94% 10%,#b6cff0 0%,rgba(182,207,240,0) 62%),radial-gradient(55% 50% at 55% 108%,#c1e0d4 0%,rgba(193,224,212,0) 62%),radial-gradient(35% 35% at 35% 55%,#e2d5ef 0%,rgba(226,213,239,0) 70%),radial-gradient(30% 30% at 80% 60%,#f3dcd6 0%,rgba(243,220,214,0) 70%),#e5eaf0;box-shadow:0 30px 80px rgba(30,45,70,.18)">
+
+    <div style="position:absolute;left:0;right:0;top:0;height:68px;box-sizing:border-box;padding:0 24px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:16px;z-index:6">
+      <div style="display:flex;align-items:center;gap:12px;min-width:0">
+        <div style="display:flex;gap:6px">
+          <div onClick="{{ nav.back }}" title="Back (⌘[)" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;line-height:1;cursor:pointer;transition:background .15s;opacity:{{ nav.bOp }};background:rgba(255,255,255,.42);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 2px 6px rgba(30,45,70,.08)" style-hover="background:rgba(255,255,255,.75)">‹</div>
+          <div onClick="{{ nav.fwd }}" title="Forward (⌘])" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;line-height:1;cursor:pointer;transition:background .15s;opacity:{{ nav.fOp }};background:rgba(255,255,255,.42);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 2px 6px rgba(30,45,70,.08)" style-hover="background:rgba(255,255,255,.75)">›</div>
+        </div>
+        <div style="min-width:0;display:flex;flex-direction:column;gap:1px"><span style="font-size:15px;font-weight:600;letter-spacing:-.01em">Code Atlas</span><span style="font-size:12px;color:#6b717c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ summary }}</span></div>
+      </div>
+      <div style="display:flex;padding:3px;border-radius:999px;background:rgba(255,255,255,.24);backdrop-filter:blur(22px) saturate(1.9);-webkit-backdrop-filter:blur(22px) saturate(1.9);box-shadow:inset 0 1px 3px rgba(20,30,50,.1),inset 0 0 0 1px rgba(255,255,255,.45)">
+        <sc-for list="{{ views }}" as="v" hint-placeholder-count="3"><div onClick="{{ v.go }}" title="{{ v.key }}" style="display:flex;align-items:center;gap:7px;padding:7px 16px;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;color:{{ v.fg }};background:{{ v.bg }};box-shadow:{{ v.sh }};transition:background .2s,box-shadow .2s,color .2s">{{ v.label }}<sc-if value="{{ v.hasBadge }}" hint-placeholder-val="{{ false }}"><span style="min-width:16px;height:16px;padding:0 5px;box-sizing:border-box;border-radius:999px;background:#d0393e;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ v.badge }}</span></sc-if></div></sc-for>
+      </div>
+      <div style="display:flex;justify-content:flex-end">
+        <div onClick="{{ openPal }}" style="width:240px;display:flex;align-items:center;gap:8px;padding:7px 8px 7px 14px;border-radius:999px;cursor:text;font-size:13px;color:#8a909a;background:linear-gradient(160deg,rgba(255,255,255,0.46),rgba(255,255,255,0.24) 50%,rgba(255,255,255,0.38));backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);-webkit-backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.45),inset 0 0 20px rgba(255,255,255,.22),0 6px 20px rgba(30,45,70,.1)"><span style="flex:1">Search everything</span><span style="font-size:11px;padding:2px 7px;border-radius:6px;background:rgba(255,255,255,.7);color:#6b717c;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)">⌘K</span></div>
+      </div>
+    </div>
+
+    <sc-if value="{{ isLake }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;left:24px;right:392px;top:76px;bottom:108px;z-index:2;display:grid;grid-template-columns:208px minmax(0,1fr);gap:16px;animation:dcFade .25s ease">
+        <div style="min-height:0;overflow:auto;border-radius:20px;padding:14px 10px;box-sizing:border-box;display:flex;flex-direction:column;gap:18px;background:linear-gradient(160deg,rgba(255,255,255,0.46),rgba(255,255,255,0.24) 50%,rgba(255,255,255,0.38));backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);-webkit-backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.45),inset 0 0 20px rgba(255,255,255,.22),0 6px 20px rgba(30,45,70,.1)">
+          <sc-for list="{{ lake.side }}" as="sec" hint-placeholder-count="2">
+            <div style="display:flex;flex-direction:column;gap:1px">
+              <div style="padding:0 10px 6px;font-size:11px;font-weight:600;color:#8a909a">{{ sec.title }}</div>
+              <sc-for list="{{ sec.rows }}" as="r" hint-placeholder-count="5">
+                <div onClick="{{ r.go }}" style="display:flex;align-items:center;gap:10px;height:30px;padding:0 10px;border-radius:9px;cursor:pointer;font-size:13px;background:{{ r.bg }};box-shadow:{{ r.sh }};transition:background .15s">
+                  <span style="flex:none;width:8px;height:8px;border-radius:{{ r.dotR }};background:{{ r.dotBg }}"></span>
+                  <span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.label }}</span>
+                  <span style="font-size:12px;color:{{ r.countC }}">{{ r.count }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+        <div style="min-height:0;display:flex;flex-direction:column;overflow:hidden;border-radius:20px;background:linear-gradient(160deg,rgba(255,255,255,0.46),rgba(255,255,255,0.24) 50%,rgba(255,255,255,0.38));backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);-webkit-backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.45),inset 0 0 20px rgba(255,255,255,.22),0 6px 20px rgba(30,45,70,.1)">
+          <div style="padding:14px 16px 10px 22px;display:flex;align-items:center;gap:10px">
+            <span style="font-size:16px;font-weight:600;letter-spacing:-.01em">{{ lake.title }}</span><span style="font-size:12px;color:#8a909a">{{ lake.count }}</span>
+            <div style="margin-left:auto;display:flex;padding:2px;border-radius:999px;background:rgba(255,255,255,.24);box-shadow:inset 0 1px 2px rgba(20,30,50,.08),inset 0 0 0 1px rgba(255,255,255,.45)">
+              <sc-for list="{{ lake.modes }}" as="m" hint-placeholder-count="2"><div onClick="{{ m.go }}" style="padding:4px 12px;border-radius:999px;font-size:12px;font-weight:500;cursor:pointer;background:{{ m.bg }};box-shadow:{{ m.sh }}">{{ m.label }}</div></sc-for>
+            </div>
+          </div>
+          <sc-if value="{{ lake.isCatalog }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:8px minmax(0,1.6fr) 100px 140px 84px 40px;gap:12px;padding:0 24px 8px;font-size:11px;font-weight:600;user-select:none">
+              <sc-for list="{{ lake.heads }}" as="h" hint-placeholder-count="6"><span onClick="{{ h.go }}" style="cursor:{{ h.cur }};text-align:{{ h.al }};color:{{ h.c }};white-space:nowrap">{{ h.label }}</span></sc-for>
+            </div>
+            <div style="flex:1;min-height:0;overflow:auto;padding:0 10px 10px;display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ lake.rows }}" as="r" hint-placeholder-count="10">
+                <div onClick="{{ r.go }}" style="display:grid;grid-template-columns:8px minmax(0,1.6fr) 100px 140px 84px 40px;gap:12px;align-items:center;padding:8px 14px;border-radius:11px;cursor:pointer;background:{{ r.bg }};box-shadow:{{ r.sh }};transition:background .12s" style-hover="background:rgba(255,255,255,.4)">
+                  <span style="width:8px;height:8px;border-radius:2px;background:{{ r.bpc }}"></span>
+                  <div style="min-width:0;display:flex;flex-direction:column;gap:1px"><span style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.name }}</span><span style="font-size:11px;color:#6b717c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.sub }}</span></div>
+                  <span style="font-size:13px;color:#4a505a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.owner }}</span>
+                  <span style="display:flex;align-items:center;gap:6px;font-size:12px;min-width:0"><span style="flex:none;width:7px;height:7px;border-radius:50%;background:{{ r.sc }}"></span><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.sl }}</span></span>
+                  <span style="display:flex"><sc-if value="{{ r.hasTier }}" hint-placeholder-val="{{ false }}"><span style="padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;color:{{ r.tierC }};background:{{ r.tierBg }}">{{ r.tier }}</span></sc-if></span>
+                  <span style="text-align:right;font-size:12px;color:#6b717c">{{ r.rel }}</span>
+                </div>
+              </sc-for>
+              <sc-if value="{{ lake.empty }}" hint-placeholder-val="{{ false }}"><div style="padding:48px 14px;text-align:center;font-size:13px;color:#8a909a">Nothing needs attention here.</div></sc-if>
+            </div>
+          </sc-if>
+          <sc-if value="{{ lake.isStream }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:1;min-height:0;overflow:auto;padding:0 10px 10px;display:flex;flex-direction:column;gap:2px;animation:dcFade .2s ease">
+              <sc-for list="{{ lake.stream }}" as="x" hint-placeholder-count="10">
+                <div onClick="{{ x.go }}" style="display:grid;grid-template-columns:104px minmax(0,1fr) 150px 40px;gap:12px;align-items:center;padding:9px 14px;border-radius:11px;cursor:pointer;background:{{ x.bg }};box-shadow:{{ x.sh }}" style-hover="background:rgba(255,255,255,.4)">
+                  <span onClick="{{ x.srcGo }}" title="Open {{ x.src }}" style="display:flex;align-items:center;gap:7px;min-width:0;font-size:12px;font-weight:600"><span style="flex:none;width:16px;height:16px;border-radius:5px;background:{{ x.c }};color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ x.mono }}</span><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ x.src }}</span></span>
+                  <span style="font-size:13px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ x.text }}</span>
+                  <span style="font-size:12px;color:#4a505a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ x.ent }}</span>
+                  <span style="text-align:right;font-size:12px;color:#8a909a">{{ x.age }}</span>
+                </div>
+              </sc-for>
+              <sc-if value="{{ lake.hasHidden }}" hint-placeholder-val="{{ false }}"><div style="padding:12px 14px;font-size:12px;color:#8a909a">{{ lake.hiddenTxt }}</div></sc-if>
+            </div>
+          </sc-if>
+          <div style="padding:8px 22px 10px;font-size:11px;color:#9aa0aa;box-shadow:inset 0 1px 0 rgba(255,255,255,.5)">{{ lake.hint }}</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isRepo }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:24px;right:392px;top:76px;height:36px;z-index:3;display:flex;align-items:center;gap:6px">
+        <sc-for list="{{ repo.chips }}" as="o" hint-placeholder-count="4"><div onClick="{{ o.go }}" title="{{ o.title }}" style="display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;font-size:13px;cursor:pointer;user-select:none;white-space:nowrap;background:{{ o.bg }};box-shadow:{{ o.sh }};opacity:{{ o.op }};transition:background .2s,box-shadow .2s"><span style="width:8px;height:8px;border-radius:50%;background:{{ o.dot }};box-shadow:inset 0 0 0 1.5px {{ o.c }}"></span>{{ o.name }}<span style="font-size:11px;color:#8a909a">{{ o.count }}</span></div></sc-for>
+        <span style="width:1px;height:20px;margin:0 6px;background:rgba(60,75,100,.18)"></span>
+        <sc-for list="{{ repo.repos }}" as="o" hint-placeholder-count="3"><div onClick="{{ o.go }}" title="{{ o.title }}" style="padding:6px 11px;border-radius:999px;font-size:13px;cursor:pointer;user-select:none;white-space:nowrap;background:{{ o.bg }};box-shadow:{{ o.sh }}">{{ o.name }}</div></sc-for>
+        <div style="margin-left:auto;display:flex;gap:14px;font-size:12px;color:#6b717c;white-space:nowrap"><span style="display:flex;align-items:center;gap:6px"><span style="width:18px;border-top:1.5px solid rgba(60,75,100,.5)"></span>calls</span><span style="display:flex;align-items:center;gap:6px"><span style="width:18px;border-top:2px dashed #b06a1a"></span>cross-repo</span></div>
+      </div>
+      <div style="position:absolute;left:24px;right:392px;top:124px;bottom:108px;overflow:auto;z-index:1">
+        <div style="position:relative;width:1024px;height:{{ repo.gh }}px">
+          <sc-for list="{{ repo.clusters }}" as="c" hint-placeholder-count="3">
+            <div style="position:absolute;left:{{ c.x }}px;top:0;width:{{ c.w }}px;height:{{ c.h }}px;box-sizing:border-box;border-radius:26px;opacity:{{ c.op }};transition:opacity .2s;background:linear-gradient(165deg,rgba(255,255,255,.34),rgba(255,255,255,.12) 55%,rgba(255,255,255,.22));backdrop-filter:blur(6px) saturate(1.4);-webkit-backdrop-filter:blur(6px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.45),inset 0 0 20px rgba(255,255,255,.22);animation:dcSettle .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:{{ c.delay }}">
+              <div style="position:absolute;left:20px;right:16px;top:16px;display:flex;flex-direction:column;gap:5px"><div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:14px;font-weight:600">{{ c.name }}</span><span style="font-size:12px;color:#8a909a">{{ c.count }}</span></div><sc-if value="{{ c.hasTag }}" hint-placeholder-val="{{ false }}"><span style="align-self:flex-start;font:500 10px 'JetBrains Mono';color:#8a5a00;background:rgba(194,122,0,.14);padding:2px 7px;border-radius:999px">{{ c.tag }}</span></sc-if></div>
+            </div>
+          </sc-for>
+          {{ repo.svg }}
+          {{ repo.svgTop }}
+          <sc-for list="{{ repo.nodes }}" as="n" hint-placeholder-count="16">
+            <div onClick="{{ n.select }}" style="position:absolute;left:{{ n.x }}px;top:{{ n.y }}px;width:{{ n.w }}px;box-sizing:border-box;border-radius:13px;background:linear-gradient(160deg,rgba(255,255,255,0.68),rgba(255,255,255,0.36) 50%,rgba(255,255,255,0.54));backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);-webkit-backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);box-shadow:{{ n.sh }};opacity:{{ n.op }};cursor:pointer;overflow:hidden;transition:box-shadow .2s,opacity .2s,transform .15s;z-index:2" style-hover="transform:translateY(-1px)">
+              <div style="height:38px;display:flex;align-items:center;gap:8px;padding-right:6px">
+                <span style="flex:none;width:4px;height:18px;border-radius:0 3px 3px 0;background:{{ n.c }}"></span>
+                <span style="flex:1;min-width:0;font:500 12px 'JetBrains Mono';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:{{ n.deco }}">{{ n.label }}</span>
+                <sc-if value="{{ n.hasKids }}" hint-placeholder-val="{{ false }}"><span onClick="{{ n.toggleOpen }}" title="{{ n.chevT }}" style="flex:none;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1;color:#6b717c;transform:rotate({{ n.chevRot }});transition:transform .2s,background .15s" style-hover="background:rgba(255,255,255,.7)">{{ n.chev }}</span></sc-if>
+              </div>
+              <sc-if value="{{ n.hasTags }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-wrap:wrap;gap:4px;padding:0 8px 8px 12px;margin-top:-5px">
+                  <sc-for list="{{ n.tags }}" as="t" hint-placeholder-count="1"><span style="font:500 10px/14px 'JetBrains Mono';padding:1px 6px;border-radius:999px;white-space:nowrap;color:{{ t.c }};background:{{ t.bg }}">{{ t.label }}</span></sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ n.open }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:0 10px 8px 16px;display:flex;flex-direction:column;gap:2px;animation:dcFade .22s ease">
+                  <sc-for list="{{ n.kids }}" as="k" hint-placeholder-count="3"><div style="height:22px;display:flex;align-items:center;gap:8px;font:400 11px 'JetBrains Mono';color:#4a505a;white-space:nowrap;overflow:hidden"><span style="flex:none;width:8px;border-top:1px solid #c5ccd6"></span>{{ k }}</div></sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isKnow }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;inset:0;z-index:1;animation:dcFade .3s ease">
+        {{ know.svg }}
+        <sc-for list="{{ know.nodes }}" as="k" hint-placeholder-count="20">
+          <div onClick="{{ k.go }}" title="{{ k.tip }}" style="position:absolute;left:{{ k.x }}px;top:{{ k.y }}px;width:{{ k.s }}px;height:{{ k.s }}px;transform:translate(-50%,-50%);border-radius:{{ k.r }};background:{{ k.c }};box-shadow:{{ k.sh }};opacity:{{ k.op }};cursor:pointer;transition:opacity .2s,width .2s,height .2s;z-index:2">
+            <span style="position:absolute;left:50%;top:100%;margin-top:6px;transform:translateX(-50%);white-space:nowrap;font:{{ k.font }};color:{{ k.lc }}">{{ k.label }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:absolute;left:24px;right:392px;top:76px;height:36px;z-index:3;display:flex;align-items:center;gap:6px">
+        <sc-for list="{{ know.tags }}" as="o" hint-placeholder-count="8"><div onClick="{{ o.go }}" style="flex:none;display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;cursor:pointer;user-select:none;white-space:nowrap;transition:background .2s,box-shadow .2s;color:{{ o.fg }};background:{{ o.bg }};box-shadow:{{ o.sh }}"><span style="width:7px;height:7px;border-radius:50%;background:{{ o.dot }}"></span>{{ o.label }}</div></sc-for>
+        <div onClick="{{ toggleCode }}" style="flex:none;margin-left:auto;white-space:nowrap;display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;font-size:13px;cursor:pointer;user-select:none;transition:background .2s,box-shadow .2s;background:{{ codeChip.bg }};box-shadow:{{ codeChip.sh }}"><span style="width:8px;height:8px;border-radius:2px;background:{{ codeChip.dot }};box-shadow:inset 0 0 0 1.5px #2f6fe0"></span>Linked code</div>
+      </div>
+    </sc-if>
+
+    <div style="position:absolute;right:24px;top:76px;bottom:108px;width:352px;z-index:4;box-sizing:border-box;overflow:auto;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:20px;background:linear-gradient(160deg,rgba(255,255,255,0.62),rgba(255,255,255,0.36) 50%,rgba(255,255,255,0.52));backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);-webkit-backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.45),inset 0 0 20px rgba(255,255,255,.22),0 6px 20px rgba(30,45,70,.1)">
+      <sc-if value="{{ isLake }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:#8a909a"><span style="width:8px;height:8px;border-radius:2px;background:{{ ent.bpc }}"></span>{{ ent.bpName }}</div>
+          <div style="font-size:21px;font-weight:600;letter-spacing:-.015em;line-height:1.2">{{ ent.name }}</div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:13px;flex-wrap:wrap"><span style="width:7px;height:7px;border-radius:50%;background:{{ ent.sc }}"></span><span>{{ ent.sl }}</span><sc-if value="{{ ent.hasOwner }}" hint-placeholder-val="{{ false }}"><span style="color:#8a909a">· owned by</span><span onClick="{{ ent.ownerGo }}" style="color:#2f6fe0;cursor:pointer">{{ ent.ownerName }}</span></sc-if></div>
+        </div>
+        <div style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px 16px;font-size:13px">
+          <sc-for list="{{ ent.props }}" as="p" hint-placeholder-count="3"><span style="color:#8a909a;white-space:nowrap">{{ p.k }}</span><span style="min-width:0;overflow-wrap:anywhere">{{ p.v }}</span></sc-for>
+        </div>
+        <sc-if value="{{ ent.hasScore }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="flex:1;font-size:11px;font-weight:600;color:#8a909a">Production readiness</span><span style="font-size:12px;color:#6b717c">{{ ent.ruleCount }}</span><span style="padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;color:{{ ent.tierC }};background:{{ ent.tierBg }}">{{ ent.tier }}</span></div>
+            <div style="height:4px;border-radius:2px;background:rgba(60,75,100,.12);overflow:hidden"><div style="height:100%;width:{{ ent.pct }};background:{{ ent.tierBar }};border-radius:2px;transition:width .3s"></div></div>
+            <sc-for list="{{ ent.rules }}" as="u" hint-placeholder-count="5"><div style="display:flex;align-items:baseline;gap:8px;font-size:13px"><span style="flex:none;width:14px;font-weight:600;color:{{ u.c }}">{{ u.mark }}</span><span style="flex:1;min-width:0">{{ u.n }}</span><span style="font-size:11px;color:#8a909a">{{ u.note }}</span></div></sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ ent.hasCode }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:11px;font-weight:600;color:#8a909a">Code</div>
+            <div style="font-size:13px;line-height:1.45;color:#4a505a;text-wrap:pretty">{{ ent.codeText }}</div>
+            <div onClick="{{ ent.codeGo }}" style="align-self:flex-start;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;background:#1c1e22;color:#fff">Open in Repo Intelligence</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ ent.hasNotes }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <div style="font-size:11px;font-weight:600;color:#8a909a;padding-bottom:6px">Mentioned in notes</div>
+            <sc-for list="{{ ent.notes }}" as="b" hint-placeholder-count="2"><div onClick="{{ b.go }}" style="display:flex;align-items:center;gap:8px;padding:5px 8px;margin:0 -8px;border-radius:8px;cursor:pointer;font-size:13px" style-hover="background:rgba(255,255,255,.55)"><span style="flex:none;width:7px;height:7px;border-radius:50%;background:{{ b.c }}"></span>{{ b.title }}</div></sc-for>
+          </div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:11px;font-weight:600;color:#8a909a">Related · {{ ent.relN }}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <sc-for list="{{ ent.rels }}" as="l" hint-placeholder-count="4"><div onClick="{{ l.go }}" style="display:flex;align-items:center;gap:6px;padding:4px 10px 4px 8px;border-radius:999px;cursor:pointer;font-size:12px;background:rgba(255,255,255,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5)" style-hover="background:rgba(255,255,255,.8)"><span style="width:7px;height:7px;border-radius:2px;background:{{ l.c }}"></span>{{ l.name }}</div></sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="font-size:11px;font-weight:600;color:#8a909a;padding-bottom:6px">Activity</div>
+          <sc-for list="{{ ent.acts }}" as="a" hint-placeholder-count="2">
+            <div onClick="{{ a.go }}" title="{{ a.tip }}" style="display:flex;gap:10px;align-items:baseline;padding:5px 8px;margin:0 -8px;border-radius:8px;cursor:pointer;font-size:13px" style-hover="background:rgba(255,255,255,.55)"><span style="flex:none;width:62px;font-weight:600;font-size:12px;color:{{ a.sc }}">{{ a.src }}</span><span style="flex:1;min-width:0;text-wrap:pretty;opacity:{{ a.op }}">{{ a.text }}</span><span style="flex:none;font-size:12px;color:#8a909a">{{ a.age }}</span></div>
+          </sc-for>
+          <sc-if value="{{ ent.noAct }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#8a909a">No recent events.</div></sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isRepo }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:#8a909a"><span style="width:4px;height:12px;border-radius:2px;background:{{ insp.c }}"></span>{{ insp.kind }}</div>
+          <span style="font:500 17px 'JetBrains Mono';letter-spacing:-.01em;overflow-wrap:anywhere">{{ insp.label }}</span>
+          <span style="font:400 11px 'JetBrains Mono';color:#6b717c;overflow-wrap:anywhere">{{ insp.path }}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px">
+          <sc-for list="{{ insp.stats }}" as="s" hint-placeholder-count="3"><div style="padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.45);box-shadow:inset 0 0 0 1px rgba(255,255,255,.6);display:flex;flex-direction:column;gap:1px"><span style="font-size:17px;font-weight:600">{{ s.v }}</span><span style="font-size:11px;color:#6b717c">{{ s.k }}</span></div></sc-for>
+        </div>
+        <sc-if value="{{ insp.hasKids }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:11px;font-weight:600;color:#8a909a;padding-bottom:2px">Members</div><sc-for list="{{ insp.kids }}" as="k" hint-placeholder-count="2"><span style="font:400 12px 'JetBrains Mono';color:#4a505a">{{ k }}</span></sc-for></div>
+        </sc-if>
+        <sc-for list="{{ insights }}" as="g" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;gap:8px;animation:dcFade .24s ease">
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:{{ g.c }}"></span><span style="font-size:13px;font-weight:600">{{ g.title }}</span></div>
+            <div style="font-size:13px;line-height:1.45;color:#4a505a;text-wrap:pretty">{{ g.summary }}</div>
+            <div style="display:flex;flex-direction:column;gap:1px">
+              <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2"><div onClick="{{ it.go }}" style="display:flex;justify-content:space-between;gap:10px;padding:5px 8px;margin:0 -8px;border-radius:8px;cursor:pointer;font-size:12px" style-hover="background:rgba(255,255,255,.55)"><span style="flex:1;min-width:0;font-family:'JetBrains Mono';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ it.a }}</span><span style="flex:none;white-space:nowrap;color:{{ it.c }}">{{ it.b }}</span></div></sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noOv }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;line-height:1.45;color:#8a909a">Turn on an overlay above to see blast radius, dead code or dependency drift.</div></sc-if>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="font-size:11px;font-weight:600;color:#8a909a;padding-bottom:6px">Context</div>
+          <sc-for list="{{ insp.ctx }}" as="x" hint-placeholder-count="2"><div onClick="{{ x.go }}" style="display:flex;align-items:center;gap:8px;padding:5px 8px;margin:0 -8px;border-radius:8px;cursor:pointer;font-size:13px" style-hover="background:rgba(255,255,255,.55)"><span style="flex:none;width:7px;height:7px;border-radius:{{ x.r }};background:{{ x.c }}"></span><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ x.label }}</span><span style="flex:none;font-size:11px;color:#8a909a">{{ x.kind }}</span></div></sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isKnow }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="align-self:flex-start;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600;color:{{ nt.tc }};background:{{ nt.tbg }}">{{ nt.tag }}</span>
+          <div style="font-size:21px;font-weight:600;letter-spacing:-.015em;line-height:1.25;text-wrap:pretty">{{ nt.title }}</div>
+        </div>
+        <p style="margin:0;font-size:14px;line-height:1.7;text-wrap:pretty"><sc-for list="{{ nt.segs }}" as="s" hint-placeholder-count="5"><span onClick="{{ s.go }}" style="color:{{ s.c }};cursor:{{ s.cur }};font-family:{{ s.ff }};background:{{ s.bg }};padding:{{ s.pad }};border-radius:5px">{{ s.t }}</span></sc-for></p>
+        <sc-if value="{{ nt.hasSyms }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <div style="font-size:11px;font-weight:600;color:#8a909a;padding-bottom:6px">Linked code</div>
+            <sc-for list="{{ nt.syms }}" as="y" hint-placeholder-count="2"><div onClick="{{ y.go }}" style="display:flex;justify-content:space-between;gap:10px;padding:5px 8px;margin:0 -8px;border-radius:8px;cursor:pointer;font-size:12px" style-hover="background:rgba(255,255,255,.55)"><span style="font-family:'JetBrains Mono';color:#2f6fe0">{{ y.label }}</span><span style="min-width:0;color:#8a909a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ y.repo }}</span></div></sc-for>
+          </div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="font-size:11px;font-weight:600;color:#8a909a;padding-bottom:6px">Backlinks · {{ nt.backN }}</div>
+          <sc-for list="{{ nt.back }}" as="b" hint-placeholder-count="2"><div onClick="{{ b.go }}" style="display:flex;align-items:center;gap:8px;padding:5px 8px;margin:0 -8px;border-radius:8px;cursor:pointer;font-size:13px" style-hover="background:rgba(255,255,255,.55)"><span style="flex:none;width:7px;height:7px;border-radius:50%;background:{{ b.c }}"></span>{{ b.title }}</div></sc-for>
+          <sc-if value="{{ nt.noBack }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#8a909a">No notes link here yet.</div></sc-if>
+        </div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeSheet }}" style="position:absolute;inset:0;z-index:10;background:rgba(236,240,245,.32);backdrop-filter:blur(28px) saturate(1.4);-webkit-backdrop-filter:blur(28px) saturate(1.4);animation:dcFade .25s ease"></div>
+      <div style="position:absolute;left:120px;right:120px;top:40px;bottom:112px;z-index:11;transform-origin:{{ forg }};animation:dcFolder .42s cubic-bezier(.2,.9,.25,1) both">
+        <dc-import name="Provider Dashboard" provider="{{ sheet }}" variant="branded" embedded="{{ true }}" connected="{{ sheetOn }}" on-toggle="{{ toggleSheetConn }}" on-close="{{ closeSheet }}" style="position:absolute;inset:0" hint-size="100%,100%"></dc-import>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ glance.show }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:{{ glance.x }}px;bottom:104px;width:240px;z-index:13;pointer-events:none;box-sizing:border-box;padding:12px 14px;border-radius:16px;display:flex;flex-direction:column;gap:10px;animation:dcFade .14s ease;background:linear-gradient(160deg,rgba(255,255,255,0.82),rgba(255,255,255,0.64));backdrop-filter:blur(26px) saturate(1.9);-webkit-backdrop-filter:blur(26px) saturate(1.9);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.6),0 16px 40px rgba(30,45,70,.22)">
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:14px;font-weight:600">{{ glance.name }}</span><span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4a505a"><span style="width:7px;height:7px;border-radius:50%;background:{{ glance.c }}"></span>{{ glance.status }}</span></div>
+        <sc-if value="{{ glance.on }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <sc-for list="{{ glance.kpis }}" as="k" hint-placeholder-count="2"><div style="display:flex;flex-direction:column;gap:1px"><span style="font-size:16px;font-weight:600">{{ k.v }}</span><span style="font-size:11px;color:#6b717c">{{ k.k }}</span></div></sc-for>
+          </div>
+        </sc-if>
+        <span style="font-size:11px;color:#8a909a">{{ glance.hint }}</span>
+      </div>
+    </sc-if>
+
+    <div style="position:absolute;left:0;right:0;bottom:14px;margin:0 auto;width:fit-content;z-index:12;box-sizing:border-box;padding:12px 12px 14px;border-radius:26px;display:flex;align-items:flex-end;gap:10px;background:linear-gradient(160deg,rgba(255,255,255,0.42),rgba(255,255,255,0.22) 50%,rgba(255,255,255,0.34));backdrop-filter:blur(24px) saturate(1.9) brightness(1.05);-webkit-backdrop-filter:blur(24px) saturate(1.9) brightness(1.05);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.45),inset 0 0 20px rgba(255,255,255,.22),0 20px 50px rgba(30,45,70,.18)">
+      <sc-for list="{{ dockA }}" as="s" hint-placeholder-count="6">
+        <div onClick="{{ s.go }}" onMouseEnter="{{ s.enter }}" onMouseLeave="{{ s.leave }}" style="position:relative;flex:none;width:52px;height:52px;cursor:pointer">
+          <div style="position:absolute;inset:0;border-radius:14px;background:{{ s.c }};box-shadow:{{ s.sh }};transform:{{ s.tf }};transform-origin:50% 100%;transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s">
+            <div style="position:absolute;inset:0;border-radius:inherit;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:700;letter-spacing:-.02em;opacity:{{ s.op }};filter:{{ s.filter }}">{{ s.mono }}<image-slot id="{{ s.slot }}" shape="rect" fit="cover" placeholder="" style="position:absolute;inset:0"></image-slot></div>
+            <div style="position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(165deg,rgba(255,255,255,.34) 0%,rgba(255,255,255,0) 46%);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 0 0 1px rgba(255,255,255,.16)"></div>
+          </div>
+          <span style="position:absolute;left:50%;bottom:-9px;margin-left:-2.5px;width:5px;height:5px;border-radius:50%;background:{{ s.dot }}"></span>
+        </div>
+      </sc-for>
+      <span style="flex:none;align-self:center;width:1px;height:40px;background:rgba(60,75,100,.2)"></span>
+      <sc-for list="{{ dockB }}" as="s" hint-placeholder-count="10">
+        <div onClick="{{ s.go }}" onMouseEnter="{{ s.enter }}" onMouseLeave="{{ s.leave }}" style="position:relative;flex:none;width:52px;height:52px;cursor:pointer">
+          <div style="position:absolute;inset:0;border-radius:14px;background:{{ s.c }};box-shadow:{{ s.sh }};transform:{{ s.tf }};transform-origin:50% 100%;transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s">
+            <div style="position:absolute;inset:0;border-radius:inherit;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:700;letter-spacing:-.02em;opacity:{{ s.op }};filter:{{ s.filter }}">{{ s.mono }}<image-slot id="{{ s.slot }}" shape="rect" fit="cover" placeholder="" style="position:absolute;inset:0"></image-slot></div>
+            <div style="position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(165deg,rgba(255,255,255,.34) 0%,rgba(255,255,255,0) 46%);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 0 0 1px rgba(255,255,255,.16)"></div>
+          </div>
+          <span style="position:absolute;left:50%;bottom:-9px;margin-left:-2.5px;width:5px;height:5px;border-radius:50%;background:{{ s.dot }}"></span>
+        </div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;bottom:112px;z-index:45;display:flex;justify-content:center;pointer-events:none"><div style="padding:9px 16px;border-radius:999px;background:rgba(28,30,34,.86);color:#fff;font-size:13px;box-shadow:0 10px 30px rgba(20,30,50,.25);animation:dcFade .2s ease">{{ toast }}</div></div>
+    </sc-if>
+
+    <sc-if value="{{ pal }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closePal }}" style="position:absolute;inset:0;z-index:40;background:rgba(28,30,34,.1);animation:dcFade .15s ease"></div>
+      <div style="position:absolute;left:50%;top:92px;width:640px;z-index:41;transform:translateX(-50%);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(160deg,rgba(255,255,255,0.86),rgba(255,255,255,0.7));backdrop-filter:blur(30px) saturate(1.9);-webkit-backdrop-filter:blur(30px) saturate(1.9);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.6),0 30px 80px rgba(20,30,50,.3);animation:dcPop .18s ease">
+        <div style="padding:14px 18px;display:flex;align-items:center;gap:10px;box-shadow:inset 0 -1px 0 rgba(60,75,100,.1)">
+          <input ref="{{ palRef }}" value="{{ pq }}" onChange="{{ onPq }}" onKeyDown="{{ onPalKey }}" placeholder="Search entities, symbols, notes, sources" style="flex:1;border:none;outline:none;background:transparent;font:inherit;font-size:17px;color:#1c1e22">
+          <span style="font-size:11px;padding:2px 7px;border-radius:6px;background:rgba(60,75,100,.08);color:#6b717c">esc</span>
+        </div>
+        <div style="max-height:440px;overflow:auto;padding:8px;display:flex;flex-direction:column;gap:6px">
+          <sc-for list="{{ palGroups }}" as="g" hint-placeholder-count="2">
+            <div style="display:flex;flex-direction:column;gap:1px">
+              <div style="padding:6px 10px 4px;font-size:11px;font-weight:600;color:#8a909a">{{ g.title }}</div>
+              <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+                <div onClick="{{ it.go }}" onMouseEnter="{{ it.hover }}" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;cursor:pointer;background:{{ it.bg }}">
+                  <span style="flex:none;width:8px;height:8px;border-radius:{{ it.r }};background:{{ it.c }}"></span>
+                  <span style="font-size:14px;white-space:nowrap;font-family:{{ it.ff }}">{{ it.label }}</span>
+                  <span style="flex:1;min-width:0;font-size:12px;color:#8a909a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ it.sub }}</span>
+                  <span style="flex:none;font-size:11px;color:{{ it.kc }}">↵</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+          <sc-if value="{{ palEmpty }}" hint-placeholder-val="{{ false }}"><div style="padding:28px;text-align:center;font-size:13px;color:#8a909a">No results.</div></sc-if>
+        </div>
+        <div style="padding:9px 18px;display:flex;gap:16px;font-size:11px;color:#8a909a;box-shadow:inset 0 1px 0 rgba(60,75,100,.08)"><span>↑ ↓ move</span><span>↵ open</span><span>⌘1–3 views</span><span>⌘[ ⌘] back, forward</span></div>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { view: 'lake', lakeMode: 'catalog', bp: 'all', ent: 'svc-api', sort: { k: null, dir: 1 }, focus: 'formatTime', open: {}, ov: { blast: true, dead: false, drift: true, beads: false }, repoF: null, note: 'Catalog architecture', tag: null, codeLinks: true, off: {}, sheet: null, forg: '50% 100%', hov: null, pal: false, pq: '', pi: 0, back: [], fwd: [], toast: '' };
+  palRef = React.createRef();
+  _nav = {};
+  GREEN = '#1f9d55'; AMBER = '#c27a00'; RED = '#d0393e';
+  BP = [['service', 'Services', '#2f6fe0'], ['api', 'APIs', '#0f9a8c'], ['package', 'Packages', '#b06a1a'], ['deploy', 'Deployments', '#1c1e22'], ['env', 'Environments', '#8a909a'], ['incident', 'Incidents', '#d0393e'], ['db', 'Databases', '#1f9d55'], ['container', 'Containers', '#1d63ed'], ['team', 'Teams', '#5e6ad2']];
+  ENT = [
+    { id: 'svc-web', bp: 'service', name: 'catalog-web', owner: 'team-catalog', st: ['Production', '#1f9d55'], props: [['Repo', 'acme/web-app'], ['Language', 'TypeScript'], ['Tier', '1 · customer-facing'], ['On-call', 'M. Ortiz']], rels: ['api-titles', 'pkg-shared', 'dep-web-prod', 'dep-web-prev', 'db-convex'], rules: [['Has owner', 1], ['README present', 1], ['On-call rotation', 1], ['CI passing on main', 1], ['Internal deps current', 0, 'shared-lib 2.3.1'], ['Runbook linked', 0]], act: [['Vercel', 'Preview building · 3d8e1b7', '1m'], ['GitHub', 'PR #131 checks running', '3m'], ['Linear', 'CAT-212 Upgrade shared-lib moved to In progress', '1h']] },
+    { id: 'svc-api', bp: 'service', name: 'catalog-api', owner: 'team-catalog', st: ['Production', '#1f9d55'], props: [['Repo', 'acme/api-service'], ['Language', 'TypeScript'], ['Tier', '1 · customer-facing'], ['Runtime', 'Docker · docker-prod-1']], rels: ['api-titles', 'api-search', 'db-turso', 'pkg-shared', 'inc-1', 'ctr-api', 'dep-api-prod'], rules: [['Has owner', 1], ['README present', 1], ['On-call rotation', 1], ['CI passing on main', 1], ['Internal deps current', 1], ['Runbook linked', 1], ['SLO 99.9% (30d)', 0, '99.72%']], act: [['Docker', 'catalog-api:7be03d1 healthy', '2m'], ['Turso', 'catalog-prod p95 read 4 ms', '5m'], ['Linear', 'CAT-207 Pool exhaustion follow-up', '1d']] },
+    { id: 'svc-shared', bp: 'service', name: 'shared-lib', owner: 'team-platform', st: ['Production', '#1f9d55'], props: [['Repo', 'acme/shared-lib'], ['Language', 'TypeScript'], ['Latest', '2.4.0'], ['Consumers', '2 services']], rels: ['pkg-shared'], rules: [['Has owner', 1], ['README present', 1], ['On-call rotation', 1], ['CI passing on main', 1], ['Internal deps current', 1], ['Runbook linked', 1]], act: [['GitHub', 'Release v2.4.0 published', '2d'], ['Beads', 'bd-41 Drop legacy pad2() is ready', '4h']] },
+    { id: 'svc-index', bp: 'service', name: 'search-indexer', owner: 'team-data', st: ['Degraded', '#c27a00'], props: [['Repo', 'acme/search-indexer'], ['Language', 'Python'], ['Tier', '2 · internal'], ['Runtime', 'Docker · docker-prod-2']], rels: ['api-search', 'db-convex', 'ctr-index', 'dep-index-stg', 'inc-2'], rules: [['Has owner', 1], ['README present', 0], ['On-call rotation', 1], ['CI passing on main', 0, '2 failing'], ['Internal deps current', 1], ['Runbook linked', 0]], act: [['Docker', 'search-indexer restarting (3×)', '6m'], ['Convex', 'search_docs 48k rows synced', '4s'], ['Langfuse', 'Embedding job p95 2.4 s', '20m']] },
+    { id: 'api-titles', bp: 'api', name: 'GET /titles', owner: 'team-catalog', st: ['p95 182 ms', '#1f9d55'], props: [['Service', 'catalog-api'], ['Calls / min', '1.2k']], rels: [] },
+    { id: 'api-search', bp: 'api', name: 'POST /titles/search', owner: 'team-catalog', st: ['p95 640 ms', '#c27a00'], props: [['Service', 'catalog-api'], ['Backed by', 'search-indexer']], rels: [] },
+    { id: 'pkg-shared', bp: 'package', name: '@acme/shared-lib', owner: 'team-platform', st: ['2.4.0 latest', '#1f9d55'], props: [['Registry', 'npm · private'], ['web-app pins', '2.3.1 · 1 minor behind'], ['api-service pins', '2.4.0']], rels: [] },
+    { id: 'dep-web-prod', bp: 'deploy', name: 'catalog-web · a41c9e2', owner: 'team-catalog', st: ['Ready', '#1f9d55'], props: [['Branch', 'main'], ['Duration', '1m 52s'], ['Via', 'Vercel']], rels: ['env-prod'], act: [['Vercel', 'Promoted to production', '14m']] },
+    { id: 'dep-web-prev', bp: 'deploy', name: 'catalog-web · 3d8e1b7', owner: 'team-catalog', st: ['Building', '#c27a00'], props: [['Branch', 'feat/beads-overlay'], ['Via', 'Vercel']], rels: ['env-prev'], act: [['Vercel', 'Build running · 0m 41s', '1m']] },
+    { id: 'dep-api-prod', bp: 'deploy', name: 'catalog-api · 7be03d1', owner: 'team-catalog', st: ['Ready', '#1f9d55'], props: [['Branch', 'main'], ['Via', 'Docker']], rels: ['env-prod'] },
+    { id: 'dep-index-stg', bp: 'deploy', name: 'search-indexer · 5f21e09', owner: 'team-data', st: ['Failed', '#d0393e'], props: [['Branch', 'main'], ['Error', 'OOM in embed step']], rels: ['env-stg'], act: [['GitHub', 'Workflow deploy-staging failed', '35m']] },
+    { id: 'env-prod', bp: 'env', name: 'Production', owner: 'team-platform', st: ['Healthy', '#1f9d55'], props: [['Region', 'iad1'], ['Cluster', 'docker-prod']], rels: [] },
+    { id: 'env-stg', bp: 'env', name: 'Staging', owner: 'team-platform', st: ['Degraded', '#c27a00'], props: [['Region', 'iad1']], rels: [] },
+    { id: 'env-prev', bp: 'env', name: 'Preview', owner: 'team-platform', st: ['Healthy', '#1f9d55'], props: [['Scope', 'One per branch']], rels: [] },
+    { id: 'inc-1', bp: 'incident', name: 'Elevated 5xx on /titles', owner: 'team-catalog', st: ['SEV2 · monitoring', '#d0393e'], props: [['Opened', 'Oct 21, 14:02'], ['Impact', '18 min · 4.1% of requests'], ['Cause', 'DB pool exhaustion']], rels: ['db-turso'], act: [['Linear', 'CAT-207 created from incident', 'Oct 21']] },
+    { id: 'inc-2', bp: 'incident', name: 'Index lag over 10 min', owner: 'team-data', st: ['SEV3 · resolved', '#6b717c'], props: [['Opened', 'Oct 26, 09:40'], ['Impact', 'Search results stale']], rels: [] },
+    { id: 'db-turso', bp: 'db', name: 'catalog-prod', owner: 'team-catalog', st: ['Healthy', '#1f9d55'], props: [['Provider', 'Turso'], ['Region', 'iad'], ['Size', '2.1 GB']], rels: [], act: [['Turso', '3 replicas in sync', '1m']] },
+    { id: 'db-convex', bp: 'db', name: 'catalog', owner: 'team-data', st: ['Synced', '#1f9d55'], props: [['Provider', 'Convex'], ['Tables', '5'], ['Documents', '48k']], rels: [], act: [['Convex', 'Functions deployed · v118', '3h']] },
+    { id: 'ctr-api', bp: 'container', name: 'catalog-api', owner: 'team-catalog', st: ['Running', '#1f9d55'], props: [['Image', 'catalog-api:7be03d1'], ['Host', 'docker-prod-1'], ['CPU · Mem', '34% · 412 MB']], rels: [], act: [['Docker', 'Health check passing', '2m']] },
+    { id: 'ctr-index', bp: 'container', name: 'search-indexer', owner: 'team-data', st: ['Restarting', '#c27a00'], props: [['Image', 'search-indexer:5f21e09'], ['Host', 'docker-prod-2'], ['Restarts', '3 in 10 min']], rels: [], act: [['Docker', 'Exited 137 (OOM)', '6m']] },
+    { id: 'team-catalog', bp: 'team', name: 'Catalog', st: ['6 members', '#5e6ad2'], props: [['Slack', '#catalog'], ['Lead', 'R. Chen'], ['On-call', 'M. Ortiz']], rels: [], act: [['Linear', 'Cycle 42 · 11 of 16 issues done', 'today']] },
+    { id: 'team-platform', bp: 'team', name: 'Platform', st: ['4 members', '#5e6ad2'], props: [['Slack', '#platform'], ['On-call', 'J. Park']], rels: [] },
+    { id: 'team-data', bp: 'team', name: 'Data', st: ['3 members', '#5e6ad2'], props: [['Slack', '#data'], ['On-call', 'A. Novak']], rels: [] },
+  ];
+  TC = { Gold: ['#8a5a00', 'rgba(194,122,0,.16)', '#c27a00'], Silver: ['#4a505a', 'rgba(107,113,124,.15)', '#8a909a'], Bronze: ['#8a4b16', 'rgba(176,106,26,.14)', '#b06a1a'], Basic: ['#b3262b', 'rgba(208,57,62,.1)', '#d0393e'] };
+  K = { c: '#2f6fe0', f: '#1f9d55', t: '#0f9a8c' };
+  R = [
+    { name: 'web-app', nodes: [
+      { id: 'HomeScreen', k: 'c', file: 'src/screens/Home.tsx' },
+      { id: 'useCatalog', k: 'f', file: 'src/hooks/useCatalog.ts', kids: ['state.titles', 'state.page', 'refetch()'] },
+      { id: 'fetchTitles', k: 'f', file: 'src/api/titles.ts' },
+      { id: 'DockView', k: 'c', file: 'src/components/DockView.tsx', kids: ['DockTile', 'useDockFocus()'] },
+      { id: 'formatDuration', k: 'f', file: 'src/utils/time.ts' },
+      { id: 'LegacyGrid', k: 'c', file: 'src/components/LegacyGrid.tsx' }] },
+    { name: 'api-service', nodes: [
+      { id: 'CatalogRouter', k: 'c', file: 'routes/catalog.ts', kids: ['GET /titles', 'GET /titles/:id', 'POST /titles/search'] },
+      { id: 'listTitles', k: 'f', file: 'services/titles.ts' },
+      { id: 'TitleModel', k: 't', file: 'models/title.ts', kids: ['id: string', 'runtime: Duration', 'repo: RepoRef'] },
+      { id: 'db.query', k: 'f', file: 'db/index.ts' },
+      { id: 'exportCsv', k: 'f', file: 'services/export.ts' }] },
+    { name: 'shared-lib', nodes: [
+      { id: 'Duration', k: 't', file: 'src/time/duration.ts' },
+      { id: 'formatTime', k: 'f', file: 'src/time/format.ts', kids: ['pad2()', 'toParts()'] },
+      { id: 'Logger', k: 'c', file: 'src/log/logger.ts', kids: ['info()', 'warn()', 'child()'] },
+      { id: 'retry', k: 'f', file: 'src/net/retry.ts' },
+      { id: 'Config', k: 't', file: 'src/config.ts' }] },
+  ];
+  E = [['HomeScreen', 'useCatalog'], ['HomeScreen', 'DockView'], ['useCatalog', 'fetchTitles'], ['DockView', 'formatDuration'], ['LegacyGrid', 'formatDuration'], ['CatalogRouter', 'listTitles'], ['listTitles', 'TitleModel'], ['listTitles', 'db.query'], ['exportCsv', 'db.query'], ['formatTime', 'Duration'], ['retry', 'Logger'], ['Logger', 'Config'], ['retry', 'Config']];
+  X = [['fetchTitles', 'CatalogRouter'], ['DockView', 'TitleModel'], ['formatDuration', 'formatTime'], ['formatDuration', 'Duration'], ['TitleModel', 'Duration'], ['CatalogRouter', 'Logger'], ['db.query', 'retry']];
+  ENTRY = ['HomeScreen', 'CatalogRouter'];
+  LOC = { LegacyGrid: 214, exportCsv: 96 };
+  PIN = { 'web-app': '2.3.1', 'api-service': '2.4.0' };
+  LATEST = '2.4.0';
+  CHANGED = { formatTime: 'formatTime gained a required locale argument in 2.4.0.' };
+  B = { useCatalog: ['ready', '#1f9d55'], DockView: ['blocked', '#c27a00'], listTitles: ['ready', '#1f9d55'], TitleModel: ['blocked', '#c27a00'], retry: ['ready', '#1f9d55'], formatDuration: ['claimed', '#2f6fe0'] };
+  TAGC = { architecture: '#2f6fe0', adr: '#5e6ad2', runbook: '#d0393e', incident: '#c27a00', planning: '#1f9d55', policy: '#b06a1a', onboarding: '#0f9a8c', reference: '#6b717c', meeting: '#1c1e22' };
+  NOTES = [
+    ['Catalog architecture', 'architecture', 'The web client loads titles through [[useCatalog]], which reaches [[CatalogRouter]] in api-service. Shared time handling lives in [[Duration]]. Background on caching is in [[ADR-012 Cross-repo edge cache]]; on-call steps are in [[Runbook: 5xx on /titles]].'],
+    ['ADR-012 Cross-repo edge cache', 'adr', 'Decision: cache resolved cross-repo references per commit. Motivated by slow atlas loads described in [[Catalog architecture]]. Touches [[listTitles]] and [[db.query]].'],
+    ['Runbook: 5xx on /titles', 'runbook', 'Check [[db.query]] retry counts first, then the [[retry]] backoff values in [[Config]]. Most recent occurrence: [[Incident 2026-10-21]].'],
+    ['Incident 2026-10-21', 'incident', 'Elevated 5xx for 18 minutes. Root cause was connection pool exhaustion in [[db.query]]. Follow-ups are tracked in [[Q4 reliability goals]].'],
+    ['Q4 reliability goals', 'planning', 'Bring catalog-api to Gold on production readiness. Remove [[LegacyGrid]] and [[exportCsv]]. Move web-app to shared-lib 2.4 per [[Dependency policy]].'],
+    ['Dependency policy', 'policy', 'Internal packages may lag one minor version for at most 30 days. Note that [[formatTime]] changed its signature in 2.4.0.'],
+    ['Onboarding: catalog team', 'onboarding', 'Start with [[Catalog architecture]], then read [[Dependency policy]]. Before your first on-call shift, walk through [[Runbook: 5xx on /titles]].'],
+    ['Time formatting', 'reference', '[[formatDuration]] in web-app wraps [[formatTime]]. Runtimes are stored as seconds on [[TitleModel]] using [[Duration]].'],
+    ['Platform sync 2026-10-24', 'meeting', 'Agreed to ship [[ADR-012 Cross-repo edge cache]]. Platform owns [[Logger]] child loggers going forward. Revisit [[Q4 reliability goals]] next week.'],
+  ];
+  TILES = [['Vercel', '#1c1e22'], ['Convex', '#e11d48'], ['Docker', '#1d63ed'], ['Port', '#16a34a'], ['Turso', '#db2752'], ['GitHub', '#2563eb']];
+  MORE = [['Linear', '#5e6ad2'], ['Tailscale', '#3d4a5c'], ['Sprites', '#c27a00'], ['Supabase', '#1f9d55'], ['Rivet', '#1c1e22'], ['Polygraph', '#2f6fe0'], ['Beads', '#b06a1a'], ['Trail-Code', '#0f9a8c'], ['Langfuse', '#d0393e'], ['Factory MCP', '#6b717c']];
+
+
+  REPO_SVC = { 'web-app': 'svc-web', 'api-service': 'svc-api', 'shared-lib': 'svc-shared' };
+  KIND = { c: 'Component', f: 'Function', t: 'Type' };
+  TONE = { ok: '#1f9d55', info: '#2f6fe0', warn: '#c27a00', err: '#d0393e' };
+  GLANCE = {
+    Vercel: ['Preview building', 'info', [['Deploys today', '14'], ['Error rate', '0.12%']]], Convex: ['Healthy', 'ok', [['Function calls', '1.8M'], ['Query p95', '38 ms']]],
+    Docker: ['1 container restarting', 'warn', [['Running', '4 of 6'], ['CPU', '41%']]], Port: ['1 approval waiting', 'info', [['Entities', '22'], ['Scorecard avg', 'Silver']]],
+    Turso: ['All databases healthy', 'ok', [['Rows read', '12.4M'], ['Replica lag', '38 ms']]], GitHub: ['deploy-staging failing', 'err', [['Open PRs', '7'], ['CI pass rate', '94%']]],
+    Linear: ['Cycle 42 · 69% done', 'info', [['In progress', '4'], ['Open bugs', '5']]], Tailscale: ['12 of 14 online', 'ok', [['Exit nodes', '2'], ['Expiring keys', '1']]],
+    Sprites: ['3 active', 'ok', [['Checkpoints', '38'], ['CPU hours', '12.4']]], Supabase: ['Operational', 'ok', [['Auth users', '3,204'], ['Requests', '410k']]],
+    Rivet: ['Queue backlog 1.2k', 'warn', [['Live actors', '1,284'], ['Cold start', '42 ms']]], Polygraph: ['9 tools available', 'ok', [['Calls', '3.4k'], ['p95', '310 ms']]],
+    Beads: ['3 ready · 2 blocked', 'info', [['Claimed', '1'], ['Closed', '9']]], 'Trail-Code': ['Indexed 4 min ago', 'ok', [['Symbols', '16'], ['Cross-repo', '7']]],
+    Langfuse: ['Latency p95 2.4 s', 'warn', [['Traces', '18.2k'], ['Cost 24h', '$41.20']]], 'Factory MCP': ['12 tools available', 'ok', [['Calls', '960'], ['Errors', '0']]],
+  };
+  componentDidMount() { window.addEventListener('keydown', this.onKey); }
+  componentWillUnmount() { window.removeEventListener('keydown', this.onKey); clearTimeout(this._tt); }
+  componentDidUpdate(pp, ps) { if (this.state.pal && !ps.pal) setTimeout(() => this.palRef.current && this.palRef.current.focus(), 20); }
+  snapOf(s) { return { view: s.view, bp: s.bp, ent: s.ent, focus: s.focus, note: s.note, repoF: s.repoF, lakeMode: s.lakeMode }; }
+  go(patch) { this.setState(s => ({ back: [...s.back, this.snapOf(s)].slice(-40), fwd: [], pal: false, sheet: null, ...patch })); }
+  goBack() { this.setState(s => (s.back.length ? { ...s.back[s.back.length - 1], back: s.back.slice(0, -1), fwd: [this.snapOf(s), ...s.fwd] } : null)); }
+  goFwd() { this.setState(s => (s.fwd.length ? { ...s.fwd[0], fwd: s.fwd.slice(1), back: [...s.back, this.snapOf(s)] } : null)); }
+  say(m) { this.setState({ toast: m }); clearTimeout(this._tt); this._tt = setTimeout(() => this.setState({ toast: '' }), 1800); }
+  onKey = e => {
+    const st = this.state, mod = e.metaKey || e.ctrlKey, t = e.target && e.target.tagName, inInput = t === 'INPUT' || t === 'TEXTAREA';
+    if (mod && e.key.toLowerCase() === 'k') { e.preventDefault(); this.setState(s => ({ pal: !s.pal, pq: '', pi: 0 })); return; }
+    if (e.key === 'Escape') { if (st.pal) this.setState({ pal: false }); else if (st.sheet) this.setState({ sheet: null }); return; }
+    if (inInput || st.pal || st.sheet) return;
+    if (mod && ['1', '2', '3'].includes(e.key)) { e.preventDefault(); this.go({ view: ['lake', 'repo', 'know'][+e.key - 1] }); return; }
+    if (mod && e.key === '[') { e.preventDefault(); this.goBack(); return; }
+    if (mod && e.key === ']') { e.preventDefault(); this.goFwd(); return; }
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      const v = st.view, list = this._nav[v] || [], cur = v === 'lake' ? st.ent : v === 'repo' ? st.focus : st.note;
+      if (!list.length) return;
+      const i = list.indexOf(cur), n = list[Math.max(0, Math.min(list.length - 1, i < 0 ? 0 : i + (e.key === 'ArrowDown' ? 1 : -1)))];
+      e.preventDefault(); this.setState(v === 'lake' ? { ent: n } : v === 'repo' ? { focus: n } : { note: n });
+    }
+  };
+  pick(on) { return on ? { bg: 'rgba(255,255,255,.72)', sh: 'inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.6),0 3px 10px rgba(30,45,70,.1)' } : { bg: 'transparent', sh: 'none' }; }
+  chip(on) { return on ? { bg: '#fff', sh: 'inset 0 1px 0 #fff,0 0 0 1px rgba(255,255,255,.7),0 4px 12px rgba(30,45,70,.12)' } : { bg: 'rgba(255,255,255,.3)', sh: 'inset 0 0 0 1px rgba(255,255,255,.5)' }; }
+  row(o) { return { label: o.label, count: o.count == null ? '' : String(o.count), countC: o.countC || '#8a909a', dotBg: o.dotBg || 'transparent', dotR: o.dotR || '2px', ...this.pick(!!o.on), go: o.go }; }
+  lake() {
+    if (this._lake) return this._lake;
+    const byId = {}, list = this.ENT.map(e => ({ act: [], ...e, rels: new Set(e.rels) }));
+    list.forEach(e => { byId[e.id] = e; if (e.owner) e.rels.add(e.owner); });
+    list.forEach(e => e.rels.forEach(r => byId[r] && byId[r].rels.add(e.id)));
+    list.forEach(e => { e.rels = [...e.rels]; });
+    return (this._lake = { list, byId });
+  }
+  tier(e) { if (!e.rules) return null; const p = e.rules.filter(r => r[1]).length / e.rules.length; return p === 1 ? 'Gold' : p >= 0.7 ? 'Silver' : p >= 0.5 ? 'Bronze' : 'Basic'; }
+  att(e) { return e.st[1] === this.RED || (e.st[1] === this.AMBER && e.st[0] !== 'Building'); }
+  bpm() { if (!this._bpm) { this._bpm = {}; this.BP.forEach(b => { this._bpm[b[0]] = b; }); } return this._bpm; }
+  label(n) { return n.k === 'f' ? n.id + '()' : n.id; }
+  all() { return this._all || (this._all = this.R.flatMap(r => r.nodes.map(n => ({ ...n, repo: r.name })))); }
+  node(id) { return this.all().find(n => n.id === id); }
+  svcRepo(id) { return Object.keys(this.REPO_SVC).find(r => this.REPO_SVC[r] === id); }
+  notesFor(e) { const G = this.kg(), repo = this.svcRepo(e.id); return G.notes.filter(n => n.body.includes(e.name) || (repo && n.links.some(l => G.syms.has(l) && this.node(l).repo === repo))); }
+  SRC() { return [...this.TILES, ...this.MORE]; }
+  srcColor(n) { const s = this.SRC().find(x => x[0] === n); return s ? s[1] : '#6b717c'; }
+  dockX(i) { const W = 24 + 16 * 52 + 16 * 10 + 1, L = (1440 - W) / 2; return L + 12 + i * 62 + (i >= this.TILES.length ? 11 : 0) + 26; }
+  openSrc(name) {
+    const st = this.state;
+    if (st.sheet === name) return this.setState({ sheet: null });
+    const i = this.SRC().findIndex(s => s[0] === name);
+    this.setState({ sheet: name, pal: false, hov: null, forg: st.sheet ? st.forg : Math.round(this.dockX(i) - 120) + 'px ' + (846 - 40) + 'px' });
+  }
+  ageMin(a) { const m = /^(\d+)(m|h|d)$/.exec(a); if (m) return +m[1] * { m: 1, h: 60, d: 1440 }[m[2]]; return a === 'today' ? 600 : 1e6; }
+
+  lakeVals() {
+    const st = this.state, L = this.lake(), BPm = this.bpm();
+    const scope = L.list.filter(e => st.bp === 'all' || (st.bp === 'attention' ? this.att(e) : e.bp === st.bp));
+    let vis = scope;
+    const sev = e => (e.st[1] === this.RED ? 0 : e.st[1] === this.AMBER ? 1 : 2), tr = e => ({ Gold: 0, Silver: 1, Bronze: 2, Basic: 3 })[this.tier(e)] ?? 9;
+    if (st.sort.k) { const f = { name: e => e.name.toLowerCase(), status: sev, score: tr }[st.sort.k]; vis = [...vis].sort((a, b) => (f(a) < f(b) ? -1 : f(a) > f(b) ? 1 : 0) * st.sort.dir); }
+    this._nav.lake = vis.map(e => e.id);
+    const heads = [['', null], ['Name', 'name'], ['Owner', null], ['Status', 'status'], ['Scorecard', 'score'], ['Links', null]].map(([label, k]) => ({
+      label: label + (k && st.sort.k === k ? (st.sort.dir > 0 ? ' ↑' : ' ↓') : ''), cur: k ? 'pointer' : 'default', al: label === 'Links' ? 'right' : 'left', c: k && st.sort.k === k ? '#1c1e22' : '#8a909a',
+      go: k ? () => this.setState(s => ({ sort: { k, dir: s.sort.k === k ? -s.sort.dir : 1 } })) : undefined }));
+    const owner = e => (e.owner ? L.byId[e.owner].name : '—');
+    const rows = vis.map(e => { const t = this.tier(e); return { name: e.name, sub: e.props[0] ? e.props[0][1] : '', bpc: BPm[e.bp][2], owner: owner(e), sc: e.st[1], sl: e.st[0], hasTier: !!t, tier: t || '', tierC: t ? this.TC[t][0] : '', tierBg: t ? this.TC[t][1] : '', rel: e.rels.length, ...this.pick(e.id === st.ent), go: () => this.setState({ ent: e.id }) }; });
+    let hidden = 0; const ev = [];
+    scope.forEach(e => e.act.forEach(([src, text, age]) => { if (st.off[src]) hidden++; else ev.push({ e, src, text, age, m: this.ageMin(age) }); }));
+    ev.sort((a, b) => a.m - b.m);
+    const stream = ev.map(x => ({ src: x.src, mono: x.src[0], c: this.srcColor(x.src), text: x.text, ent: x.e.name, age: x.age, ...this.pick(x.e.id === st.ent), go: () => this.setState({ ent: x.e.id }), srcGo: ev2 => { ev2.stopPropagation(); this.openSrc(x.src); } }));
+    const e = L.byId[st.ent], t = this.tier(e), pass = e.rules ? e.rules.filter(r => r[1]).length : 0, repo = this.svcRepo(e.id);
+    const syms = repo ? this.all().filter(n => n.repo === repo) : [], pin = repo && this.PIN[repo], notes = this.notesFor(e);
+    const ent = {
+      name: e.name, bpName: BPm[e.bp][1].replace(/s$/, ''), bpc: BPm[e.bp][2], sc: e.st[1], sl: e.st[0], hasOwner: !!e.owner, ownerName: owner(e), ownerGo: () => e.owner && this.setState({ ent: e.owner }),
+      props: e.props.map(([k, v]) => ({ k, v })),
+      hasScore: !!t, tier: t || '', tierC: t ? this.TC[t][0] : '', tierBg: t ? this.TC[t][1] : '', tierBar: t ? this.TC[t][2] : '', pct: e.rules ? Math.round((pass / e.rules.length) * 100) + '%' : '0%',
+      ruleCount: e.rules ? pass + ' of ' + e.rules.length : '', rules: (e.rules || []).map(([n, p, note]) => ({ n, note: note || '', c: p ? this.GREEN : this.RED, mark: p ? '✓' : '✕' })),
+      hasCode: !!repo, codeText: repo ? `${syms.length} symbols indexed in ${repo}.` + (pin && pin !== this.LATEST ? ` Pins shared-lib ${pin}; latest is ${this.LATEST}.` : '') : '',
+      codeGo: () => repo && this.go({ view: 'repo', focus: syms[0].id, repoF: repo }),
+      hasNotes: notes.length > 0, notes: notes.map(n => ({ title: n.title, c: this.TAGC[n.tag], go: () => this.go({ view: 'know', note: n.title, tag: null }) })),
+      relN: e.rels.length, rels: e.rels.map(id => { const r = L.byId[id]; return { name: r.name, c: BPm[r.bp][2], go: () => this.setState(s => ({ ent: id, bp: s.bp === 'all' || s.bp === r.bp ? s.bp : 'all' })) }; }),
+      acts: e.act.map(([src, text, age]) => { const on = !st.off[src]; return { src, text, age, op: on ? 1 : 0.5, sc: on ? '#2f6fe0' : '#8a909a', tip: on ? 'Open ' + src : src + ' is disconnected · open to connect', go: () => this.openSrc(src) }; }),
+      noAct: e.act.length === 0,
+    };
+    const attN = L.list.filter(x => this.att(x)).length;
+    const side = [
+      { title: 'Smart lists', rows: [
+        this.row({ label: 'All entities', count: L.list.length, on: st.bp === 'all', dotBg: '#1c1e22', go: () => this.setState({ bp: 'all' }) }),
+        this.row({ label: 'Needs attention', count: attN, countC: this.RED, on: st.bp === 'attention', dotBg: this.RED, dotR: '50%', go: () => this.setState({ bp: 'attention' }) })] },
+      { title: 'Blueprints', rows: this.BP.map(([id, name, c]) => this.row({ label: name, count: L.list.filter(x => x.bp === id).length, on: st.bp === id, dotBg: c, go: () => this.setState({ bp: id }) })) },
+    ];
+    const title = st.bp === 'all' ? 'All entities' : st.bp === 'attention' ? 'Needs attention' : BPm[st.bp][1];
+    const isCat = st.lakeMode === 'catalog';
+    const modes = [['catalog', 'Catalog'], ['stream', 'Activity']].map(([id, label]) => ({ label, ...this.chip(st.lakeMode === id), sh: st.lakeMode === id ? '0 2px 6px rgba(30,45,70,.12)' : 'none', bg: st.lakeMode === id ? '#fff' : 'transparent', go: () => this.setState({ lakeMode: id }) }));
+    return { heads, rows, empty: !rows.length, stream, hasHidden: hidden > 0, hiddenTxt: hidden + ' event' + (hidden === 1 ? '' : 's') + ' hidden from disconnected sources', isCatalog: isCat, isStream: !isCat, modes,
+      ent, side, title, count: isCat ? vis.length + '' : stream.length + ' events', attN,
+      hint: isCat ? '↑ ↓ move between entities · click a column title to sort' : 'Newest first · click a source to open its dashboard',
+      summary: `${L.list.length} entities · ${this.SRC().filter(s => !st.off[s[0]]).length} of ${this.SRC().length} sources connected` };
+  }
+
+  repoVals() {
+    const st = this.state, ov = st.ov, beadsOn = ov.beads && !st.off.Beads, all = this.all(), links = [...this.E, ...this.X], L = this.lake();
+    const repoOf = {}; all.forEach(n => { repoOf[n.id] = n.repo; });
+    const inb = {}; links.forEach(([, b]) => { inb[b] = (inb[b] || 0) + 1; });
+    const dead = {}; all.forEach(n => { if (!inb[n.id] && !this.ENTRY.includes(n.id)) dead[n.id] = true; });
+    const f = st.focus, depth = { [f]: 0 }, qu = [f];
+    while (qu.length) { const c = qu.shift(); links.forEach(([a, b]) => { if (b === c && depth[a] === undefined) { depth[a] = depth[c] + 1; qu.push(a); } }); }
+    const behind = r => this.PIN[r] && this.PIN[r] !== this.LATEST;
+    const drift = this.X.filter(([a, b]) => repoOf[b] === 'shared-lib' && behind(repoOf[a]));
+    const dSrc = {}, dTgt = {}; drift.forEach(([a, b]) => { dSrc[a] = true; if (this.CHANGED[b]) dTgt[b] = true; });
+    const tagsOf = (n, repo) => {
+      const t = [];
+      if (ov.blast && depth[n.id] > 0) t.push({ label: 'impact · hop ' + depth[n.id], c: '#b3262b', bg: 'rgba(208,57,62,.1)' });
+      if (ov.dead && dead[n.id]) t.push({ label: 'dead · ' + (this.LOC[n.id] || 0) + ' loc', c: '#4a505a', bg: 'rgba(107,113,124,.15)' });
+      if (ov.drift && dSrc[n.id]) t.push({ label: 'on ' + this.PIN[repo], c: '#8a5a00', bg: 'rgba(194,122,0,.14)' });
+      if (ov.drift && dTgt[n.id]) t.push({ label: 'changed in ' + this.LATEST, c: '#b3262b', bg: 'rgba(208,57,62,.1)' });
+      if (beadsOn && this.B[n.id]) t.push({ label: 'beads · ' + this.B[n.id][0], c: this.B[n.id][1], bg: 'rgba(255,255,255,.7)' });
+      return t;
+    };
+    const pos = {}, clusters = [];
+    this.R.forEach((r, ci) => {
+      const cx = ci * 352; let extra = ov.drift && behind(r.name) ? 22 : 0;
+      r.nodes.forEach((n, i) => {
+        const open = !!(n.kids && st.open[n.id]), tags = tagsOf(n, r.name);
+        let lines = 0, w = 0; tags.forEach(t => { const tw = t.label.length * 6.2 + 16; if (!lines || w + 4 + tw > 166) { lines++; w = tw; } else w += 4 + tw; });
+        const add = (lines ? lines * 18 + 2 : 0) + (open ? n.kids.length * 24 + 6 : 0);
+        pos[n.id] = { x: cx + (i % 2 ? 114 : 16), y: 54 + i * 62 + extra, w: 190, h: 38 + add, open, n, tags };
+        extra += add;
+      });
+      const bottom = Math.max(...r.nodes.map(n => pos[n.id].y + pos[n.id].h));
+      clusters.push({ name: r.name, count: r.nodes.length + ' symbols', x: cx, w: 320, h: bottom + 24, delay: ci * 80 + 'ms', op: st.repoF && st.repoF !== r.name ? 0.45 : 1, hasTag: ov.drift && !!behind(r.name), tag: 'shared-lib ' + this.PIN[r.name] + ' → ' + this.LATEST });
+    });
+    const m = Math.max(660, ...clusters.map(c => c.h)); clusters.forEach(c => { c.h = m; });
+    const gh = m + 4;
+    const dimR = id => st.repoF && repoOf[id] !== st.repoF;
+    const touch = (a, b) => a === f || b === f;
+    const inPath = (a, b) => ov.blast && depth[a] !== undefined && depth[b] !== undefined && depth[a] === depth[b] + 1;
+    const isDrift = (a, b) => ov.drift && drift.some(([x, y]) => x === a && y === b);
+    const mk = (id, c) => React.createElement('marker', { key: id, id, viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 8, markerHeight: 8, markerUnits: 'userSpaceOnUse', orient: 'auto' }, React.createElement('path', { d: 'M0,1 L9,5 L0,9 z', fill: c }));
+    const els = [React.createElement('defs', { key: 'defs' }, [mk('ca-g', 'rgba(60,75,100,.55)'), mk('ca-b', '#2f6fe0'), mk('ca-r', '#d0393e'), mk('ca-a', '#c27a00'), mk('ca-o', '#b06a1a')])], tops = [];
+    this.E.forEach(([a, b], i) => {
+      const A = pos[a], Bp = pos[b], p = inPath(a, b), t = touch(a, b);
+      const ax = A.x + A.w / 2, ay = A.y + 19, bx = Bp.x + Bp.w / 2, by = Bp.y + 19, dx = bx - ax, dy = by - ay, k = Math.min((A.w / 2 + 2) / Math.abs(dx || 1e-6), 22 / Math.abs(dy || 1e-6));
+      els.push(React.createElement('line', { key: 'e' + i, x1: ax + dx * k, y1: ay + dy * k, x2: bx - dx * k, y2: by - dy * k, stroke: p ? 'rgba(208,57,62,.8)' : t ? 'rgba(47,111,224,.7)' : 'rgba(60,75,100,.32)', strokeWidth: p || t ? 2 : 1.5, strokeDasharray: ov.dead && dead[a] ? '3 4' : undefined, markerEnd: 'url(#' + (p ? 'ca-r' : t ? 'ca-b' : 'ca-g') + ')', opacity: dimR(a) && dimR(b) ? 0.3 : 1 }));
+    });
+    this.X.forEach(([a, b], i) => {
+      const A = pos[a], Bp = pos[b], p = inPath(a, b), t = touch(a, b), d = isDrift(a, b);
+      const x1 = A.x + A.w + 2, y1 = A.y + 19, x2 = Bp.x - 3, y2 = Bp.y + 19, col = d ? (this.CHANGED[b] ? this.RED : this.AMBER) : p ? this.RED : '#b06a1a';
+      const mid = d ? (this.CHANGED[b] ? 'ca-r' : 'ca-a') : p ? 'ca-r' : 'ca-o';
+      els.push(React.createElement('path', { key: 'x' + i, d: `M ${x1} ${y1} C ${x1 + 50} ${y1}, ${x2 - 50} ${y2}, ${x2} ${y2}`, fill: 'none', stroke: col, strokeOpacity: d || p || t ? 1 : 0.6, strokeWidth: d || p || t ? 2.2 : 1.5, strokeDasharray: d ? undefined : '6 5', strokeLinecap: 'round', markerEnd: 'url(#' + mid + ')', opacity: dimR(a) && dimR(b) ? 0.3 : 1 }));
+      if (d && !tops.some(t => t.key === 'd' + a)) tops.push(React.createElement('text', { key: 'd' + a, x: x1 + 8, y: y1 - 7, fontSize: 10, fontFamily: 'JetBrains Mono', fill: col, stroke: 'rgba(255,255,255,.92)', strokeWidth: 3, paintOrder: 'stroke' }, this.PIN[repoOf[a]] + ' → ' + this.LATEST));
+    });
+    const sv = (z, kids) => React.createElement('svg', { width: 1024, height: gh, style: { position: 'absolute', left: 0, top: 0, pointerEvents: 'none', zIndex: z, overflow: 'visible' } }, kids);
+    const nodes = Object.values(pos).map(p => {
+      const n = p.n, on = n.id === f, dp = depth[n.id], imp = ov.blast && dp > 0;
+      let op = 1; if (ov.blast && !on && !imp) op *= 0.62; if (dimR(n.id)) op *= 0.4;
+      const sh = on ? 'inset 0 1px 0 #fff,0 0 0 2px rgba(47,111,224,.6),0 12px 30px rgba(30,45,70,.18)'
+        : imp ? `inset 0 1px 0 #fff,0 0 0 ${dp === 1 ? 2 : 1.5}px rgba(208,57,62,${dp === 1 ? 0.55 : 0.3}),0 8px 22px rgba(30,45,70,.14)`
+        : 'inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.55),0 4px 14px rgba(30,45,70,.1)';
+      return { x: p.x, y: p.y, w: p.w, label: this.label(n), c: this.K[n.k], open: p.open, hasKids: !!n.kids, chev: '›', chevRot: p.open ? '90deg' : '0deg', chevT: p.open ? 'Collapse members' : 'Show members', kids: n.kids || [], sh, op,
+        deco: ov.dead && dead[n.id] ? 'line-through rgba(60,75,100,.5)' : 'none', hasTags: p.tags.length > 0, tags: p.tags,
+        select: () => this.setState({ focus: n.id }), toggleOpen: ev => { ev.stopPropagation(); this.setState(s => ({ focus: n.id, open: { ...s.open, [n.id]: !s.open[n.id] } })); } };
+    });
+    this._nav.repo = all.map(n => n.id);
+    const fn = this.node(f), fl = this.label(fn), s = n => (n === 1 ? '' : 's');
+    const lab = id => this.label(this.node(id)), focusGo = id => () => this.setState({ focus: id });
+    const imps = all.filter(n => depth[n.id] > 0).sort((a, b) => depth[a.id] - depth[b.id]), ds = all.filter(n => dead[n.id]);
+    const insights = [];
+    if (ov.blast) { const rs = new Set(imps.map(n => n.repo)); insights.push({ title: 'Blast radius', c: this.RED, summary: imps.length ? `Changing ${fl} affects ${imps.length} symbol${s(imps.length)} in ${rs.size} repo${s(rs.size)}.` : `Nothing calls ${fl}, so changes stay local.`, items: imps.map(n => ({ a: this.label(n), b: 'hop ' + depth[n.id] + ' · ' + n.repo, c: '#6b717c', go: focusGo(n.id) })) }); }
+    if (ov.dead) { const loc = ds.reduce((t, n) => t + (this.LOC[n.id] || 0), 0); insights.push({ title: 'Dead code', c: '#6b717c', summary: `${ds.length} symbol${s(ds.length)} with no callers outside entry points · ${loc} lines removable.`, items: ds.map(n => ({ a: this.label(n), b: n.repo + ' · ' + (this.LOC[n.id] || 0) + ' loc', c: '#6b717c', go: focusGo(n.id) })) }); }
+    if (ov.drift) {
+      const br = drift.filter(([, b]) => this.CHANGED[b]), rs = Object.keys(this.PIN).filter(behind), notes = [...new Set(br.map(([, b]) => this.CHANGED[b]))].join(' ');
+      insights.push({ title: 'Dependency drift', c: this.AMBER, summary: rs.length ? `${rs.map(r => r + ' pins shared-lib ' + this.PIN[r]).join('; ')}; latest is ${this.LATEST}. ${br.length} of ${drift.length} call sites hit a changed API. ${notes}` : `All repos are on shared-lib ${this.LATEST}.`,
+        items: drift.map(([a, b]) => ({ a: lab(a) + ' → ' + lab(b), b: this.CHANGED[b] ? 'breaking' : 'compatible', c: this.CHANGED[b] ? '#b3262b' : this.GREEN, go: focusGo(b) })) });
+    }
+    if (beadsOn) { const bs = Object.keys(this.B); insights.push({ title: 'Beads status', c: this.GREEN, summary: `${bs.length} symbols have open Beads issues.`, items: bs.map(id => ({ a: lab(id), b: this.B[id][0], c: this.B[id][1], go: focusGo(id) })) }); }
+    const G = this.kg(), svc = L.byId[this.REPO_SVC[fn.repo]];
+    const ctx = [{ label: svc.name, kind: 'Service', c: '#2f6fe0', r: '2px', go: () => this.go({ view: 'lake', ent: svc.id, bp: 'all', lakeMode: 'catalog' }) },
+      ...G.notes.filter(n => n.links.includes(f)).map(n => ({ label: n.title, kind: 'Note', c: this.TAGC[n.tag], r: '50%', go: () => this.go({ view: 'know', note: n.title, tag: null }) }))];
+    if (this.B[f]) ctx.push({ label: 'Beads issue · ' + this.B[f][0], kind: 'Beads', c: this.B[f][1], r: '50%', go: () => this.openSrc('Beads') });
+    const calls = links.filter(([a]) => a === f).length, by = links.filter(([, b]) => b === f).length, xr = this.X.filter(([a, b]) => a === f || b === f).length;
+    const ovChip = (id, name, c, count) => { const dis = id === 'beads' && st.off.Beads, on = st.ov[id] && !dis;
+      return { name, c, count: dis ? 'off' : count, dot: on ? c : 'transparent', op: dis ? 0.55 : 1, ...this.chip(on), title: dis ? 'Beads is disconnected · click to connect' : (on ? 'Hide ' : 'Show ') + name.toLowerCase(),
+        go: () => (dis ? this.openSrc('Beads') : this.setState(x => ({ ov: { ...x.ov, [id]: !x.ov[id] } }))) }; };
+    const chips = [ovChip('blast', 'Blast radius', this.RED, imps.length), ovChip('dead', 'Dead code', '#6b717c', ds.length), ovChip('drift', 'Dependency drift', this.AMBER, drift.length), ovChip('beads', 'Beads', this.GREEN, Object.keys(this.B).length)];
+    const repos = this.R.map(r => ({ name: r.name, ...this.chip(st.repoF === r.name), title: st.repoF === r.name ? 'Show all repos' : 'Highlight ' + r.name, go: () => this.setState(x => ({ repoF: x.repoF === r.name ? null : r.name })) }));
+    return { gh, clusters, svg: sv(1, els), svgTop: sv(3, tops), nodes, insights, chips, repos, driftN: drift.length,
+      insp: { label: fl, kind: this.KIND[fn.k] + ' · ' + fn.repo, c: this.K[fn.k], path: fn.file, stats: [{ k: 'calls', v: calls }, { k: 'called by', v: by }, { k: 'cross-repo', v: xr }], hasKids: !!fn.kids, kids: fn.kids || [], ctx },
+      summary: `${this.R.length} repos · ${all.length} symbols · ${links.length} calls` };
+  }
+
+  kg() {
+    if (this._kg) return this._kg;
+    const syms = new Set(this.all().map(n => n.id)), byTitle = {};
+    const notes = this.NOTES.map(([title, tag, body]) => {
+      const parts = body.split(/(\[\[[^\]]+\]\])/).filter(Boolean).map(p => { const m = p.match(/^\[\[(.+)\]\]$/); return m ? { t: m[1], to: m[1] } : { t: p }; });
+      const o = { title, tag, body, parts, links: [...new Set(parts.filter(p => p.to).map(p => p.to))] }; byTitle[title] = o; return o;
+    });
+    const nodes = notes.map(n => ({ id: n.title, kind: 'note' })), seen = new Set(), edges = [];
+    notes.forEach(n => n.links.forEach(l => { if (syms.has(l) && !seen.has(l)) { seen.add(l); nodes.push({ id: l, kind: 'sym' }); } if (syms.has(l) || byTitle[l]) edges.push([n.title, l]); }));
+    const N = nodes.length, ix = {}, CX = 530, CY = 450, X0 = 110, X1 = 950, Y0 = 160, Y1 = 760;
+    nodes.forEach((n, i) => { ix[n.id] = i; const a = (i / N) * Math.PI * 2; n.x = CX + Math.cos(a) * 330; n.y = CY + Math.sin(a) * 250; });
+    for (let it = 0; it < 600; it++) {
+      const dx = new Array(N).fill(0), dy = new Array(N).fill(0);
+      for (let i = 0; i < N; i++) for (let j = i + 1; j < N; j++) { const x = nodes[i].x - nodes[j].x, y = nodes[i].y - nodes[j].y, d2 = x * x + y * y + 0.01, d = Math.sqrt(d2), F = 16000 / d2; dx[i] += (x / d) * F; dy[i] += (y / d) * F; dx[j] -= (x / d) * F; dy[j] -= (y / d) * F; }
+      edges.forEach(([a, b]) => { const A = nodes[ix[a]], Bn = nodes[ix[b]], x = Bn.x - A.x, y = Bn.y - A.y, d = Math.sqrt(x * x + y * y) || 1, F = (d - 170) * 0.04; dx[ix[a]] += (x / d) * F; dy[ix[a]] += (y / d) * F; dx[ix[b]] -= (x / d) * F; dy[ix[b]] -= (y / d) * F; });
+      const cap = 8 * (1 - it / 600) + 0.4;
+      nodes.forEach((n, i) => { let vx = dx[i] + (CX - n.x) * 0.008, vy = dy[i] + (CY - n.y) * 0.01; const l = Math.sqrt(vx * vx + vy * vy); if (l > cap) { vx = (vx / l) * cap; vy = (vy / l) * cap; } n.x = Math.min(X1, Math.max(X0, n.x + vx)); n.y = Math.min(Y1, Math.max(Y0, n.y + vy)); });
+    }
+    const lw = n => (n.kind === 'note' ? n.id.length * 6.8 : (n.id.length + 2) * 7) + 24;
+    for (let it = 0; it < 100; it++) for (let i = 0; i < N; i++) for (let j = i + 1; j < N; j++) {
+      const A = nodes[i], Bn = nodes[j], ox = (lw(A) + lw(Bn)) / 2 - Math.abs(A.x - Bn.x), oy = 40 - Math.abs(A.y - Bn.y);
+      if (ox > 0 && oy > 0) { const sy = A.y < Bn.y ? -1 : 1, p = Math.min(oy, 4) / 2; A.y = Math.min(Y1, Math.max(Y0, A.y + sy * p)); Bn.y = Math.min(Y1, Math.max(Y0, Bn.y - sy * p)); }
+    }
+    nodes.forEach(n => { n.x = Math.round(n.x); n.y = Math.round(n.y); });
+    return (this._kg = { notes, byTitle, nodes, edges, syms });
+  }
+  knowVals() {
+    const st = this.state, G = this.kg(), sel = st.note, nt = G.byTitle[sel];
+    const visNotes = G.notes.filter(o => !st.tag || o.tag === st.tag), visSet = new Set(visNotes.map(o => o.title));
+    const symVis = new Set(); if (st.codeLinks) G.edges.forEach(([a, b]) => { if (visSet.has(a) && G.syms.has(b)) symVis.add(b); });
+    const isVis = id => visSet.has(id) || symVis.has(id);
+    const nb = new Set(); G.edges.forEach(([a, b]) => { if (a === sel) nb.add(b); if (b === sel) nb.add(a); });
+    const sysF = "-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif";
+    const nodes = G.nodes.filter(n => isVis(n.id)).map(n => {
+      const isSel = n.id === sel, isNote = n.kind === 'note', c = isNote ? this.TAGC[G.byTitle[n.id].tag] : '#2f6fe0';
+      return { x: n.x, y: n.y, s: isSel ? 18 : isNote ? 12 : 9, r: isNote ? '50%' : '3px', c, tip: isNote ? 'Open note' : 'Open in Repo Intelligence',
+        sh: isSel ? `0 0 0 4px rgba(255,255,255,.75),0 0 0 6px ${c}66,0 6px 16px rgba(30,45,70,.2)` : '0 0 0 2px rgba(255,255,255,.65)',
+        label: isNote ? n.id : this.label(this.node(n.id)), font: isNote ? `${isSel ? 600 : 500} 12px ${sysF}` : "400 11px 'JetBrains Mono'", lc: isNote ? '#1c1e22' : '#2f6fe0',
+        op: isSel || nb.has(n.id) ? 1 : 0.62, go: isNote ? () => this.setState({ note: n.id }) : () => this.go({ view: 'repo', focus: n.id }) };
+    });
+    const ix = {}; G.nodes.forEach(n => { ix[n.id] = n; });
+    const lines = G.edges.filter(([a, b]) => isVis(a) && isVis(b)).map(([a, b], i) => { const on = a === sel || b === sel; return React.createElement('line', { key: i, x1: ix[a].x, y1: ix[a].y, x2: ix[b].x, y2: ix[b].y, stroke: on ? 'rgba(28,30,34,.45)' : G.syms.has(b) ? 'rgba(47,111,224,.22)' : 'rgba(60,75,100,.22)', strokeWidth: on ? 1.6 : 1 }); });
+    const svg = React.createElement('svg', { width: 1440, height: 900, style: { position: 'absolute', left: 0, top: 0, pointerEvents: 'none', zIndex: 1 } }, lines);
+    const segs = nt.parts.map(p => {
+      const base = { t: p.t, c: '#1c1e22', cur: 'auto', ff: 'inherit', bg: 'transparent', pad: '0', go: undefined };
+      if (!p.to) return base;
+      if (G.byTitle[p.to]) return { ...base, c: '#4b55b8', cur: 'pointer', bg: 'rgba(94,106,210,.1)', pad: '1px 4px', go: () => this.setState({ note: p.to, tag: null }) };
+      if (G.syms.has(p.to)) return { ...base, t: this.label(this.node(p.to)), c: '#2f6fe0', cur: 'pointer', ff: "'JetBrains Mono'", bg: 'rgba(47,111,224,.08)', pad: '1px 4px', go: () => this.go({ view: 'repo', focus: p.to }) };
+      return { ...base, c: '#8a909a' };
+    });
+    const syms = nt.links.filter(l => G.syms.has(l)).map(id => { const n = this.node(id); return { label: this.label(n), repo: n.repo, go: () => this.go({ view: 'repo', focus: id }) }; });
+    const back = G.notes.filter(o => o.links.includes(sel)).map(o => ({ title: o.title, c: this.TAGC[o.tag], go: () => this.setState({ note: o.title, tag: null }) }));
+    const c = this.TAGC[nt.tag];
+    this._nav.know = visNotes.map(o => o.title);
+    const tagList = [...new Set(G.notes.map(o => o.tag))];
+    const tchip = (label, on, go, col) => ({ label, go, dot: col || '#1c1e22', fg: on ? '#fff' : '#1c1e22', bg: on ? (col || '#1c1e22') : 'rgba(255,255,255,.35)', sh: on ? '0 3px 10px rgba(30,45,70,.16)' : 'inset 0 0 0 1px rgba(255,255,255,.55)' });
+    const tags = [tchip('All', !st.tag, () => this.setState({ tag: null })), ...tagList.map(t => tchip('#' + t, st.tag === t, () => this.setState(s => ({ tag: s.tag === t ? null : t, note: s.tag === t ? s.note : G.notes.find(o => o.tag === t).title })), this.TAGC[t]))];
+    tags.forEach(t => { if (t.fg === '#fff') t.dot = '#fff'; });
+    return { nodes, svg, tags, summary: `${G.notes.length} notes · ${G.nodes.length - G.notes.length} linked symbols`,
+      nt: { title: nt.title, tag: '#' + nt.tag, tc: c, tbg: c + '1f', segs, hasSyms: syms.length > 0, syms, back, backN: back.length, noBack: !back.length } };
+  }
+
+  palette() {
+    const st = this.state, q = st.pq.trim().toLowerCase(), L = this.lake(), BPm = this.bpm(), G = this.kg();
+    const V = [['lake', 'Context Lake', '⌘1'], ['repo', 'Repo Intelligence', '⌘2'], ['know', 'Knowledge', '⌘3']].map(([id, label, k]) => ({ label, sub: k, c: '#1c1e22', r: '3px', go: () => this.go({ view: id }) }));
+    const ent = e => ({ label: e.name, sub: BPm[e.bp][1].replace(/s$/, '') + ' · ' + e.st[0], c: BPm[e.bp][2], r: '2px', go: () => this.go({ view: 'lake', ent: e.id, bp: 'all', lakeMode: 'catalog' }) });
+    const groups = q ? [
+      { title: 'Views', items: V },
+      { title: 'Catalog', items: L.list.map(ent) },
+      { title: 'Code', items: this.all().map(n => ({ label: this.label(n), sub: n.repo + '/' + n.file, ff: "'JetBrains Mono'", c: this.K[n.k], r: '2px', go: () => this.go({ view: 'repo', focus: n.id }) })) },
+      { title: 'Notes', items: G.notes.map(n => ({ label: n.title, sub: '#' + n.tag, c: this.TAGC[n.tag], r: '50%', go: () => this.go({ view: 'know', note: n.title, tag: null }) })) },
+      { title: 'Sources', items: this.SRC().map(([name, c]) => ({ label: name, sub: st.off[name] ? 'Disconnected' : 'Open dashboard', c, r: '3px', go: () => this.openSrc(name) })) },
+    ].map(g => ({ ...g, items: g.items.filter(it => it.label.toLowerCase().includes(q) || it.sub.toLowerCase().includes(q)).slice(0, 5) })).filter(g => g.items.length)
+      : [{ title: 'Views', items: V }, { title: 'Needs attention', items: L.list.filter(e => this.att(e)).map(ent) }];
+    let i = 0; const flat = [], pi = Math.min(st.pi, Math.max(0, groups.reduce((t, g) => t + g.items.length, 0) - 1));
+    const out = groups.map(g => ({ title: g.title, items: g.items.map(it => { const k = i++; flat.push(it); return { ...it, ff: it.ff || 'inherit', bg: k === pi ? 'rgba(47,111,224,.12)' : 'transparent', kc: k === pi ? '#2f6fe0' : 'transparent', hover: () => this.state.pi !== k && this.setState({ pi: k }) }; }) }));
+    this._pal = flat;
+    return { palGroups: out, palEmpty: !flat.length };
+  }
+
+  renderVals() {
+    const st = this.state, off = st.off, v = st.view;
+    const lake = this.lakeVals(), repo = this.repoVals(), know = this.knowVals();
+    const slug = n => 'logo-' + n.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const src = this.SRC();
+    const dockItem = ([name, c], i) => {
+      const on = !off[name], g = this.GLANCE[name], cur = st.sheet === name, d = st.hov == null ? 9 : Math.abs(st.hov - i);
+      return { name, c, mono: name[0], slot: slug(name), op: on ? 1 : 0.45, filter: on ? 'none' : 'grayscale(1)',
+        tf: d === 0 ? 'translateY(-10px) scale(1.2)' : d === 1 ? 'translateY(-4px) scale(1.08)' : cur ? 'translateY(-4px)' : 'none',
+        sh: cur ? '0 0 0 2px #fff,0 0 0 4px ' + c + ',0 10px 24px rgba(30,45,70,.3)' : '0 4px 12px rgba(30,45,70,.18)',
+        dot: on ? this.TONE[g[1]] : 'transparent', go: () => this.openSrc(name),
+        enter: () => this.state.hov !== i && this.setState({ hov: i }), leave: () => this.setState(s => (s.hov === i ? { hov: null } : null)) };
+    };
+    const dock = src.map(dockItem), nA = this.TILES.length;
+    let glance = { show: false };
+    if (st.hov != null && src[st.hov] && st.sheet !== src[st.hov][0]) {
+      const [name] = src[st.hov], on = !off[name], g = this.GLANCE[name];
+      glance = { show: true, name, on, x: Math.round(Math.max(16, Math.min(1440 - 256, this.dockX(st.hov) - 120))), c: on ? this.TONE[g[1]] : '#9aa0aa', status: on ? g[0] : 'Disconnected',
+        kpis: g[2].map(([k, val]) => ({ k, v: val })), hint: on ? 'Click to open dashboard' : 'Click to connect' };
+    }
+    const views = [['lake', 'Context Lake', '⌘1'], ['repo', 'Repo Intelligence', '⌘2'], ['know', 'Knowledge', '⌘3']].map(([id, label, key]) => ({ label, key, hasBadge: id === 'lake' && lake.attN > 0, badge: lake.attN,
+      fg: v === id ? '#1c1e22' : '#4a505a', bg: v === id ? '#fff' : 'transparent', sh: v === id ? 'inset 0 1px 0 #fff,0 3px 10px rgba(30,45,70,.14)' : 'none', go: () => v !== id && this.go({ view: id }) }));
+    const pal = st.pal ? this.palette() : { palGroups: [], palEmpty: false };
+    return {
+      isLake: v === 'lake', isRepo: v === 'repo', isKnow: v === 'know', views,
+      summary: v === 'lake' ? lake.summary : v === 'repo' ? repo.summary : know.summary,
+      nav: { back: () => this.goBack(), fwd: () => this.goFwd(), bOp: st.back.length ? 1 : 0.35, fOp: st.fwd.length ? 1 : 0.35 },
+      lake, ent: lake.ent, repo, insp: repo.insp, insights: repo.insights, noOv: !repo.insights.length, know, nt: know.nt,
+      codeChip: { ...this.chip(st.codeLinks), dot: st.codeLinks ? '#2f6fe0' : 'transparent' }, toggleCode: () => this.setState({ codeLinks: !st.codeLinks }),
+      dockA: dock.slice(0, nA), dockB: dock.slice(nA), glance,
+      sheet: st.sheet, sheetOpen: !!st.sheet, sheetOn: !!st.sheet && !off[st.sheet], forg: st.forg, closeSheet: () => this.setState({ sheet: null }),
+      toggleSheetConn: () => { const n = st.sheet; if (!n) return; const was = !!off[n]; this.setState(s => ({ off: { ...s.off, [n]: !was }, ov: n === 'Beads' && was ? { ...s.ov, beads: true } : s.ov })); this.say((was ? 'Connected ' : 'Disconnected ') + n); },
+      toast: st.toast, hasToast: !!st.toast,
+      pal: st.pal, openPal: () => this.setState({ pal: true, pq: '', pi: 0 }), closePal: () => this.setState({ pal: false }), palRef: this.palRef, pq: st.pq,
+      onPq: e => this.setState({ pq: e.target.value, pi: 0 }),
+      onPalKey: e => {
+        const n = (this._pal || []).length;
+        if (e.key === 'ArrowDown') { e.preventDefault(); this.setState(s => ({ pi: Math.min(n - 1, s.pi + 1) })); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); this.setState(s => ({ pi: Math.max(0, s.pi - 1) })); }
+        else if (e.key === 'Enter') { const it = this._pal && this._pal[Math.min(this.state.pi, n - 1)]; if (it) it.go(); }
+        else if (e.key === 'Escape') { e.stopPropagation(); this.setState({ pal: false }); }
+      },
+      ...pal,
+    };
+  }
+}
+</script>
+</body>
+</html>
