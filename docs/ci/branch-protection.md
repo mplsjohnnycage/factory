@@ -63,7 +63,7 @@ Rulesets (`POST /repos/.../rulesets`) on this private repo currently require **G
 2. Ensure `meta-ci-presence` is green on `S`.
 3. For vertical-slice accept: `gh workflow run meta-accept-matrix.yml -f ref=S` (or push a no-op after CI files so matrix runs) and confirm all `accept-matrix (*)` jobs green on `S`.
 4. Port accept (Cockpit/human) only after (2)+(3); rewrite of the tip invalidates accept for the old SHA (visibility-accept Spec).
-5. Full Port webhook/automation wiring remains **PBI-011 / STL-172** — this foundation does not invent Product-lane CI or agent self-accept.
+5. **PBI-011:** run `scripts/accept-on-sha.ts` / `meta-accept-gate` / gateway `POST /accept/evaluate` on `S` before Cockpit Port-accept. See `docs/ci/port-accept-on-sha.md`. Agents never self-accept.
 
 ## Meta vs Product
 

@@ -1,4 +1,10 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
+import {
+  AcceptLedger,
+  evaluateAcceptOnSha,
+  META_ALWAYS_REQUIRED_CHECKS,
+  type CheckRunSummary,
+} from "./accept-sha.js";
 import { CatalogWriter, claimNextJob } from "./catalog-writer.js";
 import { verifyPortWebhookHmac } from "./hmac.js";
 import { MemoryCatalogStore } from "./memory-store.js";
@@ -9,6 +15,7 @@ export type GatewayDeps = {
   secret: string;
   writer: CatalogWriter;
   supervisor: ProjectSupervisorQueue;
+  acceptLedger: AcceptLedger;
 };
 
 async function readRawBody(req: IncomingMessage): Promise<string> {
@@ -96,6 +103,122 @@ export function createGatewayServer(deps: GatewayDeps) {
         return;
       }
 
+      // PBI-011 — evaluate accept eligibility for exact SHA (no Port mutation).
+      if (req.method === "POST" && url.pathname === "/accept/evaluate") {
+        const rawBody = await readRawBody(req);
+        let body: {
+          sha?: string;
+          requiredChecks?: string[];
+          checks?: CheckRunSummary[];
+          deliveryKey?: string;
+        };
+        try {
+          body = JSON.parse(rawBody) as typeof body;
+        } catch {
+          sendJson(res, 400, { ok: false, error: "invalid_json" });
+          return;
+        }
+        if (!body.sha || !Array.isArray(body.checks)) {
+          sendJson(res, 400, { ok: false, error: "invalid_accept_evaluate" });
+          return;
+        }
+        const requiredChecks = body.requiredChecks?.length
+          ? body.requiredChecks
+          : [...META_ALWAYS_REQUIRED_CHECKS];
+        const prior =
+          body.deliveryKey !== undefined
+            ? deps.acceptLedger.get(body.deliveryKey) ?? null
+            : null;
+        const result = evaluateAcceptOnSha({
+          sha: body.sha,
+          requiredChecks,
+          checks: body.checks,
+          priorAccept: prior,
+        });
+        sendJson(res, result.ok ? 200 : 409, {
+          ...result,
+          note: "evaluate_only; cockpit_or_human_performs_port_accept",
+        });
+        return;
+      }
+
+      // PBI-011 — record Cockpit/human accept evidence after green CI on exact SHA.
+      // Refuses agent/self. Does not call Port MCP write APIs.
+      if (req.method === "POST" && url.pathname === "/accept/record") {
+        const actorHeader = String(req.headers["x-factory-accept-actor"] ?? "");
+        const rawBody = await readRawBody(req);
+        let body: {
+          deliveryKey?: string;
+          sha?: string;
+          requiredChecks?: string[];
+          checks?: CheckRunSummary[];
+          evidenceRef?: string;
+        };
+        try {
+          body = JSON.parse(rawBody) as typeof body;
+        } catch {
+          sendJson(res, 400, { ok: false, error: "invalid_json" });
+          return;
+        }
+        if (!body.deliveryKey || !body.sha || !Array.isArray(body.checks)) {
+          sendJson(res, 400, { ok: false, error: "invalid_accept_record" });
+          return;
+        }
+        const requiredChecks = body.requiredChecks?.length
+          ? body.requiredChecks
+          : [...META_ALWAYS_REQUIRED_CHECKS];
+        const evalResult = evaluateAcceptOnSha({
+          sha: body.sha,
+          requiredChecks,
+          checks: body.checks,
+        });
+        if (!evalResult.ok) {
+          sendJson(res, 409, {
+            ok: false,
+            error: "accept_denied",
+            sha: evalResult.sha,
+            reason: evalResult.reason,
+            detail: evalResult.detail,
+          });
+          return;
+        }
+        const recorded = deps.acceptLedger.record({
+          deliveryKey: body.deliveryKey,
+          sha: body.sha,
+          actor: actorHeader,
+          requiredChecks,
+          evidenceRef: body.evidenceRef,
+        });
+        if (!recorded.ok) {
+          sendJson(res, 403, { ok: false, error: recorded.reason });
+          return;
+        }
+        sendJson(res, 200, {
+          ok: true,
+          record: recorded.record,
+          note: "evidence_recorded; port_catalog_accept_remains_cockpit_governance",
+        });
+        return;
+      }
+
+      if (req.method === "GET" && url.pathname === "/accept/status") {
+        const deliveryKey = url.searchParams.get("deliveryKey") ?? "";
+        const tipSha = url.searchParams.get("tipSha") ?? "";
+        if (!deliveryKey || !tipSha) {
+          sendJson(res, 400, { ok: false, error: "deliveryKey_and_tipSha_required" });
+          return;
+        }
+        const record = deps.acceptLedger.get(deliveryKey) ?? null;
+        sendJson(res, 200, {
+          ok: true,
+          deliveryKey,
+          tipSha,
+          record,
+          validForTip: deps.acceptLedger.isValidForTip(deliveryKey, tipSha),
+        });
+        return;
+      }
+
       if (req.method === "POST" && url.pathname === "/catalog/claim-next") {
         const rawBody = await readRawBody(req);
         let body: {
@@ -151,5 +274,6 @@ export function buildDefaultDeps(env: NodeJS.ProcessEnv = process.env): GatewayD
     supervisor: new ProjectSupervisorQueue({
       rivetSupervisorUrl: env.RIVET_SUPERVISOR_URL || undefined,
     }),
+    acceptLedger: new AcceptLedger(),
   };
 }
