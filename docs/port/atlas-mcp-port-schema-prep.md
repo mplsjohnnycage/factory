@@ -52,10 +52,12 @@ Port IDs disallow `.` (`^[A-Za-z0-9@_:-]+$`). `/.well-known/openmcp.json` advert
 1. PR #51 merged with independent APPROVE + green `meta-ci-presence`.
 2. Five read-only `atlas_*` workflows created (Port EU).
 3. Connector / `_mcp_server` URL → stable Dev OS atlas routes — **not** Sandbox Agent.
-4. Smoke: `atlas.find_node` + `get_agent_traces` with `asLiveOwner` refused (store `docs/atlas-bff-smoke.md`; repo `npm run smoke:atlas-bff`).
+4. Smoke: `atlas.find_node` + `get_agent_traces` with `asLiveOwner` refused — operator guide [`docs/ops/atlas-bff-smoke.md`](../ops/atlas-bff-smoke.md) (`npm run smoke:atlas-bff`; prod default).
 5. No write tools on Langfuse via this bind.
 
 **Re-apply:** do not upsert again from this doc unless Johnny re-approves. Treat this file as naming + rollback reference.
+
+**Post-#58:** BFF accepts Port underscore aliases; OpenMCP keeps dotted-only `tools[]` plus `factory.atlas_tools.map`. Re-run prod smoke after each Atlas BFF deploy — do not re-upsert schema.
 
 ## Rollback
 

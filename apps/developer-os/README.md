@@ -92,6 +92,9 @@ ATLAS_BFF_BASE=http://localhost:3000 npm run smoke:atlas-bff
 npm run smoke:atlas-bff -- --dry-run
 ```
 
+Operator guide (PASS criteria, naming, post-deploy verify):
+[`docs/ops/atlas-bff-smoke.md`](../../docs/ops/atlas-bff-smoke.md).
+
 BFF hardening: JSON content-type required, 64 KiB body cap, `Cache-Control: no-store`,
 subgraph depth clamped, Port underscore aliases normalized.
 
