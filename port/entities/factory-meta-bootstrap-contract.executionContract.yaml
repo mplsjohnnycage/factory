@@ -1,0 +1,40 @@
+# Seed entity — Factory Meta bootstrap executionContract
+# Applied live via Port MCP upsert_entity.
+blueprint: executionContract
+identifier: factory-meta-bootstrap-contract
+title: Factory Meta bootstrap contract
+properties:
+  goal: >-
+    Seed Factory Meta Port catalog (product + executionContract) with
+    catalogVersion fencing for §4.2.1 gateway writer readiness.
+  successConditions: >-
+    Live product factory-meta and this contract exist; catalogVersion
+    present on both blueprints; trackable YAML committed under port/ in
+    Meta repo.
+  stopConditions: >-
+    Do not mutate Port External Interface OAuth apps; do not delete Ocean
+    integrations; do not touch vercel-ci branches or OAuth wiring paths.
+  nonGoals: >-
+    Not wiring workflow WEBHOOK backends; not implementing Dev OS OAuth
+    token exchange; not Ocean mapping changes.
+  allowedPaths:
+    - port/
+    - specs/port-governance/
+    - docs/
+  forbiddenPaths:
+    - .well-known/
+    - apps/developer-os/
+    - apps/factory-gateway/src/auth/
+  requiredEvidence:
+    - Port MCP list_blueprints shows catalogVersion on product and executionContract
+    - Port MCP list_entities shows factory-meta product and this contract
+    - GitHub PR with port/ YAML mirrors
+  riskClass: low
+  frozen: false
+  version: 1
+  implementer: cursor-cloud-agent
+  reviewer: johnny
+  contractHash: 428b90f72a389e79fd4ab0e26f8d5449c9aface660be24c5d1f96701bb439686
+  catalogVersion: 0
+relations:
+  product: factory-meta
