@@ -131,9 +131,10 @@ export async function GET(req: NextRequest) {
     return res;
   }
 
-  // Land on the stable origin when configured; fall back to request host for local.
-  const postLoginOrigin = new URL(config.redirectUri).origin;
-  const res = NextResponse.redirect(new URL("/?port=signed-in", postLoginOrigin), 302);
+  const postLogin = new URL(config.redirectUri);
+  postLogin.pathname = "/";
+  postLogin.search = "port=signed-in";
+  const res = NextResponse.redirect(postLogin, 302);
   clearOauthCookies(res);
 
   const accessMaxAge = Math.max(60, tokens.expires_in);

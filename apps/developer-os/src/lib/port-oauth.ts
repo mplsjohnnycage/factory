@@ -63,11 +63,11 @@ export type PortTokenResponse = {
  *
  * Preference:
  * 1. `NEXT_PUBLIC_DEVOS_URL` (explicit pin — preferred)
- * 2. Production on Vercel → `CANONICAL_DEVOS_ORIGIN` (never `VERCEL_URL`)
- * 3. Preview / non-prod Vercel → `https://${VERCEL_URL}` only when no pin
- * 4. Local → `http://localhost:3000`
+ * 2. Any Vercel deploy or NODE_ENV=production → `CANONICAL_DEVOS_ORIGIN`
+ * 3. Local → `http://localhost:3000`
  *
- * Production must never mint a rotating deployment host into authorize.
+ * **Never** `VERCEL_URL` — deployment hosts rotate and are not on the Port
+ * allowlist (max 5 exact URIs). Preview/production redeploys must not mint hosts.
  */
 export function resolveDevOsOrigin(env: EnvMap = process.env): string {
   const explicit = env.NEXT_PUBLIC_DEVOS_URL?.trim();
@@ -75,21 +75,8 @@ export function resolveDevOsOrigin(env: EnvMap = process.env): string {
     return explicit.replace(/\/$/, "");
   }
 
-  const onVercel = Boolean(env.VERCEL);
-  const vercelEnv = env.VERCEL_ENV?.trim();
-  const isProduction =
-    vercelEnv === "production" ||
-    (onVercel && env.NODE_ENV === "production" && vercelEnv !== "preview");
-
-  if (isProduction) {
-    // Hard pin: production Port OAuth must use the stable allowlisted origin.
-    // Falling back to VERCEL_URL creates a new redirect_uri host per deploy.
+  if (env.VERCEL || env.NODE_ENV === "production") {
     return CANONICAL_DEVOS_ORIGIN;
-  }
-
-  const vercelHost = env.VERCEL_URL?.trim();
-  if (vercelHost) {
-    return `https://${vercelHost.replace(/\/$/, "")}`;
   }
 
   return "http://localhost:3000";

@@ -73,14 +73,14 @@ describe("Port OAuth config + PKCE", () => {
     assert.doesNotMatch(config.redirectUri, /4vf3fb75w/);
   });
 
-  it("allows VERCEL_URL fallback only on preview when pin unset", () => {
+  it("pins preview to canonical origin — never VERCEL_URL", () => {
     assert.equal(
       resolveDevOsOrigin({
         VERCEL: "1",
         VERCEL_ENV: "preview",
         VERCEL_URL: "factory-developer-preview-johnnyc.vercel.app",
       }),
-      "https://factory-developer-preview-johnnyc.vercel.app",
+      CANONICAL_DEVOS_ORIGIN,
     );
   });
 
