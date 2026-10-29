@@ -1,0 +1,144 @@
+.panel {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  background:
+    radial-gradient(900px 500px at 80% 0%, rgba(26, 107, 138, 0.12), transparent 55%),
+    linear-gradient(165deg, #f4f7fa 0%, #e8eef4 100%);
+  color: #15202b;
+  font-family: var(--font-body);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.brand {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.title {
+  margin: 0.15rem 0 0.35rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #084c3a;
+}
+
+.meta {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #4a5a6a;
+}
+
+.meta code {
+  font-size: 0.85em;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  font-size: 0.88rem;
+  align-self: flex-start;
+}
+
+.dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: #4a5a6a;
+}
+
+.status[data-state="live"] .dot {
+  background: #0f6e56;
+  box-shadow: 0 0 0 3px rgba(15, 110, 86, 0.18);
+}
+
+.status[data-state="reconnecting"] .dot,
+.status[data-state="connecting"] .dot {
+  background: #1a6b8a;
+  animation: blink 1s ease-in-out infinite;
+}
+
+.status[data-state="error"] .dot {
+  background: #a33b2b;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  grid-template-areas:
+    "seq sender type"
+    "payload payload payload";
+  gap: 0.35rem 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(21, 32, 43, 0.06);
+  backdrop-filter: blur(10px);
+}
+
+.seq {
+  grid-area: seq;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: #1a6b8a;
+}
+
+.sender {
+  grid-area: sender;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+  color: #4a5a6a;
+  align-self: center;
+}
+
+.type {
+  grid-area: type;
+  font-weight: 600;
+}
+
+.payload {
+  grid-area: payload;
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #4a5a6a;
+}
+
+.empty {
+  padding: 1.25rem;
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.5);
+  color: #4a5a6a;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.35;
+  }
+}
