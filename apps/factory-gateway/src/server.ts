@@ -23,6 +23,13 @@ import {
   rateLimitKeyFromRequest,
   SlidingWindowRateLimiter,
 } from "./rate-limit.js";
+import {
+  convexClientFromEnv,
+  dispatchSelfService,
+  verifyHandlerBearer,
+  type SelfServiceRequest,
+} from "./self-service-handlers.js";
+import type { ConvexManagementClient } from "./convex-management.js";
 import { ProjectSupervisorQueue } from "./supervisor.js";
 import type { CatalogWriteRequest, PortWebhookBody } from "./types.js";
 
@@ -48,6 +55,10 @@ export type GatewayDeps = {
   openFleetLedger: OpenFleetLedger;
   /** Gateway rate limiter (PBI-012). */
   rateLimiter: SlidingWindowRateLimiter;
+  /** Bearer for Port WEBHOOK → /handlers/self-service (Meta SS handlers). */
+  handlerToken: string;
+  /** Convex Management API client; null when CONVEX_TEAM_TOKEN unset. */
+  convex: ConvexManagementClient | null;
 };
 
 async function readRawBody(req: IncomingMessage): Promise<string> {
@@ -389,6 +400,66 @@ export function createGatewayServer(deps: GatewayDeps) {
         return;
       }
 
+      // Meta Port self-service handlers (NEEDS HANDLER → WEBHOOK).
+      // Auth: Port classic HMAC (preferred) OR Bearer FACTORY_GATEWAY_HANDLER_TOKEN.
+      if (req.method === "POST" && url.pathname === "/handlers/self-service") {
+        if (!applyRateLimit(deps, req, res, url.pathname)) return;
+
+        const rawBody = await readRawBody(req);
+        const signature = String(req.headers["x-port-signature"] ?? "");
+        const timestamp = String(req.headers["x-port-timestamp"] ?? "");
+        const authorization = String(req.headers.authorization ?? "");
+
+        const hmacOk = verifyPortWebhookHmac({
+          secret: deps.secret,
+          rawBody,
+          headers: { signature, timestamp },
+        });
+        const bearerOk = verifyHandlerBearer({
+          expectedToken: deps.handlerToken,
+          authorizationHeader: authorization,
+        });
+        if (!hmacOk && !bearerOk) {
+          sendJson(res, 401, { ok: false, error: "unauthorized_handler" });
+          return;
+        }
+
+        let body: SelfServiceRequest;
+        try {
+          body = JSON.parse(rawBody) as SelfServiceRequest;
+        } catch {
+          sendJson(res, 400, { ok: false, error: "invalid_json" });
+          return;
+        }
+
+        try {
+          const result = await dispatchSelfService(body, {
+            convex: deps.convex,
+            writer: deps.writer,
+            allowMissingCredentials: true,
+          });
+          const status = result.ok
+            ? 200
+            : result.error === "product_lane_stub"
+              ? 501
+              : result.error === "missing_credentials"
+                ? 503
+                : result.error === "unknown_self_service_action"
+                  ? 404
+                  : 400;
+          sendJson(res, status, result);
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          sendJson(res, 502, {
+            ok: false,
+            action: body.action,
+            error: "handler_upstream_failed",
+            detail: message,
+          });
+        }
+        return;
+      }
+
       if (req.method === "POST" && url.pathname === "/catalog/claim-next") {
         if (!applyRateLimit(deps, req, res, url.pathname)) return;
         const rawBody = await readRawBody(req);
@@ -448,5 +519,7 @@ export function buildDefaultDeps(env: NodeJS.ProcessEnv = process.env): GatewayD
     acceptLedger: new AcceptLedger(),
     openFleetLedger: buildOpenFleetLedger(env),
     rateLimiter: new SlidingWindowRateLimiter(rateLimitConfigFromEnv(env)),
+    handlerToken: env.FACTORY_GATEWAY_HANDLER_TOKEN ?? "",
+    convex: convexClientFromEnv(env),
   };
 }
