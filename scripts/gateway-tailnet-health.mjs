@@ -10,15 +10,22 @@
  *
  * Optional signed smoke (secret from env only — never logged):
  *   GATEWAY_HMAC_SMOKE=1 PORT_CLIENT_SECRET=…  → expect 202 on claim path
+ *   FE-142 closed (signed 202 + handler-token good) — do not re-ask secrets.
+ *
+ * Flags:
+ *   --unsigned-only  skip signed probe section entirely (regression kit)
  *
  * Does not call Port mutate APIs. Does not apply Port schema.
+ * Never prints secret values.
  *
  * Usage:
  *   FACTORY_GATEWAY_BASE_URL=https://… node scripts/gateway-tailnet-health.mjs
  *   node scripts/gateway-tailnet-health.mjs --base-url https://…
+ *   node scripts/gateway-tailnet-health.mjs --base-url https://… --unsigned-only
  *
  * @see docs/gateway-hmac-smoke.md
  * @see docs/beads-admit-gateway-path.md
+ * @see docs/ops/beads-gateway-unsigned-admit.md
  */
 import { createHmac } from "node:crypto";
 
@@ -28,9 +35,10 @@ const FETCH_TIMEOUT_MS = 15_000;
 function usage() {
   console.error(`Usage:
   FACTORY_GATEWAY_BASE_URL=<url> node scripts/gateway-tailnet-health.mjs
-  node scripts/gateway-tailnet-health.mjs --base-url <url>
+  node scripts/gateway-tailnet-health.mjs --base-url <url> [--unsigned-only]
 
 Unsigned HMAC / allowlist / SS probes always run.
+--unsigned-only skips the signed-smoke section (FE-142 closed; no secret ask).
 Optional: GATEWAY_HMAC_SMOKE=1 + PORT_CLIENT_SECRET → signed claim expect 202.
 Never prints secret values. Never calls Port mutate APIs.`);
 }
@@ -50,11 +58,16 @@ function normalizeBaseUrl(raw) {
 
 function parseArgs(argv) {
   let baseUrl = process.env.FACTORY_GATEWAY_BASE_URL || "";
+  let unsignedOnly = false;
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === "--help" || arg === "-h") {
       usage();
       process.exit(0);
+    }
+    if (arg === "--unsigned-only") {
+      unsignedOnly = true;
+      continue;
     }
     if (arg === "--base-url" || arg === "--base") {
       baseUrl = argv[i + 1] || "";
@@ -69,7 +82,7 @@ function parseArgs(argv) {
     usage();
     process.exit(2);
   }
-  return baseUrl;
+  return { baseUrl, unsignedOnly };
 }
 
 function sign(secret, timestamp, rawBody) {
@@ -238,7 +251,9 @@ async function probeSignedClaim(baseUrl) {
 }
 
 async function main() {
-  const baseUrl = normalizeBaseUrl(parseArgs(process.argv.slice(2)));
+  const parsed = parseArgs(process.argv.slice(2));
+  const baseUrl = normalizeBaseUrl(parsed.baseUrl);
+  const unsignedOnly = parsed.unsignedOnly;
   if (!baseUrl) {
     console.error(
       "FAIL: set FACTORY_GATEWAY_BASE_URL or pass --base-url <url> (no trailing slash).",
@@ -252,6 +267,9 @@ async function main() {
   console.log(
     "Refuse: upsert_workflow / upsert_entity / upsert_blueprint / trigger_run / EI create-delete-revoke",
   );
+  if (unsignedOnly) {
+    console.log("Mode: --unsigned-only (FE-142 closed; signed section skipped)");
+  }
 
   const results = [
     await probeHealth(baseUrl),
@@ -261,13 +279,18 @@ async function main() {
   ];
 
   const wantSigned =
-    process.env.GATEWAY_HMAC_SMOKE === "1" ||
-    process.env.GATEWAY_HMAC_SMOKE === "true";
-  if (wantSigned) {
+    !unsignedOnly &&
+    (process.env.GATEWAY_HMAC_SMOKE === "1" ||
+      process.env.GATEWAY_HMAC_SMOKE === "true");
+  if (unsignedOnly) {
+    console.log(
+      "\n== 5. Signed claim ==\nSKIP: --unsigned-only (FE-142 closed; do not re-ask secrets).",
+    );
+  } else if (wantSigned) {
     results.push(await probeSignedClaim(baseUrl));
   } else {
     console.log(
-      "\n== 5. Signed claim ==\nSKIP: set GATEWAY_HMAC_SMOKE=1 and PORT_CLIENT_SECRET to run (value never printed).",
+      "\n== 5. Signed claim ==\nSKIP: set GATEWAY_HMAC_SMOKE=1 and PORT_CLIENT_SECRET to run (value never printed). FE-142 already closed for PM.",
     );
   }
 
