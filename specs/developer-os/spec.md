@@ -1,6 +1,6 @@
 # developer-os
 
-> **Status:** PBI-008 Next.js shell + atlas hero + Port OAuth Route Handler stub (Meta). Stub authorship (PBI-001) remains the Blueprint base.
+> **Status:** PBI-008 shell + PBI-009 Rivet native session stream (Meta). Stub authorship (PBI-001) remains the Blueprint base.
 > **Do not Feature-Assemble until Spec review + EGM Goldfish are green for this Spec.**
 
 ## Blueprint
@@ -14,7 +14,7 @@ External Developer OS for humans — intent, approvals UI, live progress, and co
 - **Shell:** Next.js App Router under `apps/developer-os/` (RSC default + Client Components + Route Handlers for Port OAuth callback / BFF).
 - **Host:** Vercel preview/production (`*.vercel.app`); monorepo root directory `apps/developer-os`.
 - **First viewport (PBI-008):** full-bleed Code Atlas hero composition — brand **Factory**, headline Developer OS, one CTA (Port sign-in).
-- **Streaming (kernel):** Rivet Actor native realtime into `AgentSession` event sequence — not CopilotKit (PBI-009).
+- **Streaming (kernel, PBI-009):** Rivet Actor native realtime client (`RivetSessionClient`) into `AgentSession` event sequence — reconnect from last `sequence` via gap replay + live subscribe. BFF routes `/api/rivet/sessions/[sessionId]/events|stream`. **Not** CopilotKit.
 - **Integrations UI:** MCP Apps (sandboxed iframes) or Port iframe/plugins for Vercel, Convex, Docker, Port, Turso, GitHub; frosted dock under Code Atlas hero (post-shell).
 - **Deferred:** AG-UI (Agent↔User) and CopilotKit — optional later; not kernel streaming dependencies.
 - Visual: frosted-glass atmosphere; full-bleed code-atlas hero plane.
@@ -34,7 +34,7 @@ External Developer OS for humans — intent, approvals UI, live progress, and co
 
 - Next.js app builds; atlas hero is first viewport.
 - Port OAuth login + callback Route Handlers compile; Factory client id via `PORT_FACTORY_CLIENT_ID` only.
-- Rivet native stream reconnects from last `sequence` (PBI-009).
+- Rivet native stream reconnects from last `sequence` (gap replay + live; no duplicates).
 - Port sign-in Route Handler targets the intended Factory client redirects and does not reuse Observatory or Clerk.
 
 ### Regression Guardrails
@@ -63,5 +63,12 @@ Scenario: Session events survive browser disconnect
   Given an AgentSession streaming via Rivet native realtime
   When the browser disconnects and reconnects
   Then the client resubscribes from the last sequence
+  And gap events are applied without duplicates
   And no CopilotKit runtime is required for kernel stream
+
+Scenario: PBI-009 reconnect fixture
+  Given MemoryActorTransport seeded with sequences 0..2
+  When RivetSessionClient connects then drops live then receives 3..5 then reconnects
+  Then lastSequence is 5
+  And seen sequences are exactly 0..5
 ```

@@ -1,6 +1,6 @@
 # rivet-execution
 
-> **Status:** PBI-004 Compose + PBI-005 gateway enqueue + PBI-007 ProjectSupervisor fencing / Meta Beads gate (Meta). Stub authorship (PBI-001) remains the Blueprint base.
+> **Status:** PBI-004…007 + PBI-009 Dev OS Rivet-native session stream (Meta). Stub authorship (PBI-001) remains the Blueprint base.
 > **Do not Feature-Assemble until Spec review + EGM Goldfish are green for this Spec.**
 
 ## Blueprint
@@ -16,6 +16,7 @@ Rivet 2.x is the Factory execution kernel (ADR-002): actors, queues, and workflo
 - Port projection upserts from Rivet go through the Port catalog writer (§4.2.1), never raw dual-write.
 - Port → HMAC gateway (`apps/factory-gateway` `/webhooks/port`) → ProjectSupervisor enqueue (push-only).
 - `ProjectSupervisor` fencing + Meta Beads ready gate live under `apps/project-supervisor/` (PBI-007); duplicate `workKey` → one `WorkAttempt`.
+- Developer OS subscribes to `AgentSession` Actor streams via Rivet-native client (PBI-009) — reconnect from last `sequence`; no CopilotKit; browser never calls Sandbox Agent.
 - LogicSRC map (authorship): OpenInstall for non-Compose boxes; OpenFleet ledger alongside Rivet Inspector. M1 Required rows for this Spec beyond vertical-slice Contracts: none (OpenInstall/OpenFleet production = post-M1).
 
 ### Constraints
@@ -75,4 +76,11 @@ Scenario: PBI-007 duplicate workKey yields one WorkAttempt
   When a second Port-authorized admit arrives for K
   Then the existing WorkAttempt is returned as duplicate
   And no second attempt is created
+
+Scenario: PBI-009 Dev OS reconnects from last sequence
+  Given an AgentSession Actor has persisted events through sequence N
+  When the Developer OS Rivet-native client disconnects and reconnects
+  Then it resumes with afterSequence = N
+  And subsequent events are applied without duplicates
+  And CopilotKit is not on the kernel path
 ```

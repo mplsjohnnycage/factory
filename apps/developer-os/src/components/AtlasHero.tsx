@@ -55,7 +55,12 @@ export function AtlasHero() {
           <a className={styles.primary} href="/api/auth/port/login">
             Sign in with Port
           </a>
-          <span className={styles.hint}>Factory External Interface · never Observatory</span>
+          <a className={styles.secondary} href="/session/demo">
+            Open session stream
+          </a>
+          <span className={styles.hint}>
+            Factory External Interface · Rivet-native stream · never Observatory / CopilotKit
+          </span>
         </div>
       </div>
     </section>

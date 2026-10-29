@@ -97,6 +97,18 @@
   box-shadow: 0 14px 34px rgba(15, 110, 86, 0.28);
 }
 
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.7rem 1.1rem;
+  border-radius: 0.55rem;
+  border: 1px solid rgba(21, 32, 43, 0.12);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(8px);
+  font-weight: 600;
+  color: var(--ink);
+}
+
 .hint {
   font-size: 0.82rem;
   color: var(--ink-muted);
