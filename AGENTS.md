@@ -49,14 +49,22 @@ ADR-007 is **Superseded by ADR-011**.
 
 `ProjectSupervisor` (`apps/project-supervisor/`) admits coding work **only** when Meta Beads reports ready (`ReadyTaskEvent.beadId`) **or** Port `executionContract` carries an audited human bypass. Claim = `bd update --claim` before Rivet queue message that starts Sandbox Agent.
 
+Hybrid layout: track `.beads/config.yaml` + `metadata.json`; gitignore `embeddeddolt/` (Dolt SoT lives in `refs/dolt/data`, not source branches). Operator guide: `docs/meta-beads.md`.
+
 ```bash
+# Install (bd is not on default cloud/agent PATH)
+curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash
+export PATH="$HOME/.local/bin:$PATH"
+
+# Fresh clone hydrate (git clone does not fetch refs/dolt/data)
+bd bootstrap --yes
 bd where
+bd status
 bd ready
 bd update <bead-id> --claim
 ```
 
 Linear remains human visibility; Meta Beads is ready/claim/parallel SoT for meta coding admit. Do not `bd init` per worktree. Sync: `bd dolt push` / `bd dolt pull` when authorized — do not commit Dolt DB blobs.
-
 ## Judgment boundaries
 
 - **NEVER** call Sandbox Agent from the browser.
