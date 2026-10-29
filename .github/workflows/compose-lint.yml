@@ -1,0 +1,30 @@
+name: compose-lint
+
+on:
+  push:
+    paths:
+      - "compose/**"
+      - "bin/rivet-healthcheck.sh"
+      - ".github/workflows/compose-lint.yml"
+  pull_request:
+    paths:
+      - "compose/**"
+      - "bin/rivet-healthcheck.sh"
+      - ".github/workflows/compose-lint.yml"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PyYAML
+        run: python3 -m pip install --user pyyaml
+      - name: Lint Rivet Compose
+        run: |
+          chmod +x bin/rivet-healthcheck.sh
+          bin/rivet-healthcheck.sh --lint-only
+      - name: Docker Compose config
+        run: |
+          cd compose
+          RIVET_ADMIN_TOKEN=ci-lint-placeholder docker compose config >/dev/null
+          echo OK docker compose config

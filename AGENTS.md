@@ -41,7 +41,7 @@ ADR-007 is **Superseded by ADR-011**.
 |------|-------|
 | Linear project **Factory Meta** | Human tracker facet for seed PBIs |
 | Port | Catalog SoT; workflows as tools — bind live names only |
-| Rivet 2.x Compose + Tailscale Serve | Execution kernel (PBI-004+) |
+| Rivet 2.x Compose + Tailscale Serve | Execution kernel — `compose/` + `docs/rivet-tailscale-serve.md` (PBI-004+) |
 | Beads (**Meta Beads**) | Ready/claim from PBI-007; optional earlier scaffolding (OQ-1) |
 | GitHub Actions | Accept path on exact SHA (PBI-011) |
 
