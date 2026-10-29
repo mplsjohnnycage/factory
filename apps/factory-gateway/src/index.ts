@@ -49,6 +49,26 @@ export type {
 } from "./openfleet-ledger.js";
 export type { FleetSpawnRequest, FleetSpawnResult } from "./fleet-spawn.js";
 export type { RateLimitConfig, RateLimitResult } from "./rate-limit.js";
+export {
+  dispatchSelfService,
+  verifyHandlerBearer,
+  convexClientFromEnv,
+  META_SELF_SERVICE_ACTIONS,
+  PRODUCT_SELF_SERVICE_STUBS,
+} from "./self-service-handlers.js";
+export {
+  createConvexManagementClient,
+  CONVEX_MANAGEMENT_BASE,
+} from "./convex-management.js";
+export type {
+  SelfServiceRequest,
+  SelfServiceResult,
+  MetaSelfServiceAction,
+} from "./self-service-handlers.js";
+export type {
+  ConvexManagementClient,
+  CreateDeploymentInput,
+} from "./convex-management.js";
 
 const isMain =
   process.argv[1]?.endsWith("src/index.ts") ||
