@@ -102,6 +102,17 @@ docker compose --profile gateway up -d --build
 
 **Port remount path (FE-114):** keep the repo **public**. Put Tailscale **Funnel** (M1) or a PaaS (Fly/Railway/Render/Cloud Run) in front of `:8787`, confirm `GET /health` from a non-tailnet client, then set Port secret `FACTORY_GATEWAY_BASE_URL` and remount WEBHOOKs. Do not remount onto a dead base URL.
 
+## Windows logon auto-start (DESKTOP-3APDBKG)
+
+Prefer Task Scheduler AtLogOn (survives reboot+logon). Operator kit:
+
+- `scripts/windows/factory-gateway-register-logon-task.ps1` (`DryRun` / `Register` / `Status`)
+- `scripts/windows/factory-gateway-logon-start.ps1`
+- Docs: [`docs/ops/gateway-windows-logon-autostart.md`](../../docs/ops/gateway-windows-logon-autostart.md)
+- Kit check (any OS): `node scripts/gateway-windows-logon-dry-run.mjs`
+
+Secrets live only in `%USERPROFILE%\.factory\gateway.env` (from `scripts/windows/gateway.env.example`). Never commit real values. Live reboot verify is on Johnny’s desktop — cloud agents stage only.
+
 ## Verify
 
 ```bash
