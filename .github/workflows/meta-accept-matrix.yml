@@ -1,0 +1,118 @@
+# Full Meta package matrix — foundation for PBI-011 accept-on-exact-SHA.
+# Path-filtered package workflows stay the day-to-day PR signal.
+# Dispatch this (or open a CI-path PR) to verify the whole Meta lane on one SHA.
+# Does NOT wire Port accept (that remains PBI-011 + human Cockpit).
+name: meta-accept-matrix
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref or SHA to check (empty = workflow SHA)
+        required: false
+        default: ""
+  pull_request:
+    paths:
+      - ".github/workflows/meta-accept-matrix.yml"
+      - ".github/workflows/meta-ci.yml"
+      - ".github/workflows/compose-lint.yml"
+      - ".github/workflows/factory-gateway.yml"
+      - ".github/workflows/sandbox-harness.yml"
+      - ".github/workflows/project-supervisor.yml"
+      - ".github/workflows/developer-os.yml"
+      - "docs/ci/**"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/meta-accept-matrix.yml"
+      - ".github/workflows/meta-ci.yml"
+      - "docs/ci/**"
+
+concurrency:
+  group: meta-accept-matrix-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ inputs.ref || '' }}
+  cancel-in-progress: true
+
+jobs:
+  accept-matrix-compose:
+    name: accept-matrix (compose)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+      - name: Install PyYAML
+        run: python3 -m pip install --user pyyaml
+      - name: Lint Rivet Compose
+        run: |
+          chmod +x bin/rivet-healthcheck.sh
+          bin/rivet-healthcheck.sh --lint-only
+      - name: Docker Compose config
+        run: |
+          cd compose
+          RIVET_ADMIN_TOKEN=ci-lint-placeholder docker compose config >/dev/null
+          echo OK docker compose config
+      - name: Record SHA
+        run: echo "accept_sha=$(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+
+  accept-matrix-node:
+    name: accept-matrix (${{ matrix.package }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - package: factory-gateway
+            path: apps/factory-gateway
+            build: "false"
+          - package: sandbox-harness
+            path: apps/sandbox-harness
+            build: "false"
+          - package: project-supervisor
+            path: apps/project-supervisor
+            build: "false"
+          - package: developer-os
+            path: apps/developer-os
+            build: "true"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+
+      - name: Gate package present
+        id: gate
+        run: |
+          if [[ -f "${{ matrix.path }}/package.json" ]]; then
+            echo "runnable=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "runnable=false" >> "$GITHUB_OUTPUT"
+            echo "Package ${{ matrix.package }} has no package.json on this SHA — skip (scaffold-only)."
+          fi
+
+      - if: steps.gate.outputs.runnable == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: ${{ matrix.path }}/package-lock.json
+
+      - if: steps.gate.outputs.runnable == 'true'
+        working-directory: ${{ matrix.path }}
+        run: npm ci
+
+      - if: steps.gate.outputs.runnable == 'true'
+        working-directory: ${{ matrix.path }}
+        run: npm run typecheck
+
+      - if: steps.gate.outputs.runnable == 'true'
+        working-directory: ${{ matrix.path }}
+        run: npm test
+
+      - if: steps.gate.outputs.runnable == 'true' && matrix.build == 'true'
+        working-directory: ${{ matrix.path }}
+        run: npm run build
+
+      - name: Record SHA
+        run: |
+          echo "### accept-matrix (${{ matrix.package }})" >> "$GITHUB_STEP_SUMMARY"
+          echo "- SHA: \`$(git rev-parse HEAD)\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- runnable: \`${{ steps.gate.outputs.runnable }}\`" >> "$GITHUB_STEP_SUMMARY"

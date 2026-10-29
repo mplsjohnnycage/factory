@@ -1,7 +1,10 @@
+# Meta Developer OS CI (PBI-008 landed). Meaningful check name + push limited
+# to main so PR branches do not double-run push+pull_request.
 name: developer-os
 
 on:
   push:
+    branches: [main]
     paths:
       - "apps/developer-os/**"
       - "specs/developer-os/**"
@@ -12,8 +15,13 @@ on:
       - "specs/developer-os/**"
       - ".github/workflows/developer-os.yml"
 
+concurrency:
+  group: developer-os-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  test:
+  developer-os-typecheck-test-build:
+    name: developer-os-typecheck-test-build
     runs-on: ubuntu-latest
     defaults:
       run:

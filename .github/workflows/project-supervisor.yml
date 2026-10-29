@@ -2,6 +2,7 @@ name: project-supervisor
 
 on:
   push:
+    branches: [main]
     paths:
       - "apps/project-supervisor/**"
       - ".beads/**"
@@ -14,8 +15,13 @@ on:
       - "specs/factory-kernel/**"
       - ".github/workflows/project-supervisor.yml"
 
+concurrency:
+  group: project-supervisor-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  test:
+  supervisor-typecheck-test:
+    name: supervisor-typecheck-test
     runs-on: ubuntu-latest
     defaults:
       run:
