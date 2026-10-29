@@ -10,7 +10,7 @@ Factory is an autonomous software-delivery control plane: Port (SoT) → thin `f
 
 - **Meta only** — never Product Beads / product Linear boards from this repo.
 - **Unit of work:** Linear ticket ≡ PBI ≡ typed contract ≡ bead ≡ GitHub issue.
-- **No Port OAuth create/delete** (ADR-005 deferred).
+- **No Port OAuth create/delete/revoke** from this repo. ADR-005 is Accepted — live (dedicated Factory app). Do not mutate External Interface apps here.
 - Agents **build against** `/specs/{domain}/spec.md`, not against Project store scratch alone once Specs are green.
 - Agent “done” ≠ Port accept. Accept = green CI on exact SHA + Port governance.
 
@@ -31,7 +31,9 @@ Factory is an autonomous software-delivery control plane: Port (SoT) → thin `f
 
 ## ADR index
 
-See `docs/adrs/`. Bodies immutable after PBI-002; supersede, do not edit.
+Full Nygard bodies: `docs/adrs/` ADR-001…ADR-011. Immutable after PBI-002; supersede, do not edit.
+
+ADR-007 is **Superseded by ADR-011**.
 
 ## Toolchain (minimal)
 

@@ -13,7 +13,7 @@ Local scaffold / staging only. GitHub remote push blocked until `gh` auth (or PA
 AGENTS.md
 OpenStack.md                 # PBI-003
 specs/{domain}/spec.md       # ten domains — stubs now; PBI-001 authors
-docs/adrs/                   # placeholders; PBI-002 authors
+docs/adrs/                   # Nygard bodies ADR-001…011 (PBI-002)
 docs/
 tasks/                       # optional PBI mirrors
 prd/ agents/ workflows/

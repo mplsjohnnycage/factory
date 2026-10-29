@@ -15,6 +15,7 @@ LogicSRC ASDLC nine phases + Context Gates / Workflow-as-Code / Domain-Driven Sp
 - Spec anatomy (all domains): Blueprint Context / Architecture / Constraints + Contract DoD / Guardrails / Scenarios.
 - Context gates before Feature Assembly: Spec review + EGM Goldfish (feature_spec) green.
 - Living Specs: Contract changes update Spec in the same PR (default refinement rule).
+- Accepted ADR bodies under `docs/adrs/` are immutable Nygard records (Title, Status, Context, Decision, Consequences, Alternatives Considered). ADR-007 is Superseded by ADR-011. Supersede; do not edit a merged body.
 - Local gate + CI refuse dirty/invalid (PBI-013).
 - LogicSRC map: OpenPRD for product capability decisions; OpenWorkflow release/promote; OpenInstall activate health.
 
@@ -51,4 +52,11 @@ Scenario: Living Spec updates travel with Contract changes
   Given a PR changes a Contract scenario
   When the PR is opened
   Then the owning /specs/{domain}/spec.md is updated in the same PR
+
+Scenario: Accepted ADR bodies carry six anatomy sections
+  Given ADR files ADR-001 through ADR-011 under docs/adrs
+  When each file is checked for Title, Status, Context, Decision, Consequences, and Alternatives Considered
+  Then every Accepted ADR has all six anatomy sections
+  And ADR-011 is present with Status Accepted
+  And ADR-007 Status is Superseded by ADR-011
 ```
