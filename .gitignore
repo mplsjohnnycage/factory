@@ -7,4 +7,11 @@ node_modules/
 dist/
 *.log
 .DS_Store
-.beads/
+
+# Beads / Dolt (root). Tracked under .beads/: config.yaml, metadata.json, README.md, .gitignore
+# Runtime DB + locks are ignored via .beads/.gitignore (dolt/, embeddeddolt/, etc.)
+.dolt/
+*.db
+.beads-credential-key
+.beads/proxieddb/
+*.gate.lock*

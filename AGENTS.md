@@ -42,8 +42,20 @@ ADR-007 is **Superseded by ADR-011**.
 | Linear project **Factory Meta** | Human tracker facet for seed PBIs |
 | Port | Catalog SoT; workflows as tools — bind live names only |
 | Rivet 2.x Compose + Tailscale Serve | Execution kernel — `compose/` + `docs/rivet-tailscale-serve.md` (PBI-004+) |
-| Beads (**Meta Beads**) | Ready/claim from PBI-007; optional earlier scaffolding (OQ-1) |
+| Beads (**Meta Beads**) | Ready/claim SoT for Meta coding admit (PBI-007). Prefix `factory-`. Instance `.beads/`. Never Product Beads. |
 | GitHub Actions | Accept path on exact SHA (PBI-011) |
+
+## Meta Beads (PBI-007 cutover)
+
+`ProjectSupervisor` (`apps/project-supervisor/`) admits coding work **only** when Meta Beads reports ready (`ReadyTaskEvent.beadId`) **or** Port `executionContract` carries an audited human bypass. Claim = `bd update --claim` before Rivet queue message that starts Sandbox Agent.
+
+```bash
+bd where
+bd ready
+bd update <bead-id> --claim
+```
+
+Linear remains human visibility; Meta Beads is ready/claim/parallel SoT for meta coding admit. Do not `bd init` per worktree. Sync: `bd dolt push` / `bd dolt pull` when authorized — do not commit Dolt DB blobs.
 
 ## Judgment boundaries
 
@@ -60,7 +72,7 @@ ADR-007 is **Superseded by ADR-011**.
 
 ## Layout (mandated §2)
 
-See `README.md` and master production plan. Apps: `apps/factory-gateway/`, `apps/developer-os/`.
+See `README.md` and master production plan. Apps: `apps/factory-gateway/`, `apps/sandbox-harness/`, `apps/project-supervisor/`, `apps/developer-os/`.
 
 ## LogicSRC emits (index)
 
