@@ -1,0 +1,24 @@
+{
+  "$schema": "https://logicsrc.dev/schemas/openagent.factory.json",
+  "id": "coder.factory",
+  "title": "Factory Meta coding agent (OpenAgent stub)",
+  "lane": "meta",
+  "status": "stub",
+  "pbi": "PBI-006",
+  "harness": {
+    "kind": "sandbox-agent",
+    "provider": "docker",
+    "imagePin": "rivetdev/sandbox-agent:0.5.4-full",
+    "agent": "claude",
+    "note": "M1 first harness = Claude Code inside Sandbox Agent. Browser never calls SA control APIs (ADR-006)."
+  },
+  "session": {
+    "lifecycle": ["create", "prompt", "stream", "checkpoint"],
+    "killPreservesIdentity": true,
+    "unsavedFsDurable": false
+  },
+  "secrets": {
+    "anthropic": "env:ANTHROPIC_API_KEY",
+    "github": "env:GITHUB_TOKEN (scoped repo token only)"
+  }
+}
