@@ -67,6 +67,14 @@ CI still uses `createMemorySupervisor()` / `MemoryMetaBeads` (injectable `BdRunn
 
 ## Offline admit entry (no Funnel / no Rivet host)
 
+Ops kit (repo root — markers + optional Memory tests):
+
+```bash
+npm run dry-run:supervisor-admit
+npm run dry-run:supervisor-admit -- --memory
+# docs/ops/supervisor-admit-dry-run.md
+```
+
 In-process:
 
 ```ts
