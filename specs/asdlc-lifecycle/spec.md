@@ -1,28 +1,54 @@
 # asdlc-lifecycle
 
-> **Status:** Stub — scaffold only (PBI-001 will author). Meta lane.
-> **Do not Feature-Assemble against this stub until Contract is review-green.**
+> **Status:** Stub authored — PBI-001 / STL-162 (Meta). Stub authorship only — not M1 implement DoD (§13.5).
+> **Do not Feature-Assemble until Spec review + EGM Goldfish are green for this Spec.**
+> **Role:** Pointer Spec for PBI-001 verification (Blueprint+Contract authorship norms) and owner of lifecycle/gates mapping.
 
 ## Blueprint
+
 ### Context
-TBD — see Project store `docs/factory-master-spec.md` §4 for authorship outline.
+
+LogicSRC ASDLC nine phases + Context Gates / Workflow-as-Code / Domain-Driven Specification. ISO/IEC/IEEE 12207:2026 process groups map into Spec ownership (ADR-009). Target ASDLC Level 2; ratchet habit from first escape.
 
 ### Architecture
-TBD
+
+- Spec anatomy (all domains): Blueprint Context / Architecture / Constraints + Contract DoD / Guardrails / Scenarios.
+- Context gates before Feature Assembly: Spec review + EGM Goldfish (feature_spec) green.
+- Living Specs: Contract changes update Spec in the same PR (default refinement rule).
+- Local gate + CI refuse dirty/invalid (PBI-013).
+- LogicSRC map: OpenPRD for product capability decisions; OpenWorkflow release/promote; OpenInstall activate health.
 
 ### Constraints
-TBD (positive rules only)
+
+- Constraints in Blueprint are positive rules (pink-elephant); failure modes live in Gherkin Contract scenarios.
+- PBIs are typed-contract deltas that point at Specs — they are not the Spec.
+- AGENTS.md indexes; it does not dump design.
 
 ## Contract
+
 ### Definition of Done
-TBD
+
+- One local gate command refuses dirty/invalid (when PBI-013 lands).
+- CI refuses dirty/invalid.
+- Living Specs updated in the same PR as Contract changes.
 
 ### Regression Guardrails
-TBD
+
+- Feature Assembly does not start against scaffold-placeholder Contracts.
+- Spec review + EGM Goldfish gate Feature Assembly per domain Spec.
 
 ### Scenarios
+
 ```gherkin
-Scenario: Stub placeholder
-  Given this Spec is still a scaffold stub
-  Then agents must not treat Contract scenarios as implementable DoD
+Scenario: Stub authorship satisfies PBI-001 verification pointer
+  Given ten domain Spec files under /specs/*/spec.md
+  When each is checked for Blueprint Context/Architecture/Constraints
+  And Contract DoD/Guardrails/at least one Gherkin scenario
+  Then PBI-001 verification pointer is satisfied
+  And Feature Assembly remains blocked until Spec review + EGM are green
+
+Scenario: Living Spec updates travel with Contract changes
+  Given a PR changes a Contract scenario
+  When the PR is opened
+  Then the owning /specs/{domain}/spec.md is updated in the same PR
 ```
