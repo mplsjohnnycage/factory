@@ -34,6 +34,8 @@ External Developer OS for humans — intent, approvals UI, live progress, and co
 
 - Next.js app builds; atlas hero is first viewport.
 - Port OAuth login + callback Route Handlers compile; Factory client id via `PORT_FACTORY_CLIENT_ID` only.
+- Callback path is `/api/auth/callback` (exact match to Port + OpenAccess redirect_uris).
+- Callback performs Authorization Code + PKCE token exchange (no stub; no `client_secret`).
 - Rivet native stream reconnects from last `sequence` (gap replay + live; no duplicates).
 - Port sign-in Route Handler targets the intended Factory client redirects and does not reuse Observatory or Clerk.
 
@@ -43,6 +45,7 @@ External Developer OS for humans — intent, approvals UI, live progress, and co
 - Clerk is absent.
 - Observatory client id configured as Factory auth fails Contract review.
 - No CopilotKit / AG-UI on the kernel streaming path.
+- OAuth callback must not remain at `/api/auth/port/callback` (redirect_uri drift).
 
 ### Scenarios
 
@@ -53,10 +56,12 @@ Scenario: Preview deploy serves shell
   Then the Code Atlas hero is the first viewport composition
   And privileged mutations are not available without Port auth
 
-Scenario: PBI-008 OAuth Route Handler stub compiles
+Scenario: Port OAuth PKCE login and callback
   Given PORT_FACTORY_CLIENT_ID names the Factory External Interface app
-  When GET /api/auth/port/login and GET /api/auth/port/callback are typechecked and built
+  When GET /api/auth/port/login and GET /api/auth/callback are typechecked and built
   Then the handlers compile
+  And authorize uses Auth0 PKCE (S256) with audience set to the Port API base
+  And callback exchanges code + code_verifier at Auth0 /oauth/token without client_secret
   And configuring PORT_OBSERVATORY_CLIENT_ID is refused
 
 Scenario: Session events survive browser disconnect

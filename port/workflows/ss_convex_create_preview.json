@@ -1,0 +1,118 @@
+{
+  "identifier": "ss_convex_create_preview",
+  "title": "Create Convex preview deployment",
+  "icon": "Database",
+  "description": "Meta handler: after Johnny approval, WEBHOOK → factory-gateway POST /handlers/self-service (action=ss_convex_create_preview). Requires Port secrets FACTORY_GATEWAY_BASE_URL + FACTORY_GATEWAY_HANDLER_TOKEN and gateway CONVEX_TEAM_TOKEN. Creates Convex Management preview/dev deployment and projects convexDeployment via §4.2.1 writer.",
+  "category": "Convex",
+  "allowAnyoneToViewRuns": true,
+  "nodes": [
+    {
+      "identifier": "trigger",
+      "config": {
+        "type": "SELF_SERVE_TRIGGER",
+        "published": true,
+        "userInputs": {
+          "properties": {
+            "product": {
+              "title": "Product",
+              "type": "string",
+              "format": "entity",
+              "blueprint": "product"
+            },
+            "kind": {
+              "title": "Deployment kind",
+              "type": "string",
+              "default": "preview",
+              "enum": ["preview", "dev"]
+            },
+            "branch": {
+              "title": "Branch (for preview reference)",
+              "type": "string"
+            },
+            "convexProjectId": {
+              "title": "Convex project ID",
+              "description": "Numeric Convex Management project id (from convexProject.projectId).",
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            }
+          },
+          "required": ["product", "kind", "convexProjectId"],
+          "order": ["product", "convexProjectId", "kind", "branch"]
+        }
+      },
+      "variables": {},
+      "verbose": false
+    },
+    {
+      "identifier": "approval",
+      "config": {
+        "type": "INPUT",
+        "description": "Create Convex {{ .outputs.trigger.kind }} deployment for {{ .outputs.trigger.product }} (project {{ .outputs.trigger.convexProjectId }})?",
+        "userInputs": {
+          "properties": {},
+          "buttons": [
+            { "identifier": "approve", "label": "Approve", "variant": "PRIMARY" },
+            { "identifier": "reject", "label": "Reject", "variant": "DANGER" }
+          ]
+        },
+        "outlets": [
+          {
+            "evaluationMethod": "button",
+            "identifier": "approve",
+            "title": "Approved",
+            "numOfResponders": 1
+          },
+          {
+            "evaluationMethod": "button",
+            "identifier": "reject",
+            "title": "Rejected",
+            "numOfResponders": 1
+          }
+        ],
+        "responders": {
+          "users": ["mplsjohnnycage@makeithappenentllc.com"]
+        }
+      },
+      "variables": {},
+      "verbose": false
+    },
+    {
+      "identifier": "gateway_handler",
+      "title": "factory-gateway self-service",
+      "config": {
+        "type": "WEBHOOK",
+        "url": "{{ .secrets[\"FACTORY_GATEWAY_BASE_URL\"] }}/handlers/self-service",
+        "agent": false,
+        "synchronized": true,
+        "method": "POST",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer {{ .secrets[\"FACTORY_GATEWAY_HANDLER_TOKEN\"] }}"
+        },
+        "body": {
+          "action": "ss_convex_create_preview",
+          "runId": "{{ .workflowRun.id }}",
+          "product": "{{ .outputs.trigger.product }}",
+          "kind": "{{ .outputs.trigger.kind }}",
+          "branch": "{{ .outputs.trigger.branch }}",
+          "convexProjectId": "{{ .outputs.trigger.convexProjectId }}"
+        },
+        "onTimeout": "fail",
+        "onFailure": "terminate"
+      },
+      "variables": {},
+      "verbose": false
+    }
+  ],
+  "connections": [
+    {
+      "sourceIdentifier": "trigger",
+      "targetIdentifier": "approval"
+    },
+    {
+      "sourceIdentifier": "approval",
+      "targetIdentifier": "gateway_handler",
+      "sourceOutletIdentifier": "approve"
+    }
+  ]
+}

@@ -28,7 +28,8 @@ Humans and agents share one Port action surface. The person path is a dedicated 
 ### Definition of Done
 
 - Spec, OpenAccess descriptor, and ADR-005 status agree: Accepted — live. The descriptor publishes the recorded client id and redirects. It does not invent a client id.
-- Developer OS callback Route Handler targets the dedicated Factory redirects above, not Observatory and not Clerk.
+- Developer OS callback Route Handler is `/api/auth/callback` and matches the dedicated Factory redirects above, not Observatory and not Clerk.
+- Developer OS performs Authorization Code + PKCE token exchange for the Factory client id (public client; no secret in git).
 - HTTPS callbacks are specified before any non-localhost deploy.
 - Inventory §7 item 10 present: `/.well-known/openaccess.json` with `openaccess: "0.1"` and required keys.
 
@@ -54,6 +55,12 @@ Scenario: Observatory client rejected for Developer OS
   Given an operator attempts to configure Observatory as Factory OAuth
   When Contract review runs
   Then the configuration fails review
+
+Scenario: Developer OS callback path matches live redirects
+  Given Port and OpenAccess register /api/auth/callback
+  When Developer OS builds the authorize redirect_uri and hosts the callback Route Handler
+  Then the path is /api/auth/callback
+  And the handler exchanges the authorization code with PKCE (no client_secret)
 
 Scenario: PBI-010 OpenAccess inventory item 10
   Given /.well-known/openaccess.json exists

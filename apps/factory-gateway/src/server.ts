@@ -6,6 +6,10 @@ import {
   type CheckRunSummary,
 } from "./accept-sha.js";
 import { CatalogWriter, claimNextJob } from "./catalog-writer.js";
+import {
+  isFactoryWorkflowId,
+  resolveFactoryActionIdentifier,
+} from "./factory-workflows.js";
 import { gateFleetSpawn } from "./fleet-spawn.js";
 import { verifyPortWebhookHmac } from "./hmac.js";
 import { MemoryCatalogStore } from "./memory-store.js";
@@ -19,8 +23,29 @@ import {
   rateLimitKeyFromRequest,
   SlidingWindowRateLimiter,
 } from "./rate-limit.js";
+import {
+  convexClientFromEnv,
+  dispatchSelfService,
+  verifyHandlerBearer,
+  type SelfServiceRequest,
+} from "./self-service-handlers.js";
+import type { ConvexManagementClient } from "./convex-management.js";
 import { ProjectSupervisorQueue } from "./supervisor.js";
+import { applySyncWrite, isSyncSource } from "./sync-ingress.js";
 import type { CatalogWriteRequest, PortWebhookBody } from "./types.js";
+
+/** Match POST /webhooks/port or /webhooks/port/<factory_*>. */
+function matchPortWebhookPath(
+  pathname: string,
+): { ok: true; pathAction?: string } | { ok: false } {
+  if (pathname === "/webhooks/port") return { ok: true };
+  const prefix = "/webhooks/port/";
+  if (!pathname.startsWith(prefix)) return { ok: false };
+  const pathAction = pathname.slice(prefix.length);
+  if (!pathAction || pathAction.includes("/")) return { ok: false };
+  if (!isFactoryWorkflowId(pathAction)) return { ok: false };
+  return { ok: true, pathAction };
+}
 
 export type GatewayDeps = {
   secret: string;
@@ -31,6 +56,10 @@ export type GatewayDeps = {
   openFleetLedger: OpenFleetLedger;
   /** Gateway rate limiter (PBI-012). */
   rateLimiter: SlidingWindowRateLimiter;
+  /** Bearer for Port WEBHOOK → /handlers/self-service (Meta SS handlers). */
+  handlerToken: string;
+  /** Convex Management API client; null when CONVEX_TEAM_TOKEN unset. */
+  convex: ConvexManagementClient | null;
 };
 
 async function readRawBody(req: IncomingMessage): Promise<string> {
@@ -93,8 +122,10 @@ export function createGatewayServer(deps: GatewayDeps) {
         return;
       }
 
-      if (req.method === "POST" && url.pathname === "/webhooks/port") {
-        if (!applyRateLimit(deps, req, res, url.pathname)) return;
+      const webhookMatch =
+        req.method === "POST" ? matchPortWebhookPath(url.pathname) : null;
+      if (webhookMatch?.ok) {
+        if (!applyRateLimit(deps, req, res, "/webhooks/port")) return;
 
         const rawBody = await readRawBody(req);
         const signature = String(req.headers["x-port-signature"] ?? "");
@@ -118,10 +149,20 @@ export function createGatewayServer(deps: GatewayDeps) {
           return;
         }
 
-        const admit = await deps.supervisor.enqueue(body);
+        const actionIdentifier = resolveFactoryActionIdentifier({
+          pathAction: webhookMatch.pathAction,
+          body,
+        });
+        const enriched: PortWebhookBody =
+          actionIdentifier && body.action !== actionIdentifier
+            ? { ...body, action: actionIdentifier }
+            : body;
+
+        const admit = await deps.supervisor.enqueue(enriched);
         sendJson(res, 202, {
           ok: true,
           admitId: admit.id,
+          actionIdentifier: admit.actionIdentifier,
           note: "enqueued_project_supervisor; rivet_never_polls_port",
         });
         return;
@@ -150,6 +191,58 @@ export function createGatewayServer(deps: GatewayDeps) {
         }
 
         const result = await deps.writer.apply(request);
+        sendJson(res, result.ok ? 200 : 409, result);
+        return;
+      }
+
+      // §4.2.1 — Ocean/MCP sync ingress; Meta-fenced blueprints cannot bypass CatalogWriter.
+      if (req.method === "POST" && url.pathname === "/catalog/sync-write") {
+        if (!applyRateLimit(deps, req, res, url.pathname)) return;
+        const rawBody = await readRawBody(req);
+        let body: CatalogWriteRequest & {
+          source?: unknown;
+          bypassFence?: unknown;
+        };
+        try {
+          body = JSON.parse(rawBody) as typeof body;
+        } catch {
+          sendJson(res, 400, { ok: false, error: "invalid_json" });
+          return;
+        }
+
+        if (
+          !body.blueprint ||
+          !body.entityIdentifier ||
+          typeof body.expectedCatalogVersion !== "number" ||
+          typeof body.patch !== "object" ||
+          body.patch === null ||
+          !isSyncSource(body.source)
+        ) {
+          sendJson(res, 400, { ok: false, error: "invalid_sync_write" });
+          return;
+        }
+
+        const result = await applySyncWrite(deps.writer, {
+          source: body.source,
+          blueprint: body.blueprint,
+          entityIdentifier: body.entityIdentifier,
+          expectedCatalogVersion: body.expectedCatalogVersion,
+          patch: body.patch,
+          bypassFence: body.bypassFence === true,
+        });
+
+        if (!result.ok && result.reason === "meta_fence_bypass_forbidden") {
+          sendJson(res, 403, result);
+          return;
+        }
+        if (!result.ok && result.reason === "ocean_mirror_not_via_gateway") {
+          sendJson(res, 409, result);
+          return;
+        }
+        if (!result.ok && result.reason === "invalid_sync_source") {
+          sendJson(res, 400, result);
+          return;
+        }
         sendJson(res, result.ok ? 200 : 409, result);
         return;
       }
@@ -360,6 +453,66 @@ export function createGatewayServer(deps: GatewayDeps) {
         return;
       }
 
+      // Meta Port self-service handlers (NEEDS HANDLER → WEBHOOK).
+      // Auth: Port classic HMAC (preferred) OR Bearer FACTORY_GATEWAY_HANDLER_TOKEN.
+      if (req.method === "POST" && url.pathname === "/handlers/self-service") {
+        if (!applyRateLimit(deps, req, res, url.pathname)) return;
+
+        const rawBody = await readRawBody(req);
+        const signature = String(req.headers["x-port-signature"] ?? "");
+        const timestamp = String(req.headers["x-port-timestamp"] ?? "");
+        const authorization = String(req.headers.authorization ?? "");
+
+        const hmacOk = verifyPortWebhookHmac({
+          secret: deps.secret,
+          rawBody,
+          headers: { signature, timestamp },
+        });
+        const bearerOk = verifyHandlerBearer({
+          expectedToken: deps.handlerToken,
+          authorizationHeader: authorization,
+        });
+        if (!hmacOk && !bearerOk) {
+          sendJson(res, 401, { ok: false, error: "unauthorized_handler" });
+          return;
+        }
+
+        let body: SelfServiceRequest;
+        try {
+          body = JSON.parse(rawBody) as SelfServiceRequest;
+        } catch {
+          sendJson(res, 400, { ok: false, error: "invalid_json" });
+          return;
+        }
+
+        try {
+          const result = await dispatchSelfService(body, {
+            convex: deps.convex,
+            writer: deps.writer,
+            allowMissingCredentials: true,
+          });
+          const status = result.ok
+            ? 200
+            : result.error === "product_lane_stub"
+              ? 501
+              : result.error === "missing_credentials"
+                ? 503
+                : result.error === "unknown_self_service_action"
+                  ? 404
+                  : 400;
+          sendJson(res, status, result);
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          sendJson(res, 502, {
+            ok: false,
+            action: body.action,
+            error: "handler_upstream_failed",
+            detail: message,
+          });
+        }
+        return;
+      }
+
       if (req.method === "POST" && url.pathname === "/catalog/claim-next") {
         if (!applyRateLimit(deps, req, res, url.pathname)) return;
         const rawBody = await readRawBody(req);
@@ -419,5 +572,7 @@ export function buildDefaultDeps(env: NodeJS.ProcessEnv = process.env): GatewayD
     acceptLedger: new AcceptLedger(),
     openFleetLedger: buildOpenFleetLedger(env),
     rateLimiter: new SlidingWindowRateLimiter(rateLimitConfigFromEnv(env)),
+    handlerToken: env.FACTORY_GATEWAY_HANDLER_TOKEN ?? "",
+    convex: convexClientFromEnv(env),
   };
 }

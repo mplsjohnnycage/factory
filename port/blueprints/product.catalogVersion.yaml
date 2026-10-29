@@ -1,0 +1,13 @@
+# Additive Port blueprint patch — product
+# Applied live via Port MCP upsert_blueprint (PATCH / deep-merge).
+# Do not PUT-replace the full product blueprint from this file alone.
+identifier: product
+schema:
+  properties:
+    catalogVersion:
+      title: Catalog Version
+      description: >-
+        §4.2.1 optimistic concurrency fence. Integer starts at 0 on create;
+        Factory catalog writer bumps by 1 on each successful apply. Stale
+        expectedCatalogVersion rejects with no partial apply.
+      type: number

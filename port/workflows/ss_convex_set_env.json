@@ -1,0 +1,124 @@
+{
+  "identifier": "ss_convex_set_env",
+  "title": "Set Convex env var",
+  "icon": "Database",
+  "description": "Meta handler: after Johnny approval, WEBHOOK → factory-gateway POST /handlers/self-service (action=ss_convex_set_env). Upserts a Convex project default env var for deployment type via Management API. Requires FACTORY_GATEWAY_BASE_URL + FACTORY_GATEWAY_HANDLER_TOKEN Port secrets and gateway CONVEX_TEAM_TOKEN. Prefer Port secret inputs for secret values.",
+  "category": "Convex",
+  "allowAnyoneToViewRuns": false,
+  "nodes": [
+    {
+      "identifier": "trigger",
+      "config": {
+        "type": "SELF_SERVE_TRIGGER",
+        "published": true,
+        "userInputs": {
+          "properties": {
+            "product": {
+              "title": "Product",
+              "type": "string",
+              "format": "entity",
+              "blueprint": "product"
+            },
+            "convexProjectId": {
+              "title": "Convex project ID",
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            },
+            "deployment": {
+              "title": "Deployment",
+              "type": "string",
+              "default": "dev",
+              "enum": ["dev", "preview", "prod"]
+            },
+            "key": {
+              "title": "Key",
+              "type": "string",
+              "pattern": "^[A-Z_][A-Z0-9_]*$"
+            },
+            "value": {
+              "title": "Value",
+              "description": "Visible to admins in the run payload unless supplied via Port secret input encryption. Never paste long-lived production secrets into non-secret fields.",
+              "type": "string"
+            }
+          },
+          "required": ["product", "convexProjectId", "deployment", "key", "value"],
+          "order": ["product", "convexProjectId", "deployment", "key", "value"]
+        }
+      },
+      "variables": {},
+      "verbose": false
+    },
+    {
+      "identifier": "approval",
+      "config": {
+        "type": "INPUT",
+        "description": "Set {{ .outputs.trigger.key }} on Convex {{ .outputs.trigger.deployment }} for {{ .outputs.trigger.product }}?",
+        "userInputs": {
+          "properties": {},
+          "buttons": [
+            { "identifier": "approve", "label": "Approve", "variant": "PRIMARY" },
+            { "identifier": "reject", "label": "Reject", "variant": "DANGER" }
+          ]
+        },
+        "outlets": [
+          {
+            "evaluationMethod": "button",
+            "identifier": "approve",
+            "title": "Approved",
+            "numOfResponders": 1
+          },
+          {
+            "evaluationMethod": "button",
+            "identifier": "reject",
+            "title": "Rejected",
+            "numOfResponders": 1
+          }
+        ],
+        "responders": {
+          "users": ["mplsjohnnycage@makeithappenentllc.com"]
+        }
+      },
+      "variables": {},
+      "verbose": false
+    },
+    {
+      "identifier": "gateway_handler",
+      "title": "factory-gateway self-service",
+      "config": {
+        "type": "WEBHOOK",
+        "url": "{{ .secrets[\"FACTORY_GATEWAY_BASE_URL\"] }}/handlers/self-service",
+        "agent": false,
+        "synchronized": true,
+        "method": "POST",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer {{ .secrets[\"FACTORY_GATEWAY_HANDLER_TOKEN\"] }}"
+        },
+        "body": {
+          "action": "ss_convex_set_env",
+          "runId": "{{ .workflowRun.id }}",
+          "product": "{{ .outputs.trigger.product }}",
+          "convexProjectId": "{{ .outputs.trigger.convexProjectId }}",
+          "deployment": "{{ .outputs.trigger.deployment }}",
+          "key": "{{ .outputs.trigger.key }}",
+          "value": "{{ .outputs.trigger.value }}"
+        },
+        "onTimeout": "fail",
+        "onFailure": "terminate"
+      },
+      "variables": {},
+      "verbose": false
+    }
+  ],
+  "connections": [
+    {
+      "sourceIdentifier": "trigger",
+      "targetIdentifier": "approval"
+    },
+    {
+      "sourceIdentifier": "approval",
+      "targetIdentifier": "gateway_handler",
+      "sourceOutletIdentifier": "approve"
+    }
+  ]
+}
