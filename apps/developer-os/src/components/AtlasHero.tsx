@@ -6,16 +6,15 @@ import { ATLAS_OVERLAYS } from "@/lib/atlas/types";
 import styles from "./AtlasHero.module.css";
 
 const OVERLAY_STROKE: Record<AtlasOverlay, string> = {
-  beads: "rgba(15, 110, 86, 0.55)",
-  polygraph: "rgba(26, 107, 138, 0.55)",
-  graft: "rgba(120, 72, 32, 0.5)",
-  langfuse: "rgba(90, 90, 110, 0.45)",
+  beads: "rgba(22, 163, 74, 0.55)",
+  polygraph: "rgba(47, 111, 224, 0.55)",
+  graft: "rgba(176, 106, 26, 0.55)",
+  langfuse: "rgba(107, 113, 124, 0.45)",
 };
 
 /**
- * First-viewport Code Atlas composition (PBI-008 shell + STL-154 overlays).
- * Full-bleed graph plane + brand — not a dashboard of cards.
- * Overlay data from /api/atlas/subgraph (fixture read projection).
+ * Code Atlas light-glass surface (Cockpit v3 / Atlas v5 direction).
+ * Graph plane + brand — not a KPI dashboard. Overlay data from /api/atlas/subgraph.
  */
 export function AtlasHero() {
   const [enabled, setEnabled] = useState<Record<AtlasOverlay, boolean>>({
@@ -63,7 +62,7 @@ export function AtlasHero() {
   };
 
   return (
-    <section className={styles.hero} aria-label="Factory Code Atlas">
+    <section className={styles.hero} aria-label="Code Atlas">
       <svg
         className={styles.graph}
         viewBox="0 0 1200 720"
@@ -73,8 +72,8 @@ export function AtlasHero() {
       >
         <defs>
           <linearGradient id="plane" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.35)" />
-            <stop offset="100%" stopColor="rgba(232,238,244,0.05)" />
+            <stop offset="0%" stopColor="rgba(255,255,255,0.55)" />
+            <stop offset="100%" stopColor="rgba(229,234,240,0.08)" />
           </linearGradient>
           <filter id="soft">
             <feGaussianBlur stdDeviation="0.6" />
@@ -86,7 +85,8 @@ export function AtlasHero() {
           const from = subgraph.nodes.find((n) => n.id === edge.from);
           const to = subgraph.nodes.find((n) => n.id === edge.to);
           if (!from?.x || !from.y || !to?.x || !to.y) return null;
-          const dashed = edge.scope === "cross" || edge.status === "unknown";
+          const cross = edge.scope === "cross";
+          const dashed = cross || edge.status === "unknown";
           return (
             <path
               key={edge.id}
@@ -94,8 +94,10 @@ export function AtlasHero() {
               fill="none"
               stroke={
                 edge.status === "unknown"
-                  ? "rgba(90,90,110,0.25)"
-                  : OVERLAY_STROKE[from.overlay]
+                  ? "rgba(107,113,124,0.28)"
+                  : cross
+                    ? "rgba(176,106,26,0.7)"
+                    : OVERLAY_STROKE[from.overlay]
               }
               strokeWidth={edge.status === "proven" ? 1.6 : 1}
               strokeDasharray={dashed ? "6 10" : undefined}
@@ -135,18 +137,18 @@ export function AtlasHero() {
       <div className={styles.veil} />
 
       <div className={styles.copy}>
-        <p className={styles.brand}>Factory</p>
-        <h1 className={styles.headline}>Developer OS</h1>
+        <p className={styles.brand}>Code Atlas</p>
+        <h1 className={styles.headline}>Lake · symbol map</h1>
         <p className={styles.lede}>
-          Code Atlas four-overlay read projection — Beads · Polygraph · Graft ·
-          Langfuse (history only).
+          Four-overlay read projection — Beads · Polygraph · Graft · Langfuse
+          (history only). Solid edges are in-repo; dashed brown is cross-repo.
         </p>
         <div className={styles.cta}>
           <a className={styles.primary} href="/api/auth/port/login">
             Sign in with Port
           </a>
-          <a className={styles.secondary} href="/session/demo">
-            Open session stream
+          <a className={styles.secondary} href="/">
+            Back to Cockpit
           </a>
           <div className={styles.overlays} role="group" aria-label="Atlas overlays">
             {ATLAS_OVERLAYS.map((overlay) => (

@@ -1,12 +1,18 @@
 .panel {
-  min-height: 100vh;
-  min-height: 100dvh;
-  padding: clamp(1.5rem, 4vw, 3rem);
-  background:
-    radial-gradient(900px 500px at 80% 0%, rgba(26, 107, 138, 0.12), transparent 55%),
-    linear-gradient(165deg, #f4f7fa 0%, #e8eef4 100%);
-  color: #15202b;
-  font-family: var(--font-body);
+  margin: 0 clamp(1.25rem, 4vw, 3.5rem) 2.5rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-radius: 30px;
+  min-height: calc(100vh - 7rem);
+  min-height: calc(100dvh - 7rem);
+  color: var(--cockpit-ink);
+  background: linear-gradient(160deg, rgba(44, 50, 66, 0.55), rgba(26, 30, 42, 0.72));
+  backdrop-filter: blur(28px) saturate(1.6);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 24px 60px rgba(0, 0, 0, 0.35);
+  animation: dcRise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .header {
@@ -19,39 +25,40 @@
 
 .brand {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cockpit-muted);
 }
 
 .title {
-  margin: 0.15rem 0 0.35rem;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #084c3a;
+  margin: 0.2rem 0 0.35rem;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .meta {
   margin: 0;
   font-size: 0.9rem;
-  color: #4a5a6a;
+  color: var(--cockpit-muted);
 }
 
 .meta code {
+  font-family: var(--font-mono);
   font-size: 0.85em;
+  color: var(--link-cyan);
 }
 
 .status {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.55rem 0.85rem;
-  border-radius: 0.55rem;
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(8px);
+  padding: 0.55rem 0.9rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: var(--cockpit-glass-edge);
   font-size: 0.88rem;
   align-self: flex-start;
 }
@@ -60,22 +67,22 @@
   width: 0.55rem;
   height: 0.55rem;
   border-radius: 50%;
-  background: #4a5a6a;
+  background: var(--cockpit-muted);
 }
 
 .status[data-state="live"] .dot {
-  background: #0f6e56;
-  box-shadow: 0 0 0 3px rgba(15, 110, 86, 0.18);
+  background: var(--mint);
+  box-shadow: 0 0 0 3px rgba(48, 209, 88, 0.2);
 }
 
 .status[data-state="reconnecting"] .dot,
 .status[data-state="connecting"] .dot {
-  background: #1a6b8a;
+  background: var(--link-blue);
   animation: blink 1s ease-in-out infinite;
 }
 
 .status[data-state="error"] .dot {
-  background: #a33b2b;
+  background: var(--danger);
 }
 
 .list {
@@ -94,17 +101,17 @@
     "payload payload payload";
   gap: 0.35rem 0.75rem;
   padding: 0.85rem 1rem;
-  border-radius: 0.65rem;
-  background: rgba(255, 255, 255, 0.62);
-  border: 1px solid rgba(21, 32, 43, 0.06);
-  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 .seq {
   grid-area: seq;
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   font-weight: 600;
-  color: #1a6b8a;
+  color: var(--link-cyan);
 }
 
 .sender {
@@ -112,7 +119,7 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-size: 0.72rem;
-  color: #4a5a6a;
+  color: var(--cockpit-muted);
   align-self: center;
 }
 
@@ -124,17 +131,18 @@
 .payload {
   grid-area: payload;
   margin: 0.25rem 0 0;
-  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
   white-space: pre-wrap;
   word-break: break-word;
-  color: #4a5a6a;
+  color: rgba(235, 240, 250, 0.66);
 }
 
 .empty {
   padding: 1.25rem;
-  border-radius: 0.65rem;
-  background: rgba(255, 255, 255, 0.5);
-  color: #4a5a6a;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--cockpit-muted);
 }
 
 @keyframes blink {
