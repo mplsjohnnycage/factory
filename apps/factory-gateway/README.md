@@ -14,6 +14,7 @@ Thin Meta gateway for **PBI-005 / STL-166** + **PBI-011 / STL-172** + **PBI-012 
 |--------|------|---------|
 | `GET` | `/health` | Liveness (not rate-limited) |
 | `POST` | `/webhooks/port` | HMAC-gated Port webhook → supervisor enqueue |
+| `POST` | `/webhooks/port/<factory_*>` | Same HMAC path; allowlisted workflow ID from path (Port WEBHOOK URL templates) |
 | `POST` | `/fleet/spawn` | OpenFleet ceiling gate; refuse → `ceiling.refuse` |
 | `GET` | `/fleet/ledger` | List ledger events / ceiling refuses for a fleet |
 | `POST` | `/accept/evaluate` | ADR-008 accept eligibility for exact SHA (no Port mutation) |
@@ -61,6 +62,8 @@ npm install
 npm run typecheck
 npm test
 ```
+
+HTTP proof for all seven `factory_*` WEBHOOK admits (HMAC reject + 202 enqueue + path allowlist): `test/webhooks-port.test.ts`. Live Port wiring inventory: `docs/port-workflow-webhooks.md`.
 
 ## Lane hard rules
 
