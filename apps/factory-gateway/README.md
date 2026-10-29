@@ -105,7 +105,7 @@ cd compose
 docker compose --profile gateway up -d --build
 ```
 
-**Port remount path (FE-114):** keep the repo **public**. Put Tailscale **Funnel** (M1) or a PaaS (Fly/Railway/Render/Cloud Run) in front of `:8787`, confirm `GET /health` from a non-tailnet client, then set Port secret `FACTORY_GATEWAY_BASE_URL` and remount WEBHOOKs. Do not remount onto a dead base URL. Live BASE_URL preflight: [`docs/gateway-remount-dry-run.md`](../../docs/gateway-remount-dry-run.md).
+**Port remount path (FE-114):** keep the repo **public**. Put Tailscale **Funnel** (M1) or a PaaS (Fly/Railway/Render/Cloud Run) in front of `:8787`, confirm `GET /health` from a non-tailnet client, then set Port secret `FACTORY_GATEWAY_BASE_URL` and remount WEBHOOKs. Do not remount onto a dead base URL. Offline checklist: [`docs/ops/funnel-remount-checklist.md`](../../docs/ops/funnel-remount-checklist.md) (`npm run dry-run:funnel-remount-checklist`). Live BASE_URL preflight: [`docs/gateway-remount-dry-run.md`](../../docs/gateway-remount-dry-run.md).
 
 ## Windows logon auto-start (DESKTOP-3APDBKG)
 
