@@ -1,6 +1,6 @@
 # port-governance
 
-> **Status:** PBI-005 / STL-166 — thin `factory-gateway` hosts §4.2.1 catalog writer + HMAC relay (Meta). Stub authorship (PBI-001) remains the Blueprint base; live Port accept is still out of band.
+> **Status:** PBI-005 gateway + PBI-010 OpenMCP well-known (Meta). Stub authorship (PBI-001) remains the Blueprint base; live Port accept is still out of band.
 > **Do not Feature-Assemble until Spec review + EGM Goldfish are green for this Spec.**
 
 ## Blueprint
@@ -15,7 +15,7 @@ Port is system of record for Factory catalog, RBAC, workflows-as-MCP-tools, MCP 
 - Workflows: `factory_create_execution_contract`, `factory_start_delivery_run`, `factory_claim_next_job`, `factory_heartbeat`, `factory_submit_evidence`, `factory_record_review_verdict`, `factory_request_release` (Johnny-only INPUT).
 - **§4.2.1 catalog write fencing:** single-writer per `{blueprint}:{entityIdentifier}` inside the thin Factory gateway (`apps/factory-gateway/`); `catalogVersion` bump; reject stale writes; lease/claim fields mutate only in the same apply.
 - **§4.2.2 stack assembly:** Port validates stack compatibility as machine rules before provision / Coding admit.
-- LogicSRC map: OpenMCP `/.well-known/openmcp.json`; OpenOntology/OpenContext post-M1; OpenAccess scopes documented (Port issues tokens).
+- LogicSRC map: OpenMCP `/.well-known/openmcp.json` (PBI-010 — advertises Port remote MCP `https://mcp.port.io/v1` as Factory’s one MCP entry); OpenOntology/OpenContext post-M1; OpenAccess scopes documented (Port issues tokens).
 
 ### Constraints
 
@@ -60,4 +60,12 @@ Scenario: PBI-005 factory-gateway hosts §4.2.1 writer
   When two concurrent claim-next applies share expectedCatalogVersion N
   Then exactly one apply succeeds and bumps catalogVersion to N+1
   And the other is rejected as stale_catalog_version with no partial apply
+
+Scenario: PBI-010 OpenMCP inventory item 9
+  Given /.well-known/openmcp.json exists
+  When scripts/validate-well-known.mjs runs
+  Then the required mcp key names the Factory MCP entry (Port remote MCP)
+  And factory.no_port_oauth_mutation is true
+  And this unit does not create or delete Port External Interface apps
 ```
+

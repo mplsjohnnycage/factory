@@ -1,1 +1,55 @@
-{"$comment":"Placeholder — PBI-010. No Port OAuth create from this file.","version":"0.0.0-scaffold"}
+{
+  "openmcp": "0.1",
+  "mcp": "https://mcp.port.io/v1",
+  "name": "Factory",
+  "description": "Factory Meta MCP surface — Port remote MCP (workflows-as-tools / catalog SoT) for the Factory kernel control plane. Documentation of the one Factory MCP entry; not a second runtime. No Port External Interface OAuth create/delete from this file.",
+  "url": "https://github.com/mplsjohnnycage/factory",
+  "auth": {
+    "kind": "oauth",
+    "url": "https://mcp.port.io/v1",
+    "open": []
+  },
+  "tags": [
+    "factory",
+    "meta",
+    "port",
+    "rivet",
+    "asdlc"
+  ],
+  "operator": "https://github.com/mplsjohnnycage/factory/blob/main/.well-known/openprofile.md",
+  "tools": [
+    "factory_create_execution_contract",
+    "factory_start_delivery_run",
+    "factory_claim_next_job",
+    "factory_heartbeat",
+    "factory_submit_evidence",
+    "factory_record_review_verdict",
+    "factory_request_release"
+  ],
+  "catalogs": [
+    "https://openmcp.logicsrc.com"
+  ],
+  "factory": {
+    "lane": "meta",
+    "spec": "port-governance",
+    "gateway": "apps/factory-gateway",
+    "webhook": "POST /webhooks/port",
+    "catalog_write_fencing": "§4.2.1",
+    "port_mcp_eu": "https://mcp.port.io/v1",
+    "port_mcp_us": "https://mcp.us.port.io/v1",
+    "port_blueprints": [
+      "product",
+      "service",
+      "executionContract",
+      "deliveryRun",
+      "executionAttempt",
+      "executionRunner",
+      "bot",
+      "_mcp_server",
+      "agentPlugin",
+      "skill",
+      "harness_session"
+    ],
+    "no_port_oauth_mutation": true
+  }
+}
