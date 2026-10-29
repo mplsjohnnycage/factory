@@ -24,7 +24,12 @@
     "factory_heartbeat",
     "factory_submit_evidence",
     "factory_record_review_verdict",
-    "factory_request_release"
+    "factory_request_release",
+    "atlas.find_node",
+    "atlas.expand_dependencies",
+    "atlas.get_task_impact",
+    "atlas.get_related_sessions",
+    "atlas.get_agent_traces"
   ],
   "catalogs": [
     "https://openmcp.logicsrc.com"

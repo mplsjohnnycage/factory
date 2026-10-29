@@ -9,7 +9,10 @@ Lane: **Meta only** · browser never calls Sandbox Agent · no Port OAuth create
 | Path | Role |
 |------|------|
 | `src/app/page.tsx` | Atlas hero shell (first viewport) |
-| `src/components/AtlasHero.tsx` | Full-bleed Code Atlas composition |
+| `src/components/AtlasHero.tsx` | Full-bleed Code Atlas composition + overlay toggles |
+| `src/lib/atlas/` | STL-154 four-overlay read projection + MCP tools |
+| `src/app/api/atlas/subgraph` | Viewport-capped subgraph JSON |
+| `src/app/api/atlas/tools` | Bounded `atlas.*` tool list + invoke |
 | `src/app/api/auth/port/login` | Begin Port OAuth (PKCE challenge + state cookies) |
 | `src/app/api/auth/callback` | OAuth callback — **token exchange** (matches Port redirects) |
 | `src/lib/port-oauth.ts` | Config, PKCE, Auth0 token exchange, Observatory refuse |
@@ -69,7 +72,23 @@ Open `/session/demo` (or any session id). Client uses Rivet-native `RivetSession
 gap replay then live SSE; on blip, reconnects from last `sequence`. Memory fixture when
 `RIVET_SERVE_URL` unset. **No CopilotKit. No browser→Sandbox Agent.**
 
+## Code Atlas (STL-154)
+
+Four overlays (Beads / Polygraph / Graft / Langfuse) as separate graphs. Only
+source-proven joins are authority. Langfuse is historical — Rivet owns live
+sessions. Port MCP tool names are advertised in `/.well-known/openmcp.json`;
+live Port blueprint/workflow bind is Johnny-gated (prep only from this lane).
+
+```bash
+curl -s 'http://localhost:3000/api/atlas/subgraph?overlays=beads,polygraph,graft&role=anonymous' | jq .
+curl -s -X POST http://localhost:3000/api/atlas/tools \
+  -H 'content-type: application/json' \
+  -d '{"tool":"atlas.find_node","args":{"query":"STL-154"},"role":"operator"}' | jq .
+```
+
 ## Follow-ons
 
 - Register production/preview HTTPS callbacks on the Port Factory app when deploy URLs are stable
 - Live Rivet Serve wiring when desktop Tailscale URL is stable
+- Johnny approval to bind atlas.* tools into live Port MCP workflows (schema apply)
+
