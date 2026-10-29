@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;family=Archivo:wght@400;500;600;800;900&amp;display=swap" rel="stylesheet">
+<style>body{margin:0;background:#e9e9ec;font-family:Archivo,"Helvetica Neue",sans-serif;color:#16161a}a{color:#9a5b13}a:hover{color:#6e400c}</style>
+</helmet>
+<section style="padding:80px;display:flex;flex-wrap:wrap;gap:80px;align-items:flex-start">
+
+<div id="1a" style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:12px"><span style="font:600 14px 'JetBrains Mono';background:#16161a;color:#fff;padding:4px 10px;border-radius:6px">1a</span><span style="font-size:18px;font-weight:500">Graph explorer</span></div>
+<div data-screen-label="1a Graph explorer" style="width:1440px;height:900px;background:#fff;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.08)">
+  <div style="height:56px;border-bottom:1px solid #ececf0;display:flex;align-items:center;padding:0 20px;gap:20px">
+    <div style="font:600 12px 'JetBrains Mono';letter-spacing:.3em;color:#9a5b13;width:220px">CODEBASE INTEL</div>
+    <div style="flex:1;display:flex;justify-content:center"><div style="width:480px;height:34px;border:1px solid #e2e2e8;border-radius:8px;background:#f6f6f9;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:14px;color:#6b6b76"><span>Jump to symbol, file, or repo</span><span style="font:500 12px 'JetBrains Mono';border:1px solid #dcdce3;border-radius:4px;padding:1px 6px;background:#fff">⌘K</span></div></div>
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#3d3d45"><span>acme / catalog</span><div style="width:30px;height:30px;border-radius:50%;background:#9a5b13;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600">MH</div></div>
+  </div>
+  <div style="flex:1;display:flex;min-height:0">
+    <div style="width:240px;border-right:1px solid #ececf0;padding:20px 14px;display:flex;flex-direction:column;gap:28px;background:#fbfbfc">
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div style="font:600 11px 'JetBrains Mono';letter-spacing:.2em;color:#8a8a94;padding:0 10px 8px">VIEWS</div>
+        <div style="padding:8px 10px;border-radius:7px;background:#fff;box-shadow:0 0 0 1px #e6e6ec;font-size:14px;font-weight:600">Symbol graph</div>
+        <div style="padding:8px 10px;border-radius:7px;font-size:14px;color:#3d3d45">Impact analysis</div>
+        <div style="padding:8px 10px;border-radius:7px;font-size:14px;color:#3d3d45">Search</div>
+        <div style="padding:8px 10px;border-radius:7px;font-size:14px;color:#3d3d45">Integrations</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div style="font:600 11px 'JetBrains Mono';letter-spacing:.2em;color:#8a8a94;padding:0 10px 8px">REPOS</div>
+        <div style="padding:8px 10px;display:flex;justify-content:space-between;align-items:center"><span style="font:500 13px 'JetBrains Mono'">web-app</span><span style="width:7px;height:7px;border-radius:50%;background:#16a34a"></span></div>
+        <div style="padding:8px 10px;display:flex;justify-content:space-between;align-items:center"><span style="font:500 13px 'JetBrains Mono'">api-service</span><span style="width:7px;height:7px;border-radius:50%;background:#16a34a"></span></div>
+        <div style="padding:8px 10px;display:flex;justify-content:space-between;align-items:center"><span style="font:500 13px 'JetBrains Mono'">shared-lib</span><span style="font:500 11px 'JetBrains Mono';color:#9a5b13">indexing</span></div>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;padding:28px 32px;gap:24px;min-width:0">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font:600 11px 'JetBrains Mono';letter-spacing:.3em;color:#9a5b13">CODEBASE INTELLIGENCE</div>
+          <div style="font-size:30px;font-weight:500;letter-spacing:-.01em">Cross-repo symbol graph</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#6b6b76">
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:36px;border-top:1.5px solid #b4b4c4"></span>call within a repo</div>
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:36px;border-top:2px dashed #9a5b13"></span>reference across repos</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;font-size:13px">
+        <span style="padding:6px 12px;border-radius:999px;background:#16161a;color:#fff">All symbols</span>
+        <span style="padding:6px 12px;border-radius:999px;border:1px solid #e2e2e8;display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#2563eb"></span>Components</span>
+        <span style="padding:6px 12px;border-radius:999px;border:1px solid #e2e2e8;display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#16a34a"></span>Functions</span>
+        <span style="padding:6px 12px;border-radius:999px;border:1px solid #e2e2e8;display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#9333ea"></span>Types</span>
+        <span style="padding:6px 12px;border-radius:999px;border:1px solid #e2e2e8;margin-left:auto;color:#6b6b76">Cross-repo only</span>
+      </div>
+      <div style="position:relative;width:820px;height:420px;font:400 12px 'JetBrains Mono'">
+        <div style="position:absolute;left:0;top:0;width:260px;height:420px;background:#f6f6f9;border:1px solid #ececf0;border-radius:14px;box-sizing:border-box"></div>
+        <div style="position:absolute;left:280px;top:0;width:260px;height:420px;background:#f6f6f9;border:1px solid #ececf0;border-radius:14px;box-sizing:border-box"></div>
+        <div style="position:absolute;left:560px;top:0;width:260px;height:420px;background:#f6f6f9;border:1px solid #ececf0;border-radius:14px;box-sizing:border-box"></div>
+        <div style="position:absolute;left:20px;top:22px;font-weight:600;font-size:14px">web-app</div>
+        <div style="position:absolute;left:300px;top:22px;font-weight:600;font-size:14px">api-service</div>
+        <div style="position:absolute;left:580px;top:22px;font-weight:600;font-size:14px">shared-lib</div>
+        <svg width="820" height="420" style="position:absolute;left:0;top:0">
+          <g stroke="#b4b4c4" stroke-width="1.5">
+            <line x1="95" y1="87" x2="165" y2="147"></line><line x1="165" y1="147" x2="95" y2="217"></line><line x1="95" y1="217" x2="165" y2="287"></line><line x1="95" y1="217" x2="95" y2="357"></line><line x1="165" y1="287" x2="95" y2="357"></line>
+            <line x1="375" y1="107" x2="445" y2="177"></line><line x1="445" y1="177" x2="375" y2="247"></line><line x1="375" y1="247" x2="445" y2="337"></line>
+            <line x1="655" y1="87" x2="725" y2="147"></line><line x1="725" y1="147" x2="655" y2="217"></line><line x1="655" y1="217" x2="725" y2="287"></line><line x1="655" y1="217" x2="655" y2="357"></line><line x1="725" y1="287" x2="655" y2="357"></line>
+          </g>
+          <g stroke="#9a5b13" stroke-width="1.75" stroke-dasharray="6 4" fill="none">
+            <line x1="240" y1="147" x2="300" y2="107"></line><line x1="240" y1="287" x2="300" y2="247"></line><line x1="170" y1="357" x2="370" y2="337"></line>
+            <line x1="450" y1="107" x2="580" y2="87"></line><line x1="520" y1="177" x2="650" y2="147"></line><line x1="520" y1="337" x2="650" y2="287"></line>
+          </g>
+        </svg>
+        <div onClick="{{ pick.HomeScreen }}" style="position:absolute;left:20px;top:70px;width:150px;height:34px;box-sizing:border-box;background:#fff;border:1px solid #e6e6ec;border-left:3px solid #2563eb;border-radius:7px;display:flex;align-items:center;padding-left:12px;cursor:pointer" style-hover="box-shadow:0 4px 14px rgba(0,0,0,.08)">HomeScreen</div>
+        <div onClick="{{ pick.useCatalog }}" style="position:absolute;left:90px;top:130px;width:150px;height:34px;box-sizing:border-box;background:#fff;border:1px solid #e6e6ec;border-left:3px solid #16a34a;border-radius:7px;display:flex;align-items:center;padding-left:12px;cursor:pointer" style-hover="box-shadow:0 4px 14px rgba(0,0,0,.08)">useCatalog()</div>
+        <div onClick="{{ pick.fetchTitles }}" style="position:absolute;left:20px;top:200px;width:150px;height:34px;box-sizing:border-box;background:#fff;border:1px solid #e6e6ec;border-left:3px solid #16a34a;border-radius:7px;display:flex;align-items:center;padding-left:12px;cursor:pointer" style-hover="box-shadow:0 4px 14px rgba(0,0,0,.08)">fetchTitles()</div>
+        <div onClick="{{ pick.DockView }}" style="position:absolute;left:90px;top:270px;width:150px;height:34px;box-sizing:border-box;background:#fff;border:1px solid #e6e6ec;border-left:3px solid #2563eb;border-radius:7px;display:flex;align-items:center;padding-left:12px;cursor:pointer" style-hover="box-shadow:0 4px 14px rgba(0,0,0,.08)">DockView</div>
+        <div onClick="{{ pick.formatDuration }}" style="position:absolute;left:20px;top:340px;width:150px;height:34px;box-sizing:border-box;background:#fff;border:1px solid #e6e6ec;border-left:3px solid #16a34a;border-radius:7px;display:flex;align-items:center;padding-left:12px;cursor:pointer" style-hover="box-shadow:0 4px 14px rgba(0,0,0,.08)">formatDuration()</div>
+        <div onClick="{{ pick.CatalogRouter }}" style="position:absolute;left:300px;top:90px;width:150px;height:34px;box-sizing:border-box;background:#fff;border:1px solid #e6e6ec;border-left:3px solid #2563eb;border-radius:7px;display:flex;align-items:center;padding-left:12px;cursor:pointer" style-hover="box-shadow:0 4px 14px rgba(0,0,0,.08)">CatalogRouter</div>
+        <div onClick="{{ pick.listTitles }}" style="position:absolute;left:370px;top:160px;width:150px;height:34px;box-sizing:border-box;background:#fff;border:1px solid #e6e6ec;border-left:3px solid #16a34a;border-radius:7px;display:flex;align-items:center;padding-left:12px;cursor:pointer" style-hover="box-shadow:0 4px 14px rgba(0,0,0,.08)">listTitles()</div>
+        <div onClick="{{ pick.TitleModel }}" style="position:absolute;left:300px;top:230px;width:150px;height:34px;box-sizing:border-box;background:#fff;border:1px solid #e6e6ec;border-left:3px solid #9333ea;border-radius:7px;display:flex;align-items:center;padding-left:12px;cursor:pointer" style-hover="box-shadow:0 4px 14px rgba(0,0,0,.08)">TitleModel</div>
+        <div onClick="{{ pick.dbquery }}" style="position:absolute;left:370px;top:320px;width:150px;height:34px;box-sizing:border-box;background:#fff;border:1px solid #e6e6ec;border-left:3px solid #16a34a;border-radius:7px;display:flex;align-items:center;padding-left:12px;cursor:pointer" style-hover="box-shadow:0 4px 14px rgba(0,0,0,.08)">db.query()</div>
+        <div onClick="{{ pick.Duration }}" style="position:absolute;left:580px;top:70px;width:150px;height:34px;box-sizing:border-box;background:#fff;border:1px solid #e6e6ec;border-left:3px solid #9333ea;border-radius:7px;display:flex;align-items:center;padding-left:12px;cursor:pointer" style-hover="box-shadow:0 4px 14px rgba(0,0,0,.08)">Duration</div>
+        <div onClick="{{ pick.formatTime }}" style="position:absolute;left:650px;top:130px;width:150px;height:34px;box-sizing:border-box;background:#fff;border:1px solid #e6e6ec;border-left:3px solid #16a34a;border-radius:7px;display:flex;align-items:center;padding-left:12px;cursor:pointer" style-hover="box-shadow:0 4px 14px rgba(0,0,0,.08)">formatTime()</div>
+        <div onClick="{{ pick.Logger }}" style="position:absolute;left:580px;top:200px;width:150px;height:34px;box-sizing:border-box;background:#fff;border:1px solid #e6e6ec;border-left:3px solid #2563eb;border-radius:7px;display:flex;align-items:center;padding-left:12px;cursor:pointer" style-hover="box-shadow:0 4px 14px rgba(0,0,0,.08)">Logger</div>
+        <div onClick="{{ pick.retry }}" style="position:absolute;left:650px;top:270px;width:150px;height:34px;box-sizing:border-box;background:#fff;border:1px solid #e6e6ec;border-left:3px solid #16a34a;border-radius:7px;display:flex;align-items:center;padding-left:12px;cursor:pointer" style-hover="box-shadow:0 4px 14px rgba(0,0,0,.08)">retry()</div>
+        <div onClick="{{ pick.Config }}" style="position:absolute;left:580px;top:340px;width:150px;height:34px;box-sizing:border-box;background:#fff;border:1px solid #e6e6ec;border-left:3px solid #9333ea;border-radius:7px;display:flex;align-items:center;padding-left:12px;cursor:pointer" style-hover="box-shadow:0 4px 14px rgba(0,0,0,.08)">Config</div>
+      </div>
+      <div style="font-size:13px;color:#6b6b76">Click a symbol to inspect it. 14 symbols, 13 calls, 6 cross-repo references.</div>
+    </div>
+    <div style="width:340px;border-left:1px solid #ececf0;padding:28px 24px;display:flex;flex-direction:column;gap:24px;box-sizing:border-box">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font:600 11px 'JetBrains Mono';letter-spacing:.2em;color:#8a8a94">{{ s.kind }}</div>
+        <div style="font:600 20px 'JetBrains Mono'">{{ s.name }}</div>
+        <div style="font:400 12px 'JetBrains Mono';color:#6b6b76">{{ s.repo }} / {{ s.file }}</div>
+      </div>
+      <div style="background:#f6f6f9;border:1px solid #ececf0;border-radius:8px;padding:12px;font:400 12px/1.5 'JetBrains Mono';color:#3d3d45;word-break:break-word">{{ s.sig }}</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font:600 11px 'JetBrains Mono';letter-spacing:.2em;color:#8a8a94">CROSS-REPO REFERENCES</div>
+        <sc-for list="{{ s.cross }}" as="r" hint-placeholder-count="2">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border:1px dashed #d9b98f;border-radius:8px;background:#fdf8f1;font:400 12px 'JetBrains Mono'"><span>{{ r.name }}</span><span style="color:#9a5b13">{{ r.repo }}</span></div>
+        </sc-for>
+        <sc-if value="{{ noCross }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#8a8a94">None. This symbol is only used inside its repo.</div></sc-if>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font:600 11px 'JetBrains Mono';letter-spacing:.2em;color:#8a8a94">CALLS IN REPO</div>
+        <sc-for list="{{ s.local }}" as="r" hint-placeholder-count="2">
+          <div style="padding:10px 12px;border:1px solid #ececf0;border-radius:8px;font:400 12px 'JetBrains Mono'">{{ r }}</div>
+        </sc-for>
+      </div>
+      <div style="margin-top:auto;display:flex;gap:8px">
+        <div style="flex:1;text-align:center;padding:10px;border-radius:8px;background:#16161a;color:#fff;font-size:14px;font-weight:500">Open in editor</div>
+        <div style="flex:1;text-align:center;padding:10px;border-radius:8px;border:1px solid #e2e2e8;font-size:14px;font-weight:500">Impact analysis</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="1b" style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:12px"><span style="font:600 14px 'JetBrains Mono';background:#16161a;color:#fff;padding:4px 10px;border-radius:6px">1b</span><span style="font-size:18px;font-weight:500">Integrations</span></div>
+<div data-screen-label="1b Integrations" style="width:1440px;height:900px;background:#fff;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.08)">
+  <div style="height:56px;border-bottom:1px solid #ececf0;display:flex;align-items:center;padding:0 20px;gap:20px">
+    <div style="font:600 12px 'JetBrains Mono';letter-spacing:.3em;color:#9a5b13;width:220px">CODEBASE INTEL</div>
+    <div style="flex:1;display:flex;justify-content:center"><div style="width:480px;height:34px;border:1px solid #e2e2e8;border-radius:8px;background:#f6f6f9;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:14px;color:#6b6b76"><span>Jump to symbol, file, or repo</span><span style="font:500 12px 'JetBrains Mono';border:1px solid #dcdce3;border-radius:4px;padding:1px 6px;background:#fff">⌘K</span></div></div>
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#3d3d45"><span>acme / catalog</span><div style="width:30px;height:30px;border-radius:50%;background:#9a5b13;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600">MH</div></div>
+  </div>
+  <div style="flex:1;display:flex;min-height:0">
+    <div style="width:240px;border-right:1px solid #ececf0;padding:20px 14px;display:flex;flex-direction:column;gap:28px;background:#fbfbfc">
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div style="font:600 11px 'JetBrains Mono';letter-spacing:.2em;color:#8a8a94;padding:0 10px 8px">VIEWS</div>
+        <div style="padding:8px 10px;border-radius:7px;font-size:14px;color:#3d3d45">Symbol graph</div>
+        <div style="padding:8px 10px;border-radius:7px;font-size:14px;color:#3d3d45">Impact analysis</div>
+        <div style="padding:8px 10px;border-radius:7px;font-size:14px;color:#3d3d45">Search</div>
+        <div style="padding:8px 10px;border-radius:7px;background:#fff;box-shadow:0 0 0 1px #e6e6ec;font-size:14px;font-weight:600">Integrations</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div style="font:600 11px 'JetBrains Mono';letter-spacing:.2em;color:#8a8a94;padding:0 10px 8px">REPOS</div>
+        <div style="padding:8px 10px;display:flex;justify-content:space-between;align-items:center"><span style="font:500 13px 'JetBrains Mono'">web-app</span><span style="width:7px;height:7px;border-radius:50%;background:#16a34a"></span></div>
+        <div style="padding:8px 10px;display:flex;justify-content:space-between;align-items:center"><span style="font:500 13px 'JetBrains Mono'">api-service</span><span style="width:7px;height:7px;border-radius:50%;background:#16a34a"></span></div>
+        <div style="padding:8px 10px;display:flex;justify-content:space-between;align-items:center"><span style="font:500 13px 'JetBrains Mono'">shared-lib</span><span style="font:500 11px 'JetBrains Mono';color:#9a5b13">indexing</span></div>
+      </div>
+    </div>
+    <div style="flex:1;padding:40px 48px;display:flex;flex-direction:column;gap:32px">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="font:600 11px 'JetBrains Mono';letter-spacing:.3em;color:#9a5b13">CODEBASE INTELLIGENCE</div>
+        <div style="font-size:30px;font-weight:500;letter-spacing:-.01em">Integrations</div>
+        <div style="font-size:15px;color:#6b6b76;max-width:560px;text-wrap:pretty">Connect the tools your code runs on. Each one adds context to the symbol graph.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px">
+        <sc-for list="{{ integrations }}" as="it" hint-placeholder-count="6">
+          <div style="border:1px solid #ececf0;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;background:#fff">
+            <div style="height:128px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:40px;font-weight:900;letter-spacing:-.02em;background:{{ it.color }}">{{ it.name }}</div>
+            <div style="padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px">
+              <div style="font-size:14px;color:#3d3d45">{{ it.desc }}</div>
+              <sc-if value="{{ it.on }}" hint-placeholder-val="{{ false }}"><div onClick="{{ it.toggle }}" style="flex:none;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#ecfdf3;color:#15803d;border:1px solid #bbf7d0">Connected</div></sc-if>
+              <sc-if value="{{ it.off }}" hint-placeholder-val="{{ true }}"><div onClick="{{ it.toggle }}" style="flex:none;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#16161a;color:#fff;border:1px solid #16161a">Connect</div></sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { sel: 'formatDuration', on: { GitHub: true, Vercel: true, docker: false, convex: false, 'port.io': false, turso: false } };
+  S = {
+    HomeScreen: { kind: 'COMPONENT', repo: 'web-app', file: 'src/screens/Home.tsx', sig: 'export function HomeScreen(): JSX.Element', cross: [], local: ['useCatalog()'] },
+    useCatalog: { kind: 'FUNCTION', repo: 'web-app', file: 'src/hooks/useCatalog.ts', sig: 'export function useCatalog(): Catalog', cross: [{ name: 'CatalogRouter', repo: 'api-service' }], local: ['fetchTitles()'] },
+    fetchTitles: { kind: 'FUNCTION', repo: 'web-app', file: 'src/api/titles.ts', sig: 'async function fetchTitles(page: number): Promise<Title[]>', cross: [], local: ['DockView', 'formatDuration()'] },
+    DockView: { kind: 'COMPONENT', repo: 'web-app', file: 'src/components/DockView.tsx', sig: 'export function DockView(props: DockProps)', cross: [{ name: 'TitleModel', repo: 'api-service' }], local: ['formatDuration()'] },
+    formatDuration: { kind: 'FUNCTION', repo: 'web-app', file: 'src/utils/time.ts', sig: 'export function formatDuration(ms: number): string', cross: [{ name: 'db.query()', repo: 'api-service' }], local: ['called by fetchTitles()', 'called by DockView'] },
+    CatalogRouter: { kind: 'COMPONENT', repo: 'api-service', file: 'routes/catalog.ts', sig: 'export const CatalogRouter: Router', cross: [{ name: 'useCatalog()', repo: 'web-app' }, { name: 'Duration', repo: 'shared-lib' }], local: ['listTitles()'] },
+    listTitles: { kind: 'FUNCTION', repo: 'api-service', file: 'services/titles.ts', sig: 'export async function listTitles(q: TitleQuery)', cross: [{ name: 'formatTime()', repo: 'shared-lib' }], local: ['TitleModel'] },
+    TitleModel: { kind: 'TYPE', repo: 'api-service', file: 'models/title.ts', sig: 'export interface TitleModel { id: string; runtime: Duration }', cross: [{ name: 'DockView', repo: 'web-app' }], local: ['db.query()'] },
+    dbquery: { name: 'db.query()', kind: 'FUNCTION', repo: 'api-service', file: 'db/index.ts', sig: 'query<T>(sql: string, params?: unknown[]): Promise<T[]>', cross: [{ name: 'formatDuration()', repo: 'web-app' }, { name: 'retry()', repo: 'shared-lib' }], local: ['called by TitleModel'] },
+    Duration: { kind: 'TYPE', repo: 'shared-lib', file: 'src/time/duration.ts', sig: 'export type Duration = { ms: number }', cross: [{ name: 'CatalogRouter', repo: 'api-service' }], local: ['formatTime()'] },
+    formatTime: { kind: 'FUNCTION', repo: 'shared-lib', file: 'src/time/format.ts', sig: 'export function formatTime(d: Duration): string', cross: [{ name: 'listTitles()', repo: 'api-service' }], local: ['Logger'] },
+    Logger: { kind: 'COMPONENT', repo: 'shared-lib', file: 'src/log/logger.ts', sig: 'export class Logger', cross: [], local: ['retry()', 'Config'] },
+    retry: { kind: 'FUNCTION', repo: 'shared-lib', file: 'src/net/retry.ts', sig: 'export function retry<T>(fn: () => Promise<T>, n = 3)', cross: [{ name: 'db.query()', repo: 'api-service' }], local: ['Config'] },
+    Config: { kind: 'TYPE', repo: 'shared-lib', file: 'src/config.ts', sig: 'export interface Config { retries: number }', cross: [], local: ['called by Logger', 'called by retry()'] },
+  };
+  I = [
+    ['Vercel', '#0e0e12', 'Deployments mapped to commits'],
+    ['convex', '#e11d48', 'Functions and schema'],
+    ['docker', '#0e0e12', 'Images and service boundaries'],
+    ['port.io', '#16a34a', 'Service catalog and owners'],
+    ['turso', '#db2752', 'Database schema'],
+    ['GitHub', '#2563eb', 'Repos, pull requests, blame'],
+  ];
+  renderVals() {
+    const pick = {};
+    Object.keys(this.S).forEach(k => { pick[k] = () => this.setState({ sel: k }); });
+    const raw = this.S[this.state.sel];
+    const s = { ...raw, name: raw.name || (raw.kind === 'FUNCTION' ? this.state.sel + '()' : this.state.sel) };
+    const integrations = this.I.map(([name, color, desc]) => {
+      const on = this.state.on[name];
+      return { name, color, desc, on: !!on, off: !on,
+        toggle: () => this.setState(st => ({ on: { ...st.on, [name]: !st.on[name] } })) };
+    });
+    return { pick, s, noCross: s.cross.length === 0, integrations };
+  }
+}
+</script>
+</body>
+</html>

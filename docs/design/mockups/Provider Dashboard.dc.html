@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>image-slot:not([data-filled]){opacity:0 !important;transition:opacity .15s}image-slot:not([data-filled]):hover,image-slot[data-over]{opacity:1 !important}body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;color:#1c1e22;background:radial-gradient(50% 45% at 10% 8%,#f2d9bd 0%,rgba(242,217,189,0) 62%),radial-gradient(50% 50% at 90% 14%,#bcd4f0 0%,rgba(188,212,240,0) 62%),radial-gradient(60% 55% at 45% 100%,#c6e2d8 0%,rgba(198,226,216,0) 62%),#e6ebf1;background-attachment:fixed}a{color:#2f6fe0}a:hover{color:#1f4fae}@keyframes dcFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div style="padding:{{ pad }};height:{{ wrapH }};box-sizing:border-box;display:flex;flex-direction:column;gap:20px">
+  <sc-if value="{{ showPicker }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-wrap:wrap;gap:6px;max-width:1220px">
+      <sc-for list="{{ picker }}" as="p" hint-placeholder-count="16"><div onClick="{{ p.go }}" style="padding:6px 12px;border-radius:999px;font-size:13px;cursor:pointer;background:{{ p.bg }};box-shadow:{{ p.sh }}">{{ p.name }}</div></sc-for>
+    </div>
+  </sc-if>
+  <sc-if value="{{ notShelf }}" hint-placeholder-val="{{ true }}">
+  <div style="width:{{ fw }};height:{{ fh }};display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;border-radius:30px;background:{{ panelBg }};backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);-webkit-backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.45),inset 0 0 20px rgba(255,255,255,.22),0 1px 2px rgba(20,30,50,.06),0 28px 70px rgba(30,45,70,.18)">
+    <div style="padding:20px 24px 16px;margin-bottom:{{ hd.mb }};display:flex;align-items:center;gap:14px;background:{{ hd.bg }};color:{{ hd.fg }}">
+      <div style="flex:none;position:relative;width:44px;height:44px;border-radius:13px;overflow:hidden;background:{{ d.accent }};display:flex;align-items:center;justify-content:center;color:#fff;font-size:19px;font-weight:700;box-shadow:{{ hd.logoSh }}">{{ d.mono }}<image-slot id="{{ d.slot }}" shape="rect" fit="cover" placeholder="" style="position:absolute;inset:0"></image-slot></div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+        <div style="font-size:20px;font-weight:600;letter-spacing:-.01em">{{ d.name }}</div>
+        <div style="font-size:13px;color:{{ hd.sub }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ d.scope }}</div>
+      </div>
+      <div onClick="{{ toggleConn }}" title="{{ connTip }}" style="display:flex;align-items:center;gap:8px;font-size:13px;color:{{ hd.sub }};cursor:pointer;user-select:none"><span>{{ connLabel }}</span><span style="position:relative;width:38px;height:22px;border-radius:999px;background:{{ track }};transition:background .2s;box-shadow:inset 0 1px 2px rgba(0,0,0,.12)"><span style="position:absolute;top:2px;left:{{ knob }};width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s"></span></span></div>
+      <sc-if value="{{ isOn }}" hint-placeholder-val="{{ true }}"><div onClick="{{ openExt }}" style="padding:7px 13px;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;color:{{ hd.fg }};background:{{ hd.btn }};box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 0 0 1px rgba(255,255,255,.4)">Open in {{ d.name }}</div></sc-if>
+      <sc-if value="{{ hasClose }}" hint-placeholder-val="{{ false }}"><div onClick="{{ close }}" style="padding:7px 14px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;background:{{ hd.doneBg }};color:{{ hd.doneFg }}">Done</div></sc-if>
+    </div>
+    <sc-if value="{{ isOff }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:40px;text-align:center;animation:dcFade .25s ease">
+        <div style="position:relative;width:64px;height:64px;border-radius:18px;overflow:hidden;background:{{ d.accent }};filter:grayscale(1);opacity:.5;display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:700">{{ d.mono }}</div>
+        <div style="font-size:17px;font-weight:600">{{ d.name }} is disconnected</div>
+        <div style="max-width:360px;font-size:13px;line-height:1.5;color:#6b717c;text-wrap:pretty">Its data is hidden from the Context Lake, overlays and activity feeds. Reconnect to bring it back.</div>
+        <div onClick="{{ toggleConn }}" style="padding:8px 18px;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer;background:#1c1e22;color:#fff">Connect {{ d.name }}</div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ isOn }}" hint-placeholder-val="{{ true }}">
+
+    <div style="padding:0 24px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
+      <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+        <div style="padding:14px 16px 12px;border-radius:16px;background:rgba(255,255,255,.36);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.45);display:flex;flex-direction:column;gap:4px;min-width:0">
+          <span style="font-size:12px;color:#6b717c">{{ k.label }}</span>
+          <div style="display:flex;align-items:baseline;gap:8px;min-width:0"><span style="font-size:22px;font-weight:600;letter-spacing:-.015em;white-space:nowrap">{{ k.value }}</span><span style="font-size:12px;color:{{ k.subC }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ k.sub }}</span></div>
+          <div style="height:26px;display:flex;align-items:flex-end;gap:2px;margin-top:4px">
+            <sc-for list="{{ k.bars }}" as="b" hint-placeholder-count="16"><span style="flex:1;height:{{ b.h }};border-radius:2px;background:{{ k.c }};opacity:{{ b.o }}"></span></sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="flex:1;min-height:0;padding:16px 24px 20px;display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px">
+      <div style="min-height:0;display:flex;flex-direction:column;border-radius:18px;background:rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.45);overflow:hidden">
+        <div style="padding:12px 14px 10px;display:flex;align-items:center;gap:12px">
+          <div style="display:flex;padding:3px;border-radius:999px;background:rgba(255,255,255,.22);box-shadow:inset 0 1px 3px rgba(20,30,50,.1),inset 0 0 0 1px rgba(255,255,255,.4)">
+            <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2"><div onClick="{{ t.go }}" style="padding:6px 14px;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;background:{{ t.bg }};box-shadow:{{ t.sh }};transition:background .2s">{{ t.name }}</div></sc-for>
+          </div>
+          <span style="margin-left:auto;font-size:12px;color:#8a909a">{{ tb.count }}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:{{ tb.grid }};gap:12px;padding:0 22px 8px;font-size:11px;font-weight:600;color:#8a909a;text-transform:uppercase;letter-spacing:.04em">
+          <span></span><sc-for list="{{ tb.cols }}" as="c" hint-placeholder-count="4"><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c }}</span></sc-for>
+        </div>
+        <div style="flex:1;min-height:0;overflow:auto;padding:0 8px 8px;display:flex;flex-direction:column;gap:2px">
+          <sc-for list="{{ tb.rows }}" as="r" hint-placeholder-count="5">
+            <div onClick="{{ r.go }}" style="display:grid;grid-template-columns:{{ tb.grid }};gap:12px;align-items:center;padding:10px 14px;border-radius:12px;cursor:pointer;background:{{ r.bg }};box-shadow:{{ r.sh }};transition:background .15s">
+              <span style="width:8px;height:8px;border-radius:50%;background:{{ r.c }}"></span>
+              <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="4"><span style="min-width:0;font-size:13px;font-weight:{{ c.fw }};color:{{ c.col }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.t }}</span></sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="min-height:0;display:flex;flex-direction:column;gap:12px;overflow:auto">
+        <div style="padding:16px;border-radius:18px;background:rgba(255,255,255,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 0 0 1px rgba(255,255,255,.5),0 6px 18px rgba(30,45,70,.08);display:flex;flex-direction:column;gap:12px;animation:dcFade .22s ease">
+          <div style="display:flex;align-items:center;gap:8px"><span style="flex:none;width:8px;height:8px;border-radius:50%;background:{{ det.c }}"></span><span style="font-size:15px;font-weight:600;min-width:0;text-wrap:pretty">{{ det.title }}</span></div>
+          <div style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:13px">
+            <span style="color:#8a909a">Status</span><span>{{ det.status }}</span>
+            <sc-for list="{{ det.fields }}" as="f" hint-placeholder-count="3"><span style="color:#8a909a;white-space:nowrap">{{ f.k }}</span><span style="min-width:0;overflow-wrap:anywhere">{{ f.v }}</span></sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <sc-for list="{{ det.actions }}" as="a" hint-placeholder-count="2"><div onClick="{{ a.go }}" style="padding:6px 11px;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;background:{{ a.bg }};color:{{ a.fg }};box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 0 0 1px rgba(255,255,255,.5),0 1px 3px rgba(20,30,50,.08)">{{ a.name }}</div></sc-for>
+          </div>
+          <sc-if value="{{ hasNote }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#2f6fe0;animation:dcFade .2s ease">{{ note }}</div></sc-if>
+        </div>
+        <div style="padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.45);display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:12px;font-weight:600;color:#8a909a">Recent activity</div>
+          <sc-for list="{{ act }}" as="a" hint-placeholder-count="3"><div style="display:flex;gap:10px;align-items:baseline;font-size:13px"><span style="flex:1;min-width:0;text-wrap:pretty">{{ a.t }}</span><span style="flex:none;font-size:12px;color:#8a909a">{{ a.age }}</span></div></sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+  </sc-if>
+  <sc-if value="{{ isShelf }}" hint-placeholder-val="{{ false }}">
+    <sc-if value="{{ isOn }}" hint-placeholder-val="{{ true }}">
+      <div style="height:100%;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:14px;animation:dcFade .3s ease">
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+            <div style="padding:14px 16px 12px;border-radius:18px;background:{{ sv.bg }};color:{{ sv.fg }};backdrop-filter:blur(20px) saturate(1.8);-webkit-backdrop-filter:blur(20px) saturate(1.8);box-shadow:{{ sv.sh }};display:flex;flex-direction:column;gap:4px;min-width:0">
+              <span style="font-size:12px;color:{{ sv.sub }}">{{ k.label }}</span>
+              <div style="display:flex;align-items:baseline;gap:8px;min-width:0"><span style="font-size:24px;font-weight:600;letter-spacing:-.015em;white-space:nowrap">{{ k.value }}</span><span style="font-size:12px;color:{{ k.subC }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ k.sub }}</span></div>
+              <div style="flex:1;min-height:22px;display:flex;align-items:flex-end;gap:2px;margin-top:4px"><sc-for list="{{ k.bars }}" as="b" hint-placeholder-count="16"><span style="flex:1;height:{{ b.h }};border-radius:2px;background:{{ k.c }};opacity:{{ b.o }}"></span></sc-for></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="padding:16px 18px;border-radius:18px;background:{{ sv.bg }};color:{{ sv.fg }};backdrop-filter:blur(20px) saturate(1.8);-webkit-backdrop-filter:blur(20px) saturate(1.8);box-shadow:{{ sv.sh }};display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:600;color:{{ sv.sub }}">Latest from {{ d.name }}</div>
+          <sc-for list="{{ act }}" as="a" hint-placeholder-count="3"><div style="display:flex;gap:10px;align-items:baseline;font-size:14px"><span style="flex:1;min-width:0;text-wrap:pretty">{{ a.t }}</span><span style="flex:none;font-size:12px;color:{{ sv.sub }}">{{ a.age }}</span></div></sc-for>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ isOff }}" hint-placeholder-val="{{ false }}">
+      <div style="height:100%;display:flex;align-items:center;justify-content:center;border-radius:18px;background:{{ sv.bg }};box-shadow:{{ sv.sh }};font-size:15px;color:{{ sv.sub }}">{{ d.name }} is disconnected. Open it to connect.</div>
+    </sc-if>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;provider&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Vercel&quot;,&quot;Convex&quot;,&quot;Docker&quot;,&quot;Port&quot;,&quot;Turso&quot;,&quot;GitHub&quot;,&quot;Linear&quot;,&quot;Tailscale&quot;,&quot;Sprites&quot;,&quot;Supabase&quot;,&quot;Rivet&quot;,&quot;Polygraph&quot;,&quot;Beads&quot;,&quot;Trail-Code&quot;,&quot;Langfuse&quot;,&quot;Factory MCP&quot;],&quot;default&quot;:&quot;Vercel&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { pv: 'Vercel', tab: {}, sel: {}, note: '', localOff: false };
+  SC = { ok: ['#1f9d55', 'Healthy'], run: ['#2f6fe0', 'In progress'], warn: ['#c27a00', 'Needs attention'], err: ['#d0393e', 'Failing'], off: ['#9aa0aa', 'Inactive'] };
+  P = {
+    Vercel: { accent: '#1c1e22', scope: 'acme · catalog-web', kpis: [['Deployments today', '14', '+3 vs yesterday', 'up'], ['Build time p50', '1m 48s', '−6s this week', 'down'], ['Edge requests', '2.4M', 'last 24h', 'up'], ['Error rate', '0.12%', 'last hour', 'flat']],
+      tabs: [{ name: 'Deployments', cols: ['Commit', 'Branch', 'Env', 'Duration', 'Age'], w: '2fr 1.3fr 90px 80px 60px', actions: ['Redeploy', 'Promote to production', 'View build logs'], rows: [
+        ['run', 'Add Beads overlay toggle · 3d8e1b7', 'feat/beads-overlay', 'Preview', '0m 41s', '1m'], ['ok', 'Merge #128 cross-repo edge cache · a41c9e2', 'main', 'Production', '1m 52s', '14m'], ['ok', 'Atlas: expand-in-place nodes · e52a0c4', 'feat/expand-nodes', 'Preview', '1m 49s', '42m'], ['off', 'WIP dock sheet · 91fd2ab', 'feat/dock-sheet', 'Preview', '0m 12s', '2h'], ['err', 'Revert router split · c09f5aa', 'main', 'Production', '0m 58s', '1d']] },
+        { name: 'Functions', cols: ['Route', 'Invocations', 'p95', 'Errors'], w: '2fr 1fr 1fr 1fr', actions: ['View runtime logs'], rows: [['ok', '/api/titles', '412k', '182 ms', '0.04%'], ['warn', '/api/search', '88k', '640 ms', '0.3%'], ['ok', '/api/og', '12k', '95 ms', '0%']] },
+        { name: 'Domains', cols: ['Domain', 'Target', 'SSL'], w: '2fr 1fr 1.2fr', actions: ['Inspect DNS', 'Remove'], rows: [['ok', 'catalog.acme.dev', 'Production', 'Valid'], ['ok', 'catalog-web.vercel.app', 'Production', 'Valid'], ['warn', 'staging.catalog.acme.dev', 'Preview', 'Renews in 6 days']] }],
+      act: [['Preview build started for 3d8e1b7', '1m'], ['a41c9e2 promoted to production', '14m'], ['Certificate renewal queued for staging.catalog.acme.dev', '3h']] },
+    Convex: { accent: '#e11d48', scope: 'catalog · production deployment', kpis: [['Function calls', '1.8M', 'last 24h', 'up'], ['Documents', '76.6k', '1.1 GB stored', 'up'], ['Query p95', '38 ms', 'last hour', 'flat'], ['Function errors', '6', 'last 24h', 'down', 'warn']],
+      tabs: [{ name: 'Data', cols: ['Table', 'Documents', 'Size', 'Indexes', 'Updated'], w: '1.6fr 1fr 1fr 80px 70px', actions: ['Open table', 'Add index', 'Export'], rows: [['ok', 'titles', '12,480', '210 MB', '4', '4s'], ['ok', 'search_docs', '48,112', '640 MB', '3', '4s'], ['ok', 'users', '3,204', '22 MB', '2', '1m'], ['ok', 'sessions', '9,870', '41 MB', '2', '12s'], ['ok', 'edges_cache', '2,931', '180 MB', '1', '2m']] },
+        { name: 'Functions', cols: ['Function', 'Type', 'Calls 24h', 'p95', 'Errors'], w: '1.6fr 90px 1fr 80px 70px', actions: ['Run function', 'View logs'], rows: [['ok', 'titles:list', 'query', '920k', '22 ms', '0'], ['warn', 'search:run', 'action', '140k', '410 ms', '4'], ['ok', 'titles:upsert', 'mutation', '18k', '31 ms', '0'], ['warn', 'sync:indexer', 'action', '2.9k', '1.2 s', '2']] }],
+      act: [['search:run threw TimeoutError', '8m'], ['Functions deployed · v118', '3h'], ['Index by_repo built on edges_cache', '1d']] },
+    Docker: { accent: '#1d63ed', scope: 'docker-prod-1 · docker-prod-2', kpis: [['Running', '4', 'of 6 containers', 'flat'], ['CPU', '41%', 'average across hosts', 'up'], ['Memory', '3.2 GB', 'of 8 GB', 'up'], ['Restarts', '3', 'last hour', 'up', 'warn']],
+      tabs: [{ name: 'Containers', cols: ['Name', 'Image', 'Host', 'CPU', 'Memory', 'Uptime'], w: '1.3fr 1.6fr 70px 56px 72px 70px', actions: ['Restart', 'Stop', 'View logs', 'Open shell'], rows: [['ok', 'catalog-api', 'catalog-api:7be03d1', 'prod-1', '34%', '412 MB', '2d'], ['warn', 'search-indexer', 'search-indexer:5f21e09', 'prod-2', '88%', '1.9 GB', '2m'], ['ok', 'redis', 'redis:7.2', 'prod-1', '3%', '64 MB', '9d'], ['ok', 'nginx', 'nginx:1.27', 'prod-1', '1%', '22 MB', '9d'], ['off', 'worker-legacy', 'catalog-worker:0.9', 'prod-2', '—', '—', 'Exited'], ['off', 'migrate', 'catalog-api:7be03d1', 'prod-1', '—', '—', 'Exited (0)']] },
+        { name: 'Images', cols: ['Repository', 'Tag', 'Size', 'Created'], w: '1.6fr 1fr 80px 80px', actions: ['Pull latest', 'Remove'], rows: [['ok', 'catalog-api', '7be03d1', '182 MB', '3h'], ['ok', 'search-indexer', '5f21e09', '1.4 GB', '1d'], ['ok', 'redis', '7.2', '41 MB', '3w'], ['off', 'catalog-worker', '0.9', '210 MB', '4mo']] }],
+      act: [['search-indexer exited 137 (OOM) and restarted', '6m'], ['catalog-api health check passing', '2m'], ['Pulled catalog-api:7be03d1', '3h']] },
+    Port: { accent: '#16a34a', scope: 'acme developer portal', kpis: [['Catalog entities', '22', '9 blueprints', 'up'], ['Scorecard average', 'Silver', '2 services below target', 'flat', 'warn'], ['Self-service runs', '3', '1 waiting approval', 'up'], ['Ownership coverage', '86%', 'entities with owner', 'up']],
+      tabs: [{ name: 'Catalog', cols: ['Entity', 'Blueprint', 'Owner', 'Scorecard'], w: '1.6fr 1fr 1fr 90px', actions: ['Open entity', 'Run action'], rows: [['ok', 'catalog-web', 'Service', 'Catalog', 'Bronze'], ['ok', 'catalog-api', 'Service', 'Catalog', 'Silver'], ['ok', 'shared-lib', 'Service', 'Platform', 'Gold'], ['warn', 'search-indexer', 'Service', 'Data', 'Bronze'], ['ok', 'GET /titles', 'API', 'Catalog', '—']] },
+        { name: 'Self-service', cols: ['Action', 'Requested by', 'Target', 'State', 'Age'], w: '1.4fr 1fr 1.2fr 1fr 50px', actions: ['Approve', 'View run'], rows: [['run', 'Create preview env', 'M. Ortiz', 'feat/beads-overlay', 'Running', '1m'], ['warn', 'Upgrade dependency', 'J. Park', 'web-app → shared-lib 2.4', 'Awaiting approval', '20m'], ['ok', 'Scaffold service', 'R. Chen', 'catalog-recs', 'Succeeded', '2h']] },
+        { name: 'Scorecards', cols: ['Scorecard', 'Gold', 'Silver', 'Bronze'], w: '2fr 1fr 1fr 1fr', actions: ['Edit rules'], rows: [['ok', 'Production readiness', '1', '1', '2'], ['ok', 'Security', '2', '1', '1']] }],
+      act: [['Upgrade dependency requested by J. Park', '20m'], ['search-indexer dropped to Bronze', '6h'], ['Blueprint Container added', '2d']] },
+    Turso: { accent: '#db2752', scope: 'acme · primary iad', kpis: [['Databases', '4', 'all healthy', 'flat'], ['Rows read', '12.4M', 'last 24h', 'up'], ['Storage', '2.9 GB', 'of 9 GB', 'up'], ['Replica lag', '38 ms', 'p95', 'flat']],
+      tabs: [{ name: 'Databases', cols: ['Name', 'Group', 'Locations', 'Size', 'Rows read'], w: '1.4fr 80px 1.2fr 70px 80px', actions: ['Open shell', 'Create branch', 'Rotate token'], rows: [['ok', 'catalog-prod', 'default', 'iad · fra · nrt', '2.1 GB', '11.2M'], ['ok', 'catalog-staging', 'default', 'iad', '410 MB', '0.9M'], ['ok', 'edges-cache', 'cache', 'iad', '280 MB', '0.3M'], ['ok', 'analytics', 'default', 'iad', '120 MB', '12k']] },
+        { name: 'Tables', cols: ['Table', 'Rows', 'Size'], w: '2fr 1fr 1fr', actions: ['Browse rows'], rows: [['ok', 'titles', '12,480', '820 MB'], ['ok', 'title_runtime', '12,480', '96 MB'], ['ok', 'edges', '38,204', '1.1 GB'], ['ok', 'repos', '3', '8 KB']] }],
+      act: [['catalog-prod replica nrt caught up', '1m'], ['Branch catalog-prod-pr131 created', '3m'], ['Auth token rotated for edges-cache', '2d']] },
+    GitHub: { accent: '#2563eb', scope: 'acme/web-app · acme/api-service · acme/shared-lib', kpis: [['Open PRs', '7', '2 awaiting review', 'up'], ['CI pass rate', '94%', 'last 7 days', 'down', 'warn'], ['Median review', '3.2 h', 'last 7 days', 'down'], ['Open issues', '18', '+2 this week', 'up']],
+      tabs: [{ name: 'Pull requests', cols: ['Title', 'Repo', 'Author', 'Checks', 'Updated'], w: '2fr 1fr 90px 1fr 60px', actions: ['Review', 'Merge', 'Re-run checks'], rows: [['run', '#131 Beads overlay toggle', 'web-app', 'M. Ortiz', '4 of 6 running', '3m'], ['ok', '#130 Bump shared-lib to 2.4.0', 'web-app', 'J. Park', '6 of 6 passed', '1h'], ['warn', '#129 Remove LegacyGrid', 'web-app', 'R. Chen', 'Changes requested', '5h'], ['err', '#127 Split catalog router', 'api-service', 'A. Novak', '1 failing', '1d']] },
+        { name: 'Actions', cols: ['Workflow', 'Branch', 'Result', 'Duration', 'Age'], w: '1.3fr 1.3fr 1fr 80px 60px', actions: ['View logs', 'Re-run'], rows: [['run', 'ci', 'feat/beads-overlay', 'In progress', '2m', '3m'], ['ok', 'ci', 'main', 'Success', '4m 12s', '14m'], ['err', 'deploy-staging', 'main', 'Failed', '6m 40s', '35m'], ['ok', 'release', 'v2.4.0', 'Success', '2m 03s', '2d']] }],
+      act: [['M. Ortiz pushed 2 commits to feat/beads-overlay', '3m'], ['deploy-staging failed on search-indexer', '35m'], ['J. Park opened #130', '1h']] },
+    Linear: { accent: '#5e6ad2', scope: 'Catalog team · Cycle 42', kpis: [['Cycle progress', '69%', '11 of 16 issues', 'up'], ['In progress', '4', '2 in review', 'flat'], ['Open bugs', '5', '+1 this week', 'up', 'warn'], ['Cycle ends', 'Nov 3', 'in 6 days', 'flat']],
+      tabs: [{ name: 'Issues', cols: ['ID', 'Title', 'Assignee', 'Priority', 'State'], w: '80px 2fr 90px 80px 1fr', actions: ['Assign to me', 'Change state', 'Open'], rows: [['run', 'CAT-212', 'Upgrade web-app to shared-lib 2.4', 'J. Park', 'High', 'In progress'], ['warn', 'CAT-207', 'Pool exhaustion follow-up', 'M. Ortiz', 'Urgent', 'In review'], ['run', 'CAT-210', 'Beads overlay in atlas', 'M. Ortiz', 'Medium', 'In progress'], ['off', 'CAT-215', 'Atlas narrow layout', '—', 'Medium', 'Backlog'], ['ok', 'CAT-201', 'Remove exportCsv', 'R. Chen', 'Low', 'Done']] },
+        { name: 'Projects', cols: ['Project', 'Lead', 'Progress', 'Target'], w: '2fr 1fr 1fr 1fr', actions: ['Open project'], rows: [['run', 'Q4 reliability', 'R. Chen', '54%', 'Dec 15'], ['run', 'Code Atlas', 'M. Ortiz', '72%', 'Nov 20']] }],
+      act: [['CAT-212 moved to In progress', '1h'], ['CAT-207 linked to incident Oct 21', '1d'], ['Cycle 42 scope increased by 2', '2d']] },
+    Tailscale: { accent: '#3d4a5c', scope: 'acme.ts.net', kpis: [['Machines', '14', '12 connected', 'flat'], ['Exit nodes', '2', 'iad · fra', 'flat'], ['Expiring keys', '1', 'within 7 days', 'up', 'warn'], ['ACL policy', 'v37', 'edited 2 days ago', 'flat']],
+      tabs: [{ name: 'Machines', cols: ['Machine', 'Address', 'OS', 'Last seen', 'Tags'], w: '1.4fr 1fr 70px 1fr 1fr', actions: ['SSH', 'Disable key expiry', 'Remove'], rows: [['ok', 'docker-prod-1', '100.64.0.11', 'Linux', 'Connected', 'tag:prod'], ['ok', 'docker-prod-2', '100.64.0.12', 'Linux', 'Connected', 'tag:prod'], ['ok', 'rchen-mbp', '100.64.0.31', 'macOS', 'Connected', '—'], ['warn', 'ci-runner-3', '100.64.0.40', 'Linux', 'Key expires in 5d', 'tag:ci'], ['off', 'old-bastion', '100.64.0.9', 'Linux', '23 days ago', 'tag:legacy']] }],
+      act: [['ci-runner-3 key expires Nov 2', '5d'], ['ACL policy updated by J. Park', '2d'], ['rchen-mbp connected', '1h']] },
+    Sprites: { accent: '#c27a00', scope: 'acme · agent sandboxes', kpis: [['Active sprites', '3', '1 sleeping', 'up'], ['Checkpoints', '38', 'last 7 days', 'up'], ['CPU hours', '12.4', 'last 24h', 'up'], ['Auto-sleep', 'On', 'after 15 min idle', 'flat']],
+      tabs: [{ name: 'Sprites', cols: ['Sprite', 'Purpose', 'State', 'Checkpoint', 'Uptime'], w: '1.2fr 1.6fr 80px 90px 70px', actions: ['Attach shell', 'Checkpoint', 'Restore'], rows: [['run', 'atlas-agent', 'Code Atlas indexing', 'Running', '4m ago', '2h'], ['run', 'drift-fixer', 'shared-lib 2.4 upgrade', 'Running', '12m ago', '40m'], ['ok', 'review-bot', 'PR review', 'Idle', '1h ago', '1d'], ['off', 'sandbox-7', 'Scratch', 'Sleeping', '2d ago', '—']] }],
+      act: [['drift-fixer checkpointed after tests passed', '12m'], ['atlas-agent restored from checkpoint 41', '2h'], ['sandbox-7 went to sleep', '2d']] },
+    Supabase: { accent: '#1f9d55', scope: 'acme-auth · us-east-1', kpis: [['Database size', '840 MB', 'of 8 GB', 'up'], ['Auth users', '3,204', '+41 this week', 'up'], ['API requests', '410k', 'last 24h', 'flat'], ['Storage', '12 GB', '3 buckets', 'up']],
+      tabs: [{ name: 'Tables', cols: ['Table', 'Rows', 'Size', 'RLS'], w: '2fr 1fr 1fr 1fr', actions: ['Open table editor', 'Enable RLS'], rows: [['ok', 'profiles', '3,204', '4 MB', 'Enabled'], ['ok', 'sessions', '9,870', '18 MB', 'Enabled'], ['warn', 'audit_log', '412k', '610 MB', 'Disabled']] },
+        { name: 'Edge Functions', cols: ['Function', 'Invocations', 'Errors'], w: '2fr 1fr 1fr', actions: ['View logs', 'Redeploy'], rows: [['ok', 'send-digest', '2.1k', '0'], ['warn', 'sync-avatar', '840', '3']] }],
+      act: [['RLS disabled warning on audit_log', '1d'], ['41 new users this week', '—'], ['sync-avatar errored 3 times', '4h']] },
+    Rivet: { accent: '#1c1e22', scope: 'acme · production', kpis: [['Live actors', '1,284', 'across 3 regions', 'up'], ['Messages / s', '2.1k', 'last hour', 'up'], ['Cold start', '42 ms', 'p95', 'flat'], ['Queue backlog', '1.2k', 'indexer-queue', 'up', 'warn']],
+      tabs: [{ name: 'Actors', cols: ['Actor', 'Kind', 'Region', 'Instances', 'State'], w: '1.4fr 1fr 1fr 80px 1fr', actions: ['Inspect', 'Restart', 'View logs'], rows: [['ok', 'atlas-session', 'session', 'iad', '812', 'Running'], ['ok', 'presence', 'realtime', 'iad · fra', '420', 'Running'], ['warn', 'indexer-queue', 'jobs', 'iad', '52', 'Backlog 1.2k']] }],
+      act: [['indexer-queue backlog over 1k', '9m'], ['presence scaled to 420 instances', '30m'], ['Deployed atlas-session v14', '5h']] },
+    Polygraph: { accent: '#2f6fe0', scope: 'Connected via MCP', kpis: [['Tools exposed', '9', '', 'flat'], ['Calls', '3.4k', 'last 24h', 'up'], ['p95 latency', '310 ms', 'last hour', 'flat'], ['Errors', '2', 'last 24h', 'down']],
+      tabs: [{ name: 'Tools', cols: ['Tool', 'Calls 24h', 'p95', 'Errors'], w: '2fr 1fr 1fr 1fr', actions: ['Test call', 'View schema'], rows: [['ok', 'query_graph', '1.9k', '280 ms', '0'], ['ok', 'get_neighbors', '1.1k', '120 ms', '0'], ['warn', 'shortest_path', '410', '1.4 s', '2']] }],
+      act: [['shortest_path exceeded 1 s twice', '2h'], ['Schema refreshed', '1d']] },
+    Beads: { accent: '#b06a1a', scope: 'acme/catalog · agent issue tracker', kpis: [['Ready', '3', 'unblocked', 'up'], ['Claimed', '1', 'by agents', 'flat'], ['Blocked', '2', 'waiting on deps', 'flat', 'warn'], ['Closed', '9', 'this week', 'up']],
+      tabs: [{ name: 'Issues', cols: ['ID', 'Title', 'Symbol', 'State'], w: '70px 2fr 1.2fr 90px', actions: ['Claim', 'Close', 'Show dependencies'], rows: [['ok', 'bd-38', 'Cache catalog pages', 'useCatalog()', 'Ready'], ['ok', 'bd-41', 'Drop legacy pad2()', 'retry()', 'Ready'], ['ok', 'bd-44', 'Paginate listTitles', 'listTitles()', 'Ready'], ['run', 'bd-36', 'Locale-aware durations', 'formatDuration()', 'Claimed'], ['warn', 'bd-33', 'Dock focus ring', 'DockView', 'Blocked'], ['warn', 'bd-35', 'Runtime as Duration', 'TitleModel', 'Blocked']] }],
+      act: [['drift-fixer claimed bd-36', '40m'], ['bd-41 unblocked', '4h'], ['bd-29 closed', '1d']] },
+    'Trail-Code': { accent: '#0f9a8c', scope: 'Repo intelligence index', kpis: [['Repos indexed', '3', '', 'flat'], ['Symbols', '16', 'functions, components, types', 'up'], ['Cross-repo refs', '7', '', 'up'], ['Last index', '4 min ago', 'incremental', 'flat']],
+      tabs: [{ name: 'Index', cols: ['Repo', 'Commit', 'Symbols', 'Refs', 'Indexed'], w: '1.4fr 90px 80px 70px 1fr', actions: ['Re-index', 'Open in atlas'], rows: [['ok', 'web-app', '3d8e1b7', '6', '4', '4m ago'], ['ok', 'api-service', '7be03d1', '5', '5', '3h ago'], ['ok', 'shared-lib', 'b19e4f0', '5', '3', '2d ago']] }],
+      act: [['web-app re-indexed at 3d8e1b7', '4m'], ['Detected 2 symbols with no callers', '4m']] },
+    Langfuse: { accent: '#d0393e', scope: 'catalog-agents · production', kpis: [['Traces', '18.2k', 'last 24h', 'up'], ['Cost', '$41.20', 'last 24h', 'up'], ['Latency p95', '2.4 s', 'last hour', 'up', 'warn'], ['Eval score', '0.87', 'helpfulness', 'flat']],
+      tabs: [{ name: 'Traces', cols: ['Trace', 'Model', 'Latency', 'Tokens', 'Cost'], w: '1.6fr 1.2fr 70px 70px 70px', actions: ['Open trace', 'Add to dataset'], rows: [['ok', 'atlas.summarize', 'claude-sonnet', '1.8 s', '3.1k', '$0.012'], ['warn', 'indexer.embed', 'embed-v3', '2.4 s', '18k', '$0.002'], ['ok', 'review.comment', 'claude-sonnet', '2.1 s', '4.4k', '$0.017'], ['err', 'drift.plan', 'claude-sonnet', 'Timeout', '—', '—']] }],
+      act: [['drift.plan timed out', '18m'], ['Eval run helpfulness-v3 finished', '2h']] },
+    'Factory MCP': { accent: '#6b717c', scope: 'Connected via MCP', kpis: [['Tools exposed', '12', '', 'flat'], ['Calls', '960', 'last 24h', 'up'], ['p95 latency', '540 ms', 'last hour', 'flat'], ['Errors', '0', 'last 24h', 'flat']],
+      tabs: [{ name: 'Tools', cols: ['Tool', 'Calls 24h', 'p95', 'Errors'], w: '2fr 1fr 1fr 1fr', actions: ['Test call', 'View schema'], rows: [['ok', 'create_task', '410', '380 ms', '0'], ['ok', 'list_tasks', '390', '90 ms', '0'], ['ok', 'run_droid', '160', '2.1 s', '0']] }],
+      act: [['run_droid completed 4 tasks', '1h']] },
+  };
+  bars(seed, trend) {
+    let h = 7; for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+    let v = trend === 'down' ? 70 : 40; const out = [];
+    for (let i = 0; i < 16; i++) { h = (Math.imul(h, 1103515245) + 12345) >>> 0; const r = ((h >>> 16) % 100) / 100; v += (trend === 'up' ? 3 : trend === 'down' ? -3 : 0) + (r - 0.5) * 16; v = Math.max(12, Math.min(96, v)); out.push({ h: Math.round(v) + '%', o: i === 15 ? 1 : 0.45 }); }
+    return out;
+  }
+  flash(m) { this.setState({ note: m }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ note: '' }), 2000); }
+  renderVals() {
+    const st = this.state, e = !!this.props.embedded, name = this.P[this.props.provider] ? this.props.provider : st.pv, p = this.P[name];
+    const ti = Math.min(st.tab[name] || 0, p.tabs.length - 1), tab = p.tabs[ti], sk = name + ':' + ti, si = Math.min(st.sel[sk] || 0, tab.rows.length - 1), row = tab.rows[si];
+    const kpis = p.kpis.map(([label, value, sub, trend, tone]) => ({ label, value, sub, subC: tone === 'warn' ? '#9a5b00' : '#8a909a', c: tone === 'warn' ? '#c27a00' : p.accent === '#1c1e22' ? '#2f6fe0' : p.accent, bars: this.bars(name + label, trend) }));
+    const tabs = p.tabs.map((t, i) => ({ name: t.name, bg: i === ti ? '#fff' : 'transparent', sh: i === ti ? 'inset 0 1px 0 #fff,0 3px 10px rgba(30,45,70,.14)' : 'none', go: () => this.setState(s => ({ tab: { ...s.tab, [name]: i }, note: '' })) }));
+    const rows = tab.rows.map((r, i) => ({ c: this.SC[r[0]][0], cells: r.slice(1).map((t, j) => ({ t, fw: j === 0 ? 500 : 400, col: j === 0 ? '#1c1e22' : '#4a505a' })),
+      bg: i === si ? 'rgba(255,255,255,.62)' : 'transparent', sh: i === si ? 'inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.6),0 4px 14px rgba(30,45,70,.1)' : 'none',
+      go: () => this.setState(s => ({ sel: { ...s.sel, [sk]: i }, note: '' })) }));
+    const det = { title: row[1], c: this.SC[row[0]][0], status: this.SC[row[0]][1], fields: tab.cols.slice(1).map((k, j) => ({ k, v: row[j + 2] })),
+      actions: tab.actions.map((a, j) => ({ name: a, bg: j === 0 ? '#1c1e22' : 'rgba(255,255,255,.45)', fg: j === 0 ? '#fff' : '#1c1e22', go: () => this.flash(a + ' requested · ' + row[1]) })) };
+    const vr = this.props.variant || 'default', br = vr === 'branded', shelfV = vr === 'shelf';
+    if (br) det.actions.forEach((a, j) => { if (j === 0) { a.bg = p.accent; a.fg = '#fff'; } });
+    const hd = br ? { bg: 'linear-gradient(135deg,' + p.accent + ',' + p.accent + 'd9)', fg: '#fff', sub: 'rgba(255,255,255,.82)', btn: 'rgba(255,255,255,.18)', doneBg: '#fff', doneFg: '#1c1e22', mb: '16px', logoSh: '0 0 0 2px rgba(255,255,255,.6),0 6px 16px rgba(0,0,0,.2)' }
+      : { bg: 'transparent', fg: '#1c1e22', sub: '#6b717c', btn: 'rgba(255,255,255,.42)', doneBg: '#1c1e22', doneFg: '#fff', mb: '0', logoSh: 'inset 0 1px 0 rgba(255,255,255,.4),0 4px 12px rgba(30,45,70,.18)' };
+    const panelBg = br ? 'linear-gradient(170deg,' + p.accent + '1f,rgba(255,255,255,.62) 38%,rgba(255,255,255,.5))' : 'linear-gradient(160deg,rgba(255,255,255,0.58),rgba(255,255,255,0.32) 50%,rgba(255,255,255,0.46))';
+    const slug = n => 'logo-' + n.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const on = this.props.connected ?? !st.localOff;
+    return {
+      sv: this.props.tone === 'dark' ? { bg: 'rgba(255,255,255,.07)', fg: '#fff', sub: 'rgba(255,255,255,.6)', sh: 'inset 0 0 0 1px rgba(255,255,255,.14),inset 0 1px 0 rgba(255,255,255,.2),0 20px 50px rgba(0,0,0,.3)' } : { bg: 'rgba(255,255,255,.5)', fg: '#1c1e22', sub: '#6b717c', sh: 'inset 0 1px 0 rgba(255,255,255,.95),inset 0 0 0 1px rgba(255,255,255,.5),0 8px 24px rgba(30,45,70,.1)' },
+      isOn: on, isOff: !on, hd, panelBg, isShelf: shelfV, notShelf: !shelfV, connLabel: on ? 'Connected' : 'Disconnected', connTip: on ? 'Disconnect ' + name : 'Connect ' + name,
+      track: on ? '#34c759' : 'rgba(118,118,128,.3)', knob: on ? '18px' : '2px',
+      toggleConn: () => (this.props.onToggle ? this.props.onToggle() : this.setState({ localOff: !st.localOff })),
+      hasClose: !!this.props.onClose, close: () => this.props.onClose && this.props.onClose(),
+      pad: e || shelfV ? '0' : '56px', wrapH: e || shelfV ? '100%' : 'auto', fw: e ? '100%' : '1220px', fh: e ? '100%' : '760px', showPicker: !e && !shelfV,
+      picker: Object.keys(this.P).map(n => ({ name: n, bg: n === name ? '#fff' : 'rgba(255,255,255,.3)', sh: n === name ? '0 3px 10px rgba(30,45,70,.14)' : 'inset 0 0 0 1px rgba(255,255,255,.5)', go: () => this.setState({ pv: n, note: '' }) })),
+      d: { name, accent: p.accent, mono: name[0], slot: slug(name), scope: p.scope }, kpis, tabs,
+      tb: { cols: tab.cols, grid: '8px ' + tab.w, rows, count: tab.rows.length + ' ' + tab.name.toLowerCase() }, det,
+      act: p.act.map(([t, age]) => ({ t, age })), note: st.note, hasNote: !!st.note, openExt: () => this.flash('Opening ' + name + ' in a new tab'),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;color:#1c1e22;background:radial-gradient(50% 45% at 10% 8%,#f2d9bd 0%,rgba(242,217,189,0) 62%),radial-gradient(50% 50% at 90% 14%,#bcd4f0 0%,rgba(188,212,240,0) 62%),radial-gradient(60% 55% at 45% 100%,#c6e2d8 0%,rgba(198,226,216,0) 62%),radial-gradient(35% 35% at 70% 60%,#e4d6ee 0%,rgba(228,214,238,0) 70%),#e6ebf1;background-attachment:fixed}a{color:#2f6fe0}a:hover{color:#1f4fae}@keyframes dcFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div style="padding:{{ pad }};height:{{ wrapH }};box-sizing:border-box;display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+<sc-for list="{{ frames }}" as="f" hint-placeholder-count="2">
+<div style="width:{{ f.w }};height:{{ f.ho }};display:flex;flex-direction:column;gap:12px">
+  <sc-if value="{{ showLabel }}" hint-placeholder-val="{{ true }}"><div style="display:flex;gap:8px;font-size:13px;font-weight:600;color:#6b717c"><span>Port</span><span style="font-weight:400;color:#9aa0aa">{{ f.label }}</span></div></sc-if>
+  <div style="height:{{ f.h }};display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;border-radius:30px;background:linear-gradient(160deg,rgba(255,255,255,0.5),rgba(255,255,255,0.25) 50%,rgba(255,255,255,0.40));backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);-webkit-backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);border:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.45),inset 0 0 20px rgba(255,255,255,.22),0 1px 2px rgba(20,30,50,.06),0 28px 70px rgba(30,45,70,.18)">
+    <div style="padding:18px 20px 10px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+          <div style="font-size:20px;font-weight:600;letter-spacing:-.01em">Port</div>
+          <div style="font-size:13px;color:#6b717c">acme · Compose stack</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6b717c;padding-top:6px;white-space:nowrap"><span style="width:6px;height:6px;border-radius:50%;background:#1f9d55"></span>Catalog v214</div>
+      </div>
+      <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Search catalog modules" style="border:none;outline:none;border-radius:9px;padding:8px 12px;background:rgba(118,118,128,.1);font:inherit;font-size:13px;color:#1c1e22">
+      <div style="display:flex;padding:3px;border-radius:999px;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 3px rgba(20,30,50,.1),inset 0 0 0 1px rgba(255,255,255,.4)">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4"><div onClick="{{ t.go }}" style="flex:1;text-align:center;padding:6px 2px;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;background:{{ t.bg }};box-shadow:{{ t.sh }};transition:background .2s,box-shadow .2s">{{ t.label }}</div></sc-for>
+      </div>
+    </div>
+    <div style="flex:1;min-height:0;overflow:auto;padding:4px 20px 12px">
+      <sc-if value="{{ isAssemble }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:18px;animation:dcFade .22s ease">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:12px;font-weight:600;color:#9aa0aa">1</span><span style="font-size:14px;font-weight:600">Choose</span><span style="margin-left:auto;font:400 12px 'JetBrains Mono';color:#6b717c">catalog-next</span></div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <sc-for list="{{ bases }}" as="b" hint-placeholder-count="2"><div onClick="{{ b.go }}" style="padding:7px 12px;border-radius:10px;font-size:13px;cursor:pointer;background:{{ b.bg }};box-shadow:{{ b.sh }}"><span style="font-weight:500">{{ b.label }}</span><span style="color:#9aa0aa"> · stackTemplate</span></div></sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;border-radius:14px;background:rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.45)">
+              <sc-for list="{{ mods }}" as="m" hint-placeholder-count="6">
+                <div onClick="{{ m.go }}" style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:.5px solid rgba(20,30,50,.06);cursor:pointer">
+                  <span style="flex:none;width:18px;height:18px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;background:{{ m.box }};box-shadow:{{ m.boxSh }}">{{ m.tick }}</span>
+                  <span style="flex:1;min-width:0;font-size:14px">{{ m.label }}</span>
+                  <span style="flex:none;font-size:12px;color:#9aa0aa">{{ m.group }}</span>
+                  <span style="flex:none;font:400 11px 'JetBrains Mono';color:#9aa0aa">{{ m.type }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:12px;font-weight:600;color:#9aa0aa">2</span><span style="font-size:14px;font-weight:600">Validate</span><span style="margin-left:auto;font:400 11px 'JetBrains Mono';color:#9aa0aa">validate_stack_compatibility</span></div>
+            <sc-if value="{{ ok }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:12px 14px;border-radius:14px;background:rgba(31,157,85,.08);box-shadow:inset 0 0 0 .5px rgba(31,157,85,.3);display:flex;align-items:center;gap:8px;font-size:14px;animation:dcFade .22s ease"><span style="width:8px;height:8px;border-radius:50%;background:#1f9d55"></span><span style="font-weight:600">Compatible</span><span style="color:#4a505a">{{ okNote }}</span></div>
+            </sc-if>
+            <sc-if value="{{ bad }}" hint-placeholder-val="{{ true }}">
+              <div style="padding:12px 14px;border-radius:14px;background:rgba(208,57,62,.06);box-shadow:inset 0 0 0 .5px rgba(208,57,62,.3);display:flex;flex-direction:column;gap:10px;animation:dcFade .22s ease">
+                <div style="display:flex;align-items:center;gap:8px;font-size:14px"><span style="width:8px;height:8px;border-radius:50%;background:#d0393e"></span><span style="font-weight:600">Conflict</span><span style="color:#4a505a">Provision blocked</span></div>
+                <sc-for list="{{ issues }}" as="is" hint-placeholder-count="1">
+                  <div style="display:flex;flex-direction:column;gap:4px">
+                    <div style="font-size:13px;line-height:1.4">{{ is.msg }}</div>
+                    <div style="font:400 11px 'JetBrains Mono';color:#9aa0aa">{{ is.code }}</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px">
+                      <sc-for list="{{ is.alts }}" as="al" hint-placeholder-count="2"><span onClick="{{ al.go }}" style="color:#2f6fe0;cursor:pointer">{{ al.label }}</span></sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;opacity:{{ provOp }}">
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:12px;font-weight:600;color:#9aa0aa">3</span><span style="font-size:14px;font-weight:600">Provision</span><span style="margin-left:auto;font-size:12px;color:#9aa0aa">via GitHub Actions</span></div>
+            <div style="display:flex;flex-direction:column;border-radius:14px;background:rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.45)">
+              <sc-for list="{{ plan }}" as="p" hint-placeholder-count="5">
+                <div style="display:flex;gap:10px;padding:9px 12px;border-bottom:.5px solid rgba(20,30,50,.06);font-size:13px"><span style="flex:none;width:72px;color:#6b717c">{{ p.target }}</span><span style="flex:1;min-width:0;color:#1c1e22">{{ p.step }}</span><span style="flex:none;font-size:12px;color:{{ p.sc }}">{{ p.state }}</span></div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ askConfirm }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:12px;border-radius:12px;background:rgba(194,122,0,.08);box-shadow:inset 0 0 0 .5px rgba(194,122,0,.3);font-size:13px;line-height:1.4;animation:dcFade .22s ease">Trigger <span style="font-family:'JetBrains Mono'">provision_composable_stack</span> for catalog-next? This creates the repo and connects Vercel and Convex.</div>
+            </sc-if>
+            <sc-if value="{{ hasRun }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;justify-content:space-between;font-size:13px;animation:dcFade .22s ease"><span style="font-family:'JetBrains Mono';color:#6b717c">run_provision_7Hk2</span><span style="color:{{ runC }}">{{ runState }}</span></div>
+            </sc-if>
+            <div style="display:flex;gap:6px;justify-content:flex-end">
+              <sc-if value="{{ askConfirm }}" hint-placeholder-val="{{ false }}"><div onClick="{{ cancelProv }}" style="padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 1px 3px rgba(20,30,50,.08);font-size:13px;font-weight:500;cursor:pointer">Cancel</div></sc-if>
+              <div onClick="{{ provision }}" style="padding:7px 14px;border-radius:999px;font-size:13px;font-weight:500;cursor:{{ provCursor }};background:{{ provBg }};color:{{ provFg }}">{{ provLabel }}</div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isCatalog }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;animation:dcFade .22s ease">
+          <sc-for list="{{ catalog }}" as="c" hint-placeholder-count="8">
+            <div style="display:flex;align-items:baseline;gap:10px;padding:10px 4px;border-bottom:.5px solid rgba(20,30,50,.06)"><span style="flex:none;width:150px;font:500 12px 'JetBrains Mono'">{{ c.bp }}</span><span style="flex:1;min-width:0;font-size:12px;color:#6b717c">{{ c.rel }}</span><span style="flex:none;font-size:13px;color:#4a505a">{{ c.n }}</span></div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isWorkflows }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:2px;animation:dcFade .22s ease">
+          <div style="font-size:12px;color:#9aa0aa;padding:0 4px 8px;line-height:1.4">New stacks go through Assemble validation first.</div>
+          <sc-for list="{{ workflows }}" as="w" hint-placeholder-count="4">
+            <div style="border-radius:12px;background:{{ w.bg }};box-shadow:{{ w.sh }}">
+              <div onClick="{{ w.go }}" style="display:flex;flex-direction:column;gap:2px;padding:10px;cursor:pointer"><span style="font:500 12px 'JetBrains Mono'">{{ w.id }}</span><span style="font-size:13px;color:#6b717c">{{ w.desc }}</span></div>
+              <sc-if value="{{ w.open }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:0 10px 12px;display:flex;flex-direction:column;gap:8px;animation:dcFade .22s ease">
+                  <sc-for list="{{ w.inputs }}" as="in" hint-placeholder-count="2"><div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="flex:none;width:90px;color:#6b717c">{{ in.k }}</span><span style="flex:1;padding:7px 10px;border-radius:8px;background:rgba(118,118,128,.1);font-family:'JetBrains Mono';font-size:12px">{{ in.v }}</span></div></sc-for>
+                  <div style="display:flex;justify-content:flex-end;gap:8px;align-items:center"><span style="font-size:12px;color:#6b717c">{{ wfNote }}</span><div onClick="{{ w.run }}" style="padding:6px 14px;border-radius:999px;background:#1c1e22;color:#fff;font-size:13px;font-weight:500;cursor:pointer">Run</div></div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isAudit }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;animation:dcFade .22s ease">
+          <sc-for list="{{ audit }}" as="a" hint-placeholder-count="5">
+            <div style="display:flex;flex-direction:column;gap:3px;padding:10px 4px;border-bottom:.5px solid rgba(20,30,50,.06)">
+              <div style="display:flex;gap:8px;font-size:13px"><span style="font-weight:500">{{ a.what }}</span><span style="margin-left:auto;flex:none;color:{{ a.c }}">{{ a.result }}</span></div>
+              <div style="display:flex;gap:8px;font-size:12px;color:#9aa0aa"><span>{{ a.who }}</span><span>{{ a.when }}</span><span style="font-family:'JetBrains Mono';overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ a.ref }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+  <sc-if value="{{ showLabel }}" hint-placeholder-val="{{ true }}"><div style="font:400 11px/1.6 'JetBrains Mono';color:#8a909a">tools: list_blueprints · list_entities · validate_stack_compatibility · list_compatible_modules · list_workflows · list_self_service_triggers · trigger_run · get_run · search_audit_logs · list_scorecards</div></sc-if>
+</div>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { tab: 'Assemble', q: '', base: 't3', on: { betterAuth: true, drizzle: true, prisma: true, trpc: true, shadcn: true, tokens: true }, confirm: false, run: null, wf: null, wfNote: '' };
+  BASES = [['t3', 'T3 · Next.js + tRPC'], ['vite', 'Vite + Hono']];
+  M = [
+    ['betterAuth', 'Better Auth', 'Auth', 'provider'], ['drizzle', 'Drizzle', 'ORM', 'provider'], ['prisma', 'Prisma', 'ORM', 'provider'],
+    ['trpc', 'tRPC', 'RPC', 'provider'], ['convexAgg', 'Convex Aggregate', 'Data', 'convexComponent'], ['convexRL', 'Convex Rate Limiter', 'Data', 'convexComponent'],
+    ['shadcn', 'shadcn/ui · acme-ui', 'UI', 'shadcnRegistry'], ['tokens', 'Tailwind · acme-tokens', 'Styling', 'theme'],
+  ];
+  frames() {
+    const e = !!this.props.embedded;
+    return e ? [{ w: '100%', h: '100%', ho: '100%', label: '' }] : [{ w: '480px', h: '640px', ho: 'auto', label: 'Desktop · 480' }, { w: '360px', h: '640px', ho: 'auto', label: 'Narrow · 360' }];
+  }
+  set(changes, base) { this.setState(s => ({ on: { ...s.on, ...changes }, base: base || s.base, confirm: false, run: null })); }
+  validate() {
+    const o = this.state.on, out = [];
+    if (o.drizzle && o.prisma) out.push({ code: 'orm.exclusive · drizzle ⟂ prisma', msg: 'Drizzle conflicts with Prisma. Only one ORM can be selected.', alts: [{ label: 'Keep Drizzle', go: () => this.set({ prisma: false }) }, { label: 'Keep Prisma', go: () => this.set({ drizzle: false }) }] });
+    if (o.betterAuth && !o.drizzle && !o.prisma) out.push({ code: 'auth.requires_orm_adapter', msg: 'Better Auth needs an ORM adapter.', alts: [{ label: 'Add Drizzle', go: () => this.set({ drizzle: true }) }, { label: 'Add Prisma', go: () => this.set({ prisma: true }) }] });
+    if (o.trpc && this.state.base === 'vite') out.push({ code: 'rpc.binding_missing · vite+hono', msg: 'The Vite + Hono template has no tRPC binding.', alts: [{ label: 'Switch to T3', go: () => this.set({}, 't3') }, { label: 'Remove tRPC', go: () => this.set({ trpc: false }) }] });
+    return out;
+  }
+  startRun() {
+    this.setState({ confirm: false, run: 1 });
+    clearTimeout(this._r); this._r = setTimeout(() => this.setState({ run: 2 }), 1400);
+    clearTimeout(this._r2); this._r2 = setTimeout(() => this.setState({ run: 3 }), 3200);
+  }
+  renderVals() {
+    const e = !!this.props.embedded, st = this.state;
+    const seg = (on) => ({ bg: on ? 'rgba(255,255,255,.78)' : 'transparent', sh: on ? 'inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.6),0 3px 10px rgba(30,45,70,.14)' : 'none' });
+    const tabs = ['Assemble', 'Catalog', 'Workflows', 'Audit'].map(l => ({ label: l, ...seg(l === st.tab), go: () => this.setState({ tab: l }) }));
+    const bases = this.BASES.map(([k, l]) => ({ label: l, bg: k === st.base ? 'rgba(255,255,255,.78)' : 'rgba(255,255,255,.25)', sh: k === st.base ? 'inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.6),0 3px 10px rgba(30,45,70,.14)' : 'none', go: () => this.set({}, k) }));
+    const q = st.q.toLowerCase();
+    const mods = this.M.filter(m => !q || (m[1] + m[2] + m[3]).toLowerCase().includes(q)).map(([k, label, group, type]) => {
+      const on = !!st.on[k];
+      return { label, group, type, tick: on ? '✓' : '', box: on ? '#1c1e22' : 'transparent', boxSh: on ? 'none' : 'inset 0 0 0 1.5px #c5ccd6', go: () => this.set({ [k]: !on }) };
+    });
+    const issues = this.validate(), ok = issues.length === 0, o = st.on;
+    const orm = o.drizzle ? 'Drizzle' : o.prisma ? 'Prisma' : 'no ORM';
+    const runStep = st.run;
+    const stepState = i => !runStep ? '' : runStep === 3 ? 'Done' : (runStep === 2 ? (i < 3 ? 'Done' : 'Running') : (i === 0 ? 'Running' : 'Queued'));
+    const plan = [
+      ['GitHub', 'Create acme/catalog-next from ' + (st.base === 't3' ? 'T3' : 'Vite + Hono')],
+      ['Vercel', 'Link project · preview + production'],
+      ['Convex', 'Create deployment' + (o.convexAgg || o.convexRL ? ' · install components' : '')],
+      ['UI', [o.shadcn && 'acme-ui registry', o.tokens && 'acme-tokens'].filter(Boolean).join(' · ') || 'none'],
+      ['Stack', [o.betterAuth && 'Better Auth', orm, o.trpc && 'tRPC'].filter(Boolean).join(' · ')],
+    ].map(([target, step], i) => { const s = stepState(i); return { target, step, state: s, sc: s === 'Done' ? '#1f9d55' : s === 'Running' ? '#c27a00' : '#9aa0aa' }; });
+    const W = [
+      { id: 'provision_composable_stack', desc: 'Scaffold and connect a validated stack', inputs: [{ k: 'project', v: 'catalog-next' }, { k: 'selection', v: 'from Assemble' }] },
+      { id: 'provision_sprite', desc: 'Provision a Sprite harness runner', inputs: [{ k: 'region', v: 'us-east' }, { k: 'size', v: 'standard' }] },
+      { id: 'factory_connect_vercel', desc: 'Connect an existing repo to Vercel', inputs: [{ k: 'repo', v: 'acme/web-app' }] },
+      { id: 'factory_sync_catalog', desc: 'Re-ingest Ocean integrations', inputs: [{ k: 'scope', v: 'github, vercel' }] },
+    ];
+    const workflows = W.map(w => ({ ...w, open: st.wf === w.id, ...(st.wf === w.id ? { bg: 'rgba(255,255,255,.46)', sh: 'inset 0 1px 0 rgba(255,255,255,.95),inset 0 0 0 1px rgba(255,255,255,.5),0 6px 18px rgba(30,45,70,.1)' } : { bg: 'transparent', sh: 'none' }),
+      go: () => this.setState({ wf: st.wf === w.id ? null : w.id, wfNote: '' }),
+      run: () => this.setState({ wfNote: w.id === 'provision_composable_stack' && !ok ? 'Blocked: Assemble has conflicts' : 'Queued · run_' + w.id.slice(0, 4) + '_31x' }) }));
+    const catalog = [['stackTemplate', '→ provider, convexComponent', 6], ['provider', 'auth, ORM, RPC, hosting', 9], ['convexComponent', '→ stackTemplate', 14], ['shadcnRegistry', '→ shadcnComponent', 3], ['shadcnComponent', '→ shadcnRegistry', 48], ['product', '→ service', 4], ['service', '→ product, _mcp_server', 11], ['executionContract', '→ deliveryRun', 27], ['deliveryRun', '→ executionAttempt', 63], ['executionRunner', '→ harness_session', 5], ['_mcp_server', '→ agentPlugin', 7], ['skill', '→ agentPlugin', 22]].map(([bp, rel, n]) => ({ bp, rel, n }));
+    const audit = [
+      { what: 'Assembly rejected', result: 'Rejected', c: '#d0393e', who: 'mh', when: '2m ago', ref: 'orm.exclusive' },
+      { what: 'provision_composable_stack · atlas-docs', result: 'Succeeded', c: '#1f9d55', who: 'mh', when: '1h ago', ref: 'run_provision_6Qa1' },
+      { what: 'Assembly validated · atlas-docs', result: 'Compatible', c: '#1f9d55', who: 'mh', when: '1h ago', ref: 'catalog v213' },
+      { what: 'factory_sync_catalog', result: 'Succeeded', c: '#1f9d55', who: 'cockpit-agent', when: '3h ago', ref: 'run_fact_29d' },
+      { what: 'Assembly rejected', result: 'Rejected', c: '#d0393e', who: 'jl', when: 'yesterday', ref: 'rpc.binding_missing' },
+    ];
+    const runLabels = { 1: 'Running', 2: 'Running', 3: 'Succeeded' };
+    return {
+      frames: this.frames(), pad: e ? '0' : '64px', wrapH: e ? '100%' : 'auto', showLabel: !e, tabs,
+      q: st.q, onQ: ev => this.setState({ q: ev.target.value }),
+      isAssemble: st.tab === 'Assemble', isCatalog: st.tab === 'Catalog', isWorkflows: st.tab === 'Workflows', isAudit: st.tab === 'Audit',
+      bases, mods, ok, bad: !ok, issues, okNote: 'Rules checked against catalog v214',
+      plan, provOp: ok ? 1 : 0.5, askConfirm: st.confirm, hasRun: !!st.run, runState: runLabels[st.run] || '', runC: st.run === 3 ? '#1f9d55' : '#c27a00',
+      provLabel: !ok ? 'Resolve conflicts to provision' : st.confirm ? 'Trigger run' : st.run ? 'Provisioned' : 'Provision',
+      provBg: ok && !st.run ? '#1c1e22' : 'rgba(118,118,128,.12)', provFg: ok && !st.run ? '#fff' : '#9aa0aa', provCursor: ok && !st.run ? 'pointer' : 'not-allowed',
+      provision: () => { if (!ok || st.run) return; if (!st.confirm) this.setState({ confirm: true }); else this.startRun(); },
+      cancelProv: () => this.setState({ confirm: false }),
+      catalog, workflows, wfNote: st.wfNote, audit,
+    };
+  }
+}
+</script>
+</body>
+</html>

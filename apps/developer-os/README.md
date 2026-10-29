@@ -4,6 +4,8 @@ Factory **Developer OS** shell: Next.js App Router on Vercel, Code Atlas hero fi
 
 Lane: **Meta only** · browser never calls Sandbox Agent · no Port OAuth create/delete · no Product Beads.
 
+**UI design direction (locked):** [`docs/design/ui-design-direction.md`](../../docs/design/ui-design-direction.md) · comps [`docs/design/mockups/`](../../docs/design/mockups/) — Factory Cockpit **v3** · Code Atlas **v5** · provider widgets. Do not invent a parallel visual language.
+
 ## Layout
 
 | Path | Role |

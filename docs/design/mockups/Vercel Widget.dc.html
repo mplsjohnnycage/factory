@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;color:#1c1e22;background:radial-gradient(50% 45% at 10% 8%,#f2d9bd 0%,rgba(242,217,189,0) 62%),radial-gradient(50% 50% at 90% 14%,#bcd4f0 0%,rgba(188,212,240,0) 62%),radial-gradient(60% 55% at 45% 100%,#c6e2d8 0%,rgba(198,226,216,0) 62%),radial-gradient(35% 35% at 70% 60%,#e4d6ee 0%,rgba(228,214,238,0) 70%),#e6ebf1;background-attachment:fixed}a{color:#2f6fe0}a:hover{color:#1f4fae}@keyframes dcFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div style="padding:{{ pad }};height:{{ wrapH }};box-sizing:border-box;display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+<sc-for list="{{ frames }}" as="f" hint-placeholder-count="2">
+<div style="width:{{ f.w }};height:{{ f.ho }};display:flex;flex-direction:column;gap:12px">
+  <sc-if value="{{ showLabel }}" hint-placeholder-val="{{ true }}"><div style="display:flex;gap:8px;font-size:13px;font-weight:600;color:#6b717c"><span>Vercel</span><span style="font-weight:400;color:#9aa0aa">{{ f.label }}</span></div></sc-if>
+  <div style="height:{{ f.h }};display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;border-radius:30px;background:linear-gradient(160deg,rgba(255,255,255,0.5),rgba(255,255,255,0.25) 50%,rgba(255,255,255,0.40));backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);-webkit-backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);border:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.45),inset 0 0 20px rgba(255,255,255,.22),0 1px 2px rgba(20,30,50,.06),0 28px 70px rgba(30,45,70,.18)">
+    <div style="padding:18px 20px 12px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+        <div style="font-size:20px;font-weight:600;letter-spacing:-.01em">Vercel</div>
+        <div style="font-size:13px;color:#6b717c">acme · catalog-web</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6b717c;padding-top:6px"><span style="width:6px;height:6px;border-radius:50%;background:#1f9d55"></span>Connected</div>
+    </div>
+    <div style="padding:0 20px 12px">
+      <div style="display:flex;padding:3px;border-radius:999px;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 3px rgba(20,30,50,.1),inset 0 0 0 1px rgba(255,255,255,.4)">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2"><div onClick="{{ t.go }}" style="flex:1;text-align:center;padding:6px 4px;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;background:{{ t.bg }};box-shadow:{{ t.sh }};transition:background .2s,box-shadow .2s">{{ t.label }}</div></sc-for>
+      </div>
+    </div>
+    <div style="margin:0 20px 10px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.34);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.45);display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600"><span style="width:8px;height:8px;border-radius:50%;background:{{ cur.c }}"></span><span>{{ cur.status }}</span><span style="margin-left:auto;font-size:12px;font-weight:400;color:#6b717c;white-space:nowrap">{{ cur.age }} · {{ cur.dur }}</span></div>
+      <div style="font:400 12px 'JetBrains Mono';color:#2f6fe0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ cur.url }}</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;font:400 12px 'JetBrains Mono';color:#6b717c"><span>{{ cur.branch }}</span><span>{{ cur.sha }}</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
+        <div onClick="{{ openUrl }}" style="padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 1px 3px rgba(20,30,50,.08);font-size:13px;font-weight:500;cursor:pointer" style-hover="background:rgba(118,118,128,.2)">Open URL</div>
+        <div onClick="{{ copyUrl }}" style="padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 1px 3px rgba(20,30,50,.08);font-size:13px;font-weight:500;cursor:pointer" style-hover="background:rgba(118,118,128,.2)">Copy URL</div>
+        <div onClick="{{ toggleLogs }}" style="padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 1px 3px rgba(20,30,50,.08);font-size:13px;font-weight:500;cursor:pointer" style-hover="background:rgba(118,118,128,.2)">{{ logsLabel }}</div>
+        <div onClick="{{ redeploy }}" style="padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 1px 3px rgba(20,30,50,.08);font-size:13px;font-weight:500;cursor:pointer" style-hover="background:rgba(118,118,128,.2)">Redeploy</div>
+        <sc-if value="{{ canCancel }}" hint-placeholder-val="{{ false }}"><div onClick="{{ cancelDep }}" style="padding:6px 11px;border-radius:999px;background:rgba(208,57,62,.1);color:#b3262b;font-size:13px;font-weight:500;cursor:pointer">Cancel build</div></sc-if>
+        <sc-if value="{{ canPromote }}" hint-placeholder-val="{{ false }}"><div onClick="{{ askPromote }}" style="padding:6px 11px;border-radius:999px;background:#1c1e22;color:#fff;font-size:13px;font-weight:500;cursor:pointer">Promote to production</div></sc-if>
+      </div>
+      <sc-if value="{{ confirming }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:8px;padding:12px;border-radius:12px;background:rgba(194,122,0,.08);box-shadow:inset 0 0 0 .5px rgba(194,122,0,.3);display:flex;flex-direction:column;gap:10px;animation:dcFade .22s ease">
+          <div style="font-size:13px;line-height:1.4;text-wrap:pretty">Promote <span style="font-family:'JetBrains Mono'">{{ cur.sha }}</span> to production? This replaces the deployment serving <span style="font-family:'JetBrains Mono'">catalog-web.vercel.app</span>.</div>
+          <div style="display:flex;gap:6px;justify-content:flex-end">
+            <div onClick="{{ cancelPromote }}" style="padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 1px 3px rgba(20,30,50,.08);font-size:13px;font-weight:500;cursor:pointer">Cancel</div>
+            <div onClick="{{ doPromote }}" style="padding:6px 11px;border-radius:999px;background:#1c1e22;color:#fff;font-size:13px;font-weight:500;cursor:pointer">Promote</div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+    <div style="flex:1;min-height:0;overflow:auto;padding:0 12px 8px">
+      <sc-if value="{{ logs }}" hint-placeholder-val="{{ false }}">
+        <div style="margin:0 8px 10px;border-radius:12px;background:rgba(255,255,255,.28);box-shadow:inset 0 1px 2px rgba(20,30,50,.06);box-shadow:inset 0 0 0 .5px rgba(20,30,50,.08);animation:dcFade .22s ease">
+          <div style="display:flex;justify-content:space-between;padding:8px 12px;font-size:12px;color:#6b717c"><span>Build log · {{ cur.sha }}</span><span onClick="{{ toggleAuto }}" style="cursor:pointer;color:#2f6fe0">{{ autoLabel }}</span></div>
+          <div style="padding:0 12px 10px;display:flex;flex-direction:column;gap:3px;font:400 11px/1.5 'JetBrains Mono';color:#4a505a">
+            <sc-for list="{{ logLines }}" as="l" hint-placeholder-count="5"><div style="display:flex;gap:10px"><span style="color:#9aa0aa">{{ l.t }}</span><span style="min-width:0;word-break:break-word">{{ l.m }}</span></div></sc-for>
+          </div>
+        </div>
+      </sc-if>
+      <div style="padding:6px 8px;font-size:12px;font-weight:600;color:#9aa0aa">Deployments</div>
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="4">
+        <div onClick="{{ r.go }}" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;cursor:pointer;background:{{ r.bg }};box-shadow:{{ r.sh }};transition:background .15s,transform .15s" style-hover="transform:translateY(-1px)">
+          <span style="flex:none;width:8px;height:8px;border-radius:50%;background:{{ r.c }}"></span>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+            <div style="font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.msg }}</div>
+            <div style="display:flex;gap:8px;font:400 11px 'JetBrains Mono';color:#6b717c;white-space:nowrap;overflow:hidden"><span style="overflow:hidden;text-overflow:ellipsis">{{ r.branch }}</span><span>{{ r.sha }}</span></div>
+          </div>
+          <span style="flex:none;font-size:12px;color:#9aa0aa">{{ r.age }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.55);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#6b717c">
+      <span>{{ footNote }}</span>
+      <span style="color:#2f6fe0;cursor:pointer">Open in Vercel</span>
+    </div>
+  </div>
+  <sc-if value="{{ showLabel }}" hint-placeholder-val="{{ true }}"><div style="font:400 11px/1.6 'JetBrains Mono';color:#8a909a;max-width:100%">tools: list_deployments · get_deployment · list_deployment_events · get_runtime_logs · create_deployment · request_promote · cancel_deployment · list_projects</div></sc-if>
+</div>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { env: 'Preview', sel: 0, logs: false, confirm: false, auto: true, note: '' };
+  SC = { Ready: '#1f9d55', Building: '#c27a00', Error: '#d0393e', Canceled: '#9aa0aa' };
+  D = {
+    Preview: [
+      { status: 'Building', msg: 'Add Beads overlay toggle', branch: 'feat/beads-overlay', sha: '3d8e1b7', age: 'just now', dur: '0m 41s' },
+      { status: 'Ready', msg: 'Atlas: expand-in-place nodes', branch: 'feat/expand-nodes', sha: 'e52a0c4', age: '42m', dur: '1m 49s' },
+      { status: 'Canceled', msg: 'WIP dock sheet', branch: 'feat/dock-sheet', sha: '91fd2ab', age: '2h', dur: '0m 12s' },
+      { status: 'Ready', msg: 'Fix formatDuration rounding', branch: 'fix/duration', sha: '0b7c6d3', age: '5h', dur: '1m 44s' },
+    ],
+    Production: [
+      { status: 'Ready', msg: 'Merge #128: cross-repo edge cache', branch: 'main', sha: 'a41c9e2', age: '14m', dur: '1m 52s' },
+      { status: 'Ready', msg: 'Bump shared-lib to 2.4.0', branch: 'main', sha: '7be03d1', age: '3h', dur: '1m 47s' },
+      { status: 'Error', msg: 'Revert router split', branch: 'main', sha: 'c09f5aa', age: 'yesterday', dur: '0m 58s' },
+    ],
+  };
+  note(m) { this.setState({ note: m }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ note: '' }), 1800); }
+  url(d) { return this.state.env === 'Production' ? 'catalog-web-' + d.sha + '-acme.vercel.app' : 'catalog-web-git-' + d.branch.replace(/\//g, '-') + '-acme.vercel.app'; }
+  frames() {
+    const e = !!this.props.embedded;
+    return e ? [{ w: '100%', h: '100%', ho: '100%', label: '' }] : [{ w: '480px', h: '640px', ho: 'auto', label: 'Desktop · 480' }, { w: '360px', h: '640px', ho: 'auto', label: 'Narrow · 360' }];
+  }
+  renderVals() {
+    const e = !!this.props.embedded, st = this.state;
+    const list = this.D[st.env], i = Math.min(st.sel, list.length - 1), d = list[i];
+    const tabs = ['Preview', 'Production'].map(l => ({ label: l, bg: l === st.env ? '#fff' : 'transparent', sh: l === st.env ? 'inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.6),0 3px 10px rgba(30,45,70,.14)' : 'none', go: () => this.setState({ env: l, sel: 0, confirm: false }) }));
+    const rows = list.map((r, k) => ({ ...r, c: this.SC[r.status], bg: k === i ? 'rgba(255,255,255,.46)' : 'transparent', sh: k === i ? 'inset 0 1px 0 rgba(255,255,255,.95),inset 0 0 0 1px rgba(255,255,255,.5),0 6px 18px rgba(30,45,70,.1)' : 'none', go: () => this.setState({ sel: k, confirm: false }) }));
+    const building = d.status === 'Building';
+    const logLines = building
+      ? [{ t: '00:00', m: 'Cloning acme/catalog-web (' + d.branch + ')' }, { t: '00:04', m: 'Restored build cache (412 MB)' }, { t: '00:09', m: 'pnpm install --frozen-lockfile' }, { t: '00:31', m: 'next build' }, { t: '00:41', m: 'Compiling /atlas …' }]
+      : [{ t: '00:00', m: 'Cloning acme/catalog-web (' + d.branch + ')' }, { t: '00:05', m: 'Restored build cache' }, { t: '00:28', m: 'next build' }, { t: '01:31', m: 'Collected 14 static pages' }, { t: d.dur.replace('m ', ':').replace('s', ''), m: d.status === 'Error' ? 'Error: Type error in routes/catalog.ts:41' : 'Deployment ' + d.status.toLowerCase() }];
+    return {
+      frames: this.frames(), pad: e ? '0' : '64px', wrapH: e ? '100%' : 'auto', showLabel: !e, tabs, rows,
+      cur: { ...d, c: this.SC[d.status], url: this.url(d) },
+      logs: st.logs, logsLabel: st.logs ? 'Hide logs' : 'View logs', logLines, autoLabel: st.auto ? 'Auto-scroll on' : 'Auto-scroll off',
+      toggleAuto: () => this.setState({ auto: !st.auto }), toggleLogs: () => this.setState({ logs: !st.logs }),
+      canPromote: st.env === 'Preview' && d.status === 'Ready', canCancel: building, confirming: st.confirm,
+      askPromote: () => this.setState({ confirm: true }), cancelPromote: () => this.setState({ confirm: false }),
+      doPromote: () => { this.setState({ confirm: false }); this.note('Promote requested · ' + d.sha); },
+      openUrl: () => this.note('Opening ' + this.url(d)), copyUrl: () => this.note('URL copied'),
+      redeploy: () => this.note('Redeploy queued · ' + d.sha), cancelDep: () => this.note('Cancel requested · ' + d.sha),
+      footNote: st.note || (list.length + ' deployments · ' + st.env.toLowerCase()),
+    };
+  }
+}
+</script>
+</body>
+</html>

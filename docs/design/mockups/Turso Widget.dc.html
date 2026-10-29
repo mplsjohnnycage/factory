@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;color:#1c1e22;background:radial-gradient(50% 45% at 10% 8%,#f2d9bd 0%,rgba(242,217,189,0) 62%),radial-gradient(50% 50% at 90% 14%,#bcd4f0 0%,rgba(188,212,240,0) 62%),radial-gradient(60% 55% at 45% 100%,#c6e2d8 0%,rgba(198,226,216,0) 62%),radial-gradient(35% 35% at 70% 60%,#e4d6ee 0%,rgba(228,214,238,0) 70%),#e6ebf1;background-attachment:fixed}a{color:#2f6fe0}a:hover{color:#1f4fae}@keyframes dcFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<div style="padding:{{ pad }};height:{{ wrapH }};box-sizing:border-box;display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+<sc-for list="{{ frames }}" as="f" hint-placeholder-count="2">
+<div style="width:{{ f.w }};height:{{ f.ho }};display:flex;flex-direction:column;gap:12px">
+  <sc-if value="{{ showLabel }}" hint-placeholder-val="{{ true }}"><div style="display:flex;gap:8px;font-size:13px;font-weight:600;color:#6b717c"><span>Turso</span><span style="font-weight:400;color:#9aa0aa">{{ f.label }}</span></div></sc-if>
+  <div style="height:{{ f.h }};display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;border-radius:30px;background:linear-gradient(160deg,rgba(255,255,255,0.5),rgba(255,255,255,0.25) 50%,rgba(255,255,255,0.40));backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);-webkit-backdrop-filter:blur(22px) saturate(1.9) brightness(1.05);border:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.45),inset 0 0 20px rgba(255,255,255,.22),0 1px 2px rgba(20,30,50,.06),0 28px 70px rgba(30,45,70,.18)">
+    <div style="padding:18px 20px 12px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+        <div style="font-size:20px;font-weight:600;letter-spacing:-.01em">Turso</div>
+        <div style="font-size:13px;color:#6b717c">acme · 2 groups</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6b717c;padding-top:6px;white-space:nowrap"><span style="width:6px;height:6px;border-radius:50%;background:#1f9d55"></span>Connected · read-only</div>
+    </div>
+    <div style="padding:0 20px 12px">
+      <div style="display:flex;padding:3px;border-radius:999px;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 3px rgba(20,30,50,.1),inset 0 0 0 1px rgba(255,255,255,.4)">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3"><div onClick="{{ t.go }}" style="flex:1;text-align:center;padding:6px 4px;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;background:{{ t.bg }};box-shadow:{{ t.sh }};transition:background .2s,box-shadow .2s">{{ t.label }}</div></sc-for>
+      </div>
+    </div>
+    <div style="flex:1;min-height:0;overflow:auto;padding:0 12px 10px">
+      <sc-if value="{{ isDbs }}" hint-placeholder-val="{{ true }}">
+        <div style="animation:dcFade .22s ease">
+          <sc-for list="{{ dbs }}" as="d" hint-placeholder-count="4">
+            <div style="border-radius:12px;background:{{ d.bg }};box-shadow:{{ d.sh }};margin-bottom:2px">
+              <div onClick="{{ d.go }}" style="display:flex;align-items:center;gap:10px;padding:10px;cursor:pointer">
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                  <span style="font:500 13px 'JetBrains Mono'">{{ d.name }}</span>
+                  <span style="font-size:12px;color:#6b717c">{{ d.group }} · {{ d.region }}</span>
+                </div>
+                <span style="flex:none;font-size:12px;color:{{ d.sc }}">{{ d.status }}</span>
+              </div>
+              <sc-if value="{{ d.open }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:0 10px 12px;display:flex;flex-direction:column;gap:8px;animation:dcFade .22s ease">
+                  <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.3)"><span style="flex:1;min-width:0;font:400 12px 'JetBrains Mono';overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ d.url }}</span><span onClick="{{ copy }}" style="flex:none;font-size:12px;color:#2f6fe0;cursor:pointer">Copy</span></div>
+                  <div style="display:flex;gap:14px;font-size:12px;color:#6b717c;flex-wrap:wrap"><span>{{ d.size }}</span><span>Created {{ d.created }}</span><span>{{ d.tables }} tables</span></div>
+                  <div style="display:flex;justify-content:flex-end"><div onClick="{{ d.sql }}" style="padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 1px 3px rgba(20,30,50,.08);font-size:13px;font-weight:500;cursor:pointer">Open SQL</div></div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isSql }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 8px;display:flex;flex-direction:column;gap:10px;animation:dcFade .22s ease">
+          <div style="display:flex;gap:6px;overflow-x:auto">
+            <sc-for list="{{ pick }}" as="p" hint-placeholder-count="4"><div onClick="{{ p.go }}" style="flex:none;padding:6px 10px;border-radius:999px;font:500 12px 'JetBrains Mono';cursor:pointer;background:{{ p.bg }};box-shadow:{{ p.sh }}">{{ p.name }}</div></sc-for>
+          </div>
+          <textarea value="{{ sql }}" onChange="{{ onSql }}" style="height:84px;resize:none;border:none;outline:none;border-radius:12px;padding:12px;background:rgba(255,255,255,.28);box-shadow:inset 0 1px 2px rgba(20,30,50,.06);font:400 12px/1.55 'JetBrains Mono';color:#1c1e22"></textarea>
+          <sc-if value="{{ confirmWrite }}" hint-placeholder-val="{{ false }}"><div style="padding:10px 12px;border-radius:10px;background:rgba(194,122,0,.08);box-shadow:inset 0 0 0 .5px rgba(194,122,0,.3);font-size:13px;line-height:1.4">This statement writes to <span style="font-family:'JetBrains Mono'">{{ db }}</span>. Run it anyway?</div></sc-if>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:12px;color:#9aa0aa">{{ sqlHint }}</span>
+            <div style="display:flex;gap:6px">
+              <sc-if value="{{ confirmWrite }}" hint-placeholder-val="{{ false }}"><div onClick="{{ cancelRun }}" style="padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.38);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.5),0 1px 3px rgba(20,30,50,.08);font-size:13px;font-weight:500;cursor:pointer">Cancel</div></sc-if>
+              <div onClick="{{ run }}" style="padding:6px 14px;border-radius:999px;background:#1c1e22;color:#fff;font-size:13px;font-weight:500;cursor:pointer">{{ runLabel }}</div>
+            </div>
+          </div>
+          <sc-if value="{{ hasRes }}" hint-placeholder-val="{{ false }}">
+            <div style="border-radius:12px;background:rgba(255,255,255,.34);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 1px rgba(255,255,255,.45);overflow:hidden;animation:dcFade .25s ease">
+              <div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);padding:8px 12px;font:500 11px 'JetBrains Mono';color:#9aa0aa;border-bottom:.5px solid rgba(20,30,50,.08)"><span>repo</span><span style="text-align:right">edges</span></div>
+              <sc-for list="{{ res }}" as="rr" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);padding:8px 12px;font:400 12px 'JetBrains Mono';border-bottom:.5px solid rgba(20,30,50,.05)"><span>{{ rr.a }}</span><span style="text-align:right">{{ rr.b }}</span></div></sc-for>
+              <div style="padding:8px 12px;font-size:12px;color:#9aa0aa">{{ resMeta }}</div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isGroups }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 8px;animation:dcFade .22s ease">
+          <sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 2px;border-bottom:.5px solid rgba(20,30,50,.06)">
+              <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font:500 13px 'JetBrains Mono'">{{ g.name }}</span><span style="font-size:12px;color:#6b717c">Primary {{ g.primary }} · replicas {{ g.replicas }}</span></div>
+              <span style="font-size:13px;color:#4a505a">{{ g.count }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.55);padding:10px 20px;font-size:12px;color:#6b717c">{{ footNote }}</div>
+  </div>
+  <sc-if value="{{ showLabel }}" hint-placeholder-val="{{ true }}"><div style="font:400 11px/1.6 'JetBrains Mono';color:#8a909a">tools: list_organizations · list_groups · list_databases · get_database · read_database · write_database (confirm) · create_database (gated)</div></sc-if>
+</div>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { tab: 'Databases', sel: 'atlas-edges', db: 'atlas-edges', sql: 'SELECT repo, COUNT(*) AS edges\nFROM cross_repo_edges\nGROUP BY repo;', confirm: false, res: null, note: '' };
+  D = [
+    { name: 'atlas-edges', group: 'default', region: 'aws-us-east-1', status: 'Healthy', size: '182 MB', created: 'Mar 2', tables: 6 },
+    { name: 'atlas-cache', group: 'default', region: 'aws-us-east-1', status: 'Healthy', size: '64 MB', created: 'Apr 18', tables: 3 },
+    { name: 'beads-mirror', group: 'agents', region: 'aws-eu-west-1', status: 'Healthy', size: '12 MB', created: 'Sep 9', tables: 4 },
+    { name: 'trail-learnings', group: 'agents', region: 'aws-eu-west-1', status: 'Sleeping', size: '8 MB', created: 'Oct 1', tables: 2 },
+  ];
+  frames() {
+    const e = !!this.props.embedded;
+    return e ? [{ w: '100%', h: '100%', ho: '100%', label: '' }] : [{ w: '480px', h: '640px', ho: 'auto', label: 'Desktop · 480' }, { w: '360px', h: '640px', ho: 'auto', label: 'Narrow · 360' }];
+  }
+  note(m) { this.setState({ note: m }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ note: '' }), 1800); }
+  exec(write) { this.setState({ confirm: false, res: write ? { rows: [], meta: '1 row affected · 9 ms' } : { rows: [{ a: 'web-app', b: '1,204' }, { a: 'api-service', b: '2,871' }, { a: 'shared-lib', b: '3,318' }], meta: '3 rows · 14 ms · read' } }); }
+  renderVals() {
+    const e = !!this.props.embedded, st = this.state;
+    const seg = on => ({ bg: on ? 'rgba(255,255,255,.78)' : 'transparent', sh: on ? 'inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.6),0 3px 10px rgba(30,45,70,.14)' : 'none' });
+    const tabs = ['Databases', 'SQL', 'Groups'].map(l => ({ label: l, ...seg(l === st.tab), go: () => this.setState({ tab: l }) }));
+    const dbs = this.D.map(d => { const on = d.name === st.sel; return { ...d, open: on, sc: d.status === 'Healthy' ? '#1f9d55' : '#9aa0aa', url: 'libsql://' + d.name + '-acme.turso.io',
+      bg: on ? 'rgba(255,255,255,.46)' : 'transparent', sh: on ? 'inset 0 1px 0 rgba(255,255,255,.95),inset 0 0 0 1px rgba(255,255,255,.5),0 6px 18px rgba(30,45,70,.1)' : 'none',
+      go: () => this.setState({ sel: on ? null : d.name }), sql: () => this.setState({ tab: 'SQL', db: d.name, res: null }) }; });
+    const pick = this.D.map(d => ({ name: d.name, bg: d.name === st.db ? 'rgba(255,255,255,.78)' : 'rgba(255,255,255,.25)', sh: d.name === st.db ? 'inset 0 1px 0 #fff,0 3px 10px rgba(30,45,70,.14)' : 'none', go: () => this.setState({ db: d.name, res: null, confirm: false }) }));
+    const write = /^\s*(insert|update|delete|drop|alter|create|replace)\b/i.test(st.sql);
+    const groups = [{ name: 'default', primary: 'us-east-1', replicas: 'eu-west-1', count: '2 databases' }, { name: 'agents', primary: 'eu-west-1', replicas: 'none', count: '2 databases' }];
+    return {
+      frames: this.frames(), pad: e ? '0' : '64px', wrapH: e ? '100%' : 'auto', showLabel: !e, tabs,
+      isDbs: st.tab === 'Databases', isSql: st.tab === 'SQL', isGroups: st.tab === 'Groups',
+      dbs, copy: () => this.note('URL copied'), pick, db: st.db, sql: st.sql, onSql: ev => this.setState({ sql: ev.target.value, confirm: false }),
+      sqlHint: write ? 'Write statement' : 'Read', confirmWrite: st.confirm, runLabel: st.confirm ? 'Run write' : 'Run',
+      run: () => { if (write && !st.confirm) this.setState({ confirm: true }); else this.exec(write); }, cancelRun: () => this.setState({ confirm: false }),
+      hasRes: !!st.res, res: st.res ? st.res.rows : [], resMeta: st.res ? st.res.meta : '', groups,
+      footNote: st.note || '4 databases · tokens are never shown',
+    };
+  }
+}
+</script>
+</body>
+</html>
