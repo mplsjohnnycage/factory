@@ -1,0 +1,44 @@
+:root {
+  --bg-deep: #e8eef4;
+  --bg-mid: #f4f7fa;
+  --ink: #15202b;
+  --ink-muted: #4a5a6a;
+  --accent: #0f6e56;
+  --accent-ink: #084c3a;
+  --glass: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --edge: rgba(21, 32, 43, 0.08);
+  --node: #1a6b8a;
+  --node-soft: rgba(26, 107, 138, 0.18);
+  --font-display: var(--font-syne), "Syne", sans-serif;
+  --font-body: var(--font-source-sans), "Source Sans 3", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  color: var(--ink);
+  font-family: var(--font-body);
+  background:
+    radial-gradient(1200px 700px at 70% 15%, rgba(26, 107, 138, 0.16), transparent 60%),
+    radial-gradient(900px 600px at 10% 80%, rgba(15, 110, 86, 0.12), transparent 55%),
+    linear-gradient(165deg, var(--bg-mid) 0%, var(--bg-deep) 100%);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}

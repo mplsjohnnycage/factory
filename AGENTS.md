@@ -72,7 +72,7 @@ Linear remains human visibility; Meta Beads is ready/claim/parallel SoT for meta
 
 ## Layout (mandated §2)
 
-See `README.md` and master production plan. Apps: `apps/factory-gateway/`, `apps/sandbox-harness/`, `apps/project-supervisor/`, `apps/developer-os/`.
+See `README.md` and master production plan. Apps: `apps/factory-gateway/`, `apps/sandbox-harness/`, `apps/project-supervisor/`, `apps/developer-os/` (Next.js → Vercel; PBI-008 shell).
 
 ## LogicSRC emits (index)
 
