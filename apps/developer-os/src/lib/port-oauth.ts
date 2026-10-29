@@ -29,6 +29,14 @@ export const DEFAULT_OAUTH_SCOPES = "openid profile email offline_access" as con
 
 export const CALLBACK_PATH = "/api/auth/callback" as const;
 
+/**
+ * Stable production / fleet origin for Port `redirect_uri`.
+ * Must match a registered Factory External Interface allowlist entry.
+ * Never use ephemeral `*.vercel.app` deployment hosts here.
+ */
+export const CANONICAL_DEVOS_ORIGIN =
+  "https://factory-developer-os.vercel.app" as const;
+
 export type PortOAuthConfig = {
   clientId: string;
   redirectUri: string;
@@ -50,6 +58,43 @@ export type PortTokenResponse = {
   scope?: string;
 };
 
+/**
+ * Public origin for Port OAuth redirect_uri.
+ *
+ * Preference:
+ * 1. `NEXT_PUBLIC_DEVOS_URL` (explicit pin — preferred)
+ * 2. Production on Vercel → `CANONICAL_DEVOS_ORIGIN` (never `VERCEL_URL`)
+ * 3. Preview / non-prod Vercel → `https://${VERCEL_URL}` only when no pin
+ * 4. Local → `http://localhost:3000`
+ *
+ * Production must never mint a rotating deployment host into authorize.
+ */
+export function resolveDevOsOrigin(env: EnvMap = process.env): string {
+  const explicit = env.NEXT_PUBLIC_DEVOS_URL?.trim();
+  if (explicit) {
+    return explicit.replace(/\/$/, "");
+  }
+
+  const onVercel = Boolean(env.VERCEL);
+  const vercelEnv = env.VERCEL_ENV?.trim();
+  const isProduction =
+    vercelEnv === "production" ||
+    (onVercel && env.NODE_ENV === "production" && vercelEnv !== "preview");
+
+  if (isProduction) {
+    // Hard pin: production Port OAuth must use the stable allowlisted origin.
+    // Falling back to VERCEL_URL creates a new redirect_uri host per deploy.
+    return CANONICAL_DEVOS_ORIGIN;
+  }
+
+  const vercelHost = env.VERCEL_URL?.trim();
+  if (vercelHost) {
+    return `https://${vercelHost.replace(/\/$/, "")}`;
+  }
+
+  return "http://localhost:3000";
+}
+
 export function resolvePortOAuthConfig(env: EnvMap = process.env): PortOAuthConfig {
   if (env[OBSERVATORY_FORBIDDEN_ENV]) {
     throw new Error(
@@ -64,11 +109,7 @@ export function resolvePortOAuthConfig(env: EnvMap = process.env): PortOAuthConf
     );
   }
 
-  const explicit = env.NEXT_PUBLIC_DEVOS_URL?.trim();
-  const vercelHost = env.VERCEL_URL?.trim();
-  const base =
-    explicit || (vercelHost ? `https://${vercelHost}` : "http://localhost:3000");
-  const origin = base.replace(/\/$/, "");
+  const origin = resolveDevOsOrigin(env);
 
   const auth0Domain =
     env.PORT_AUTH0_DOMAIN?.trim() || DEFAULT_AUTH0_DOMAIN;

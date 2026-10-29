@@ -110,15 +110,13 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  // Prefer redirect_uri derived from the request origin so it matches the
-  // authorize step when NEXT_PUBLIC_DEVOS_URL / VERCEL_URL differ.
-  const requestOrigin = url.origin;
-  const redirectUri = `${requestOrigin}/api/auth/callback`;
-  const exchangeConfig = { ...config, redirectUri };
+  // Always exchange with the same redirect_uri used at authorize
+  // (resolvePortOAuthConfig / NEXT_PUBLIC_DEVOS_URL / canonical prod pin).
+  // Never rebuild from request Host — deployment hosts break Port allowlist match.
 
   let tokens;
   try {
-    tokens = await exchangePortToken(exchangeConfig, {
+    tokens = await exchangePortToken(config, {
       grant_type: "authorization_code",
       code,
       code_verifier: verifier,
@@ -133,7 +131,9 @@ export async function GET(req: NextRequest) {
     return res;
   }
 
-  const res = NextResponse.redirect(new URL("/?port=signed-in", url.origin), 302);
+  // Land on the stable origin when configured; fall back to request host for local.
+  const postLoginOrigin = new URL(config.redirectUri).origin;
+  const res = NextResponse.redirect(new URL("/?port=signed-in", postLoginOrigin), 302);
   clearOauthCookies(res);
 
   const accessMaxAge = Math.max(60, tokens.expires_in);
