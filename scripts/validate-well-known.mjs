@@ -51,6 +51,53 @@ if (JSON.stringify(openmcp.json).includes("0.0.0-scaffold")) {
   ok("openmcp is not a scaffold placeholder");
 }
 
+const ATLAS_DOTTED = [
+  "atlas.find_node",
+  "atlas.expand_dependencies",
+  "atlas.get_task_impact",
+  "atlas.get_related_sessions",
+  "atlas.get_agent_traces",
+];
+const tools = openmcp.json.tools;
+if (!Array.isArray(tools)) {
+  fail("openmcp.tools must be an array");
+} else {
+  for (const name of ATLAS_DOTTED) {
+    if (!tools.includes(name)) fail(`openmcp.tools missing ${name}`);
+    else ok(`openmcp.tools includes ${name}`);
+  }
+  const underscoreAtlas = tools.filter(
+    (t) => typeof t === "string" && /^atlas_/.test(t),
+  );
+  if (underscoreAtlas.length > 0) {
+    fail(
+      `openmcp.tools must advertise dotted atlas.* only (found Port-style: ${underscoreAtlas.join(", ")})`,
+    );
+  } else {
+    ok("openmcp.tools has no atlas_* underscore aliases");
+  }
+}
+
+const atlasMap = openmcp.json.factory?.atlas_tools?.map;
+if (!atlasMap || typeof atlasMap !== "object") {
+  fail("openmcp.factory.atlas_tools.map required (OpenMCP dotted → Port underscore)");
+} else {
+  for (const name of ATLAS_DOTTED) {
+    const portId = atlasMap[name];
+    const expected = name.replace(/\./g, "_");
+    if (portId !== expected) {
+      fail(`atlas_tools.map[${name}] expected ${expected}, got ${JSON.stringify(portId)}`);
+    } else {
+      ok(`atlas_tools.map ${name} → ${portId}`);
+    }
+  }
+}
+if (openmcp.json.factory?.atlas_tools?.naming !== "openmcp-dotted") {
+  fail('openmcp.factory.atlas_tools.naming must be "openmcp-dotted"');
+} else {
+  ok("openmcp.atlas_tools.naming = openmcp-dotted");
+}
+
 if (openaccess.json.openaccess !== "0.1") {
   fail(`openaccess.openaccess expected "0.1", got ${JSON.stringify(openaccess.json.openaccess)}`);
 } else {
