@@ -3,7 +3,7 @@
 **Lane:** Meta  
 **Purpose:** Operator preflight before Port → `factory-gateway` WEBHOOK remount  
 **Script:** `scripts/gateway-remount-dry-run.mjs`  
-**Related:** [`docs/port-workflow-webhooks.md`](./port-workflow-webhooks.md) · [`docs/gateway-hmac-smoke.md`](./gateway-hmac-smoke.md) · [`docs/beads-admit-gateway-path.md`](./beads-admit-gateway-path.md) · `scripts/gateway-tailnet-health.mjs`
+**Related:** [`docs/port-workflow-webhooks.md`](./port-workflow-webhooks.md) · [`docs/gateway-hmac-smoke.md`](./gateway-hmac-smoke.md) · [`docs/beads-admit-gateway-path.md`](./beads-admit-gateway-path.md) · [`docs/ops/gateway-dockerfile-health.md`](./ops/gateway-dockerfile-health.md) (image `/health` contract offline) · `scripts/gateway-tailnet-health.mjs`
 
 ## Verdict
 

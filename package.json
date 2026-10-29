@@ -33,6 +33,7 @@
     "dry-run:rivet-compose-serve": "node scripts/rivet-compose-serve-dry-run.mjs",
     "dry-run:sandbox-harness": "node scripts/sandbox-harness-dry-run.mjs",
     "dry-run:bdmetabeads": "node scripts/bdmetabeads-dry-run.mjs",
+    "dry-run:gateway-dockerfile-health": "node scripts/gateway-dockerfile-health-dry-run.mjs",
     "dry-run:beads-dolt-health": "node scripts/beads-dolt-health-dry-run.mjs"
   },
   "dependencies": {
