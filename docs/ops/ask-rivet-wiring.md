@@ -54,6 +54,10 @@ docker run --rm -d --name fe198-livefail -p 3002:3000 \
 2026-10-29 evidence: smoke container PASS (home 200 · ask → client+ack · headers
 `x-factory-stream: rivet-native`) and live-fail container PASS (all routes 502).
 
+PowerShell note: the `curl` smoke lines above are bash-shaped (backslash
+continuations, `grep -q`). On Windows, run each curl on a single line or use
+Git Bash — same commands as the down-shifted ops docs.
+
 ## Boundaries
 
 | Rule | Why |
