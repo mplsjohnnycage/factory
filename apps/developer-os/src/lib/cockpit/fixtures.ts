@@ -97,12 +97,12 @@ export const ASSEMBLY: AssemblyCard[] = [
 ];
 
 export const APPS: AppTile[] = [
-  { id: "port", name: "Port", href: "/api/auth/port/login", glow: "rgba(22, 163, 74, 0.45)", monogram: "P" },
+  { id: "port", name: "Port", href: "/providers", glow: "rgba(22, 163, 74, 0.45)", monogram: "P" },
   { id: "atlas", name: "Code Atlas", href: "/atlas", glow: "rgba(10, 132, 255, 0.4)", monogram: "A" },
-  { id: "github", name: "GitHub", href: "https://github.com/mplsjohnnycage/factory", glow: "rgba(255, 255, 255, 0.2)", monogram: "G" },
-  { id: "vercel", name: "Vercel", href: "https://factory-developer-os.vercel.app", glow: "rgba(255, 255, 255, 0.18)", monogram: "▲" },
+  { id: "github", name: "GitHub", href: "/providers", glow: "rgba(255, 255, 255, 0.2)", monogram: "G" },
+  { id: "vercel", name: "Vercel", href: "/providers", glow: "rgba(255, 255, 255, 0.18)", monogram: "▲" },
   { id: "rivet", name: "Rivet", href: "/session/demo", glow: "rgba(191, 90, 242, 0.35)", monogram: "R" },
-  { id: "add", name: "Add", href: "#", glow: "rgba(255, 255, 255, 0.08)", monogram: "+" },
+  { id: "add", name: "Add", href: "/providers", glow: "rgba(255, 255, 255, 0.08)", monogram: "+" },
 ];
 
 /** Simplified constellation nodes for the Context Lake field. */

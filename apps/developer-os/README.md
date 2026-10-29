@@ -20,6 +20,9 @@ Lane: **Meta only** · browser never calls Sandbox Agent · no Port OAuth create
 | `src/app/intelligence/page.tsx` | Codebase Intelligence — cross-repo symbol graph |
 | `src/components/IntelligenceGraph.tsx` | Symbol lanes · solid in-repo / dashed brown cross-repo |
 | `src/lib/intelligence/` | FE-196 fixture graph (no Port upserts) |
+| `src/app/providers/page.tsx` | Provider widgets — dark tile grid + light dashboard |
+| `src/components/ProviderGrid.tsx` | Port · Vercel · GitHub · Convex · Docker · Turso tiles |
+| `src/lib/providers/` | FE-197 fixtures (status/KPIs only · no secrets) |
 | `src/lib/atlas/` | STL-154 projection + MCP tools + lake fixtures |
 | `src/app/api/atlas/subgraph` | Viewport-capped subgraph JSON |
 | `src/app/api/atlas/tools` | Bounded `atlas.*` tool list + invoke |
