@@ -1,12 +1,15 @@
 node_modules/
+.turbo/
 .next/
 .venv/
+.vercel/
 .env
 .env.*
 !.env.example
 dist/
 *.log
 .DS_Store
+.playwright-mcp/
 
 # Beads / Dolt (root). Tracked under .beads/: config.yaml, metadata.json, README.md, .gitignore
 # Runtime DB + locks are ignored via .beads/.gitignore (dolt/, embeddeddolt/, etc.)
