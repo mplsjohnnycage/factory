@@ -69,8 +69,18 @@ Signed claim already verified under FE-142 — see [`gateway-hmac-smoke.md`](./g
 
 ## Local Beads dry-run (no Funnel)
 
+Ops kit (markers + optional Memory admit-entry tests):
+
 ```bash
-cd apps/project-supervisor && npm test   # BdMetaBeads + admitFromPayload
+npm run dry-run:supervisor-admit
+npm run dry-run:supervisor-admit -- --memory
+# docs: docs/ops/supervisor-admit-dry-run.md
+```
+
+Package tests (BdMetaBeads + admitFromPayload):
+
+```bash
+cd apps/project-supervisor && npm test
 # or: createBdSupervisor({ cwd }) + admit with factory-* beadId
 ```
 
