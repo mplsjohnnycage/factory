@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 /**
- * PBI-013 — ASDLC local gate: ONE command refuses dirty/invalid.
+ * PBI-013 / PBI-014 — ASDLC local gate: ONE command refuses dirty/invalid.
  *
  * Steps (deterministic):
  *   1. Spec + ADR inventory (Blueprint/Contract anatomy)
  *   2. LogicSRC M1 emits presence + no scaffold placeholders
  *   3. Well-known OpenMCP/OpenAccess shape (scripts/validate-well-known.mjs)
- *   4. @logicsrc/validators on fixtures + optional prd/** + agents that match logicsrc.agent
- *   5. Typecheck + test for kernel apps (and developer-os when present)
- *   6. Lint / placeholder refuse
+ *   4. @logicsrc/validators on fixtures + agents that match logicsrc.agent
+ *   5. OpenPRD collection under prd/ via @logicsrc/openprd (PBI-014: 0001–0005 Accepted)
+ *   6. Typecheck + test for kernel apps (and developer-os when present)
+ *   7. Lint / placeholder refuse
  *
  * Exit 0 = clean. Non-zero = refuse.
  * Meta lane only — never Product Beads.
@@ -231,33 +232,6 @@ function checkLogicsrcValidators(validators) {
     }
   }
 
-  // Optional: prd/** OpenPRD bodies when present (PBI-014+)
-  const prdRoot = join(ROOT, "prd");
-  if (existsSync(prdRoot)) {
-    walkFiles(prdRoot, (abs) => /\.(md|ya?ml|json)$/i.test(abs)).forEach((abs) => {
-      const raw = readFileSync(abs, "utf8");
-      // Skip empty dirs / README-only stubs without openprd front matter
-      if (!/openprd\s*:/i.test(raw) && !/"openprd"\s*:/.test(raw)) {
-        ok(`skip non-OpenPRD ${abs.slice(ROOT.length + 1)}`);
-        return;
-      }
-      try {
-        const data = parseDocument(raw, abs);
-        const result = validate("openprd-prd", data);
-        if (!result.ok) {
-          fail(`OpenPRD invalid: ${abs.slice(ROOT.length + 1)}`);
-          for (const err of result.errors ?? []) {
-            console.error(`  - ${err.instancePath || "/"} ${err.message}`);
-          }
-        } else {
-          ok(`OpenPRD OK ${abs.slice(ROOT.length + 1)}`);
-        }
-      } catch (err) {
-        fail(`OpenPRD parse failed ${abs.slice(ROOT.length + 1)}: ${err.message}`);
-      }
-    });
-  }
-
   // agents/*.json that declare logicsrc.agent type
   const agentsDir = join(ROOT, "agents");
   if (existsSync(agentsDir)) {
@@ -291,6 +265,92 @@ function inferKind(fileName, raw) {
   if (/openworkflow/i.test(fileName)) return "openworkflow";
   if (/task/i.test(fileName)) return "task";
   return "agent";
+}
+
+const REQUIRED_OPENPRD_IDS = ["0001", "0002", "0003", "0004", "0005"];
+
+/**
+ * PBI-014 — OpenPRD 0001–0005 Accepted; full 0.3 conformance via @logicsrc/openprd.
+ * Front-matter-only AJV is insufficient (ten sections + collection numbering).
+ */
+async function checkOpenPrd() {
+  section("OpenPRD collection (PBI-014)");
+  const prdRoot = join(ROOT, "prd");
+  if (!existsSync(prdRoot)) {
+    fail("prd/ missing — PBI-014 requires OpenPRD 0001–0005 Accepted");
+    return;
+  }
+
+  let openprd;
+  try {
+    openprd = await import("@logicsrc/openprd");
+  } catch (err) {
+    fail(`@logicsrc/openprd unavailable: ${err.message}`);
+    return;
+  }
+
+  const { loadPrdCollection, validatePrdCollection, renderIndex } = openprd;
+  let collection;
+  try {
+    collection = loadPrdCollection(prdRoot);
+  } catch (err) {
+    fail(`OpenPRD load failed: ${err.message}`);
+    return;
+  }
+
+  for (const bad of collection.unparsed ?? []) {
+    fail(`OpenPRD unparsed ${bad.file}: ${bad.reason}`);
+  }
+
+  if (!collection.template) {
+    fail("prd/0000-template.md missing");
+  } else {
+    ok("prd/0000-template.md present");
+  }
+
+  const byId = new Map(
+    collection.documents.map((doc) => [doc.frontMatter.id, doc]),
+  );
+  for (const id of REQUIRED_OPENPRD_IDS) {
+    const doc = byId.get(id);
+    if (!doc) {
+      fail(`OpenPRD ${id} missing under prd/`);
+      continue;
+    }
+    if (doc.frontMatter.status !== "Accepted") {
+      fail(
+        `OpenPRD ${id} status is ${doc.frontMatter.status} (expected Accepted)`,
+      );
+    } else {
+      ok(`OpenPRD ${id} Accepted (${doc.file})`);
+    }
+  }
+
+  const expectedIndex = renderIndex(collection, {
+    title: "Factory Meta OpenPRDs",
+  }).replace(
+    "Numbered [OpenPRD](../docs/openprd.md) product requirements documents for this repo.",
+    "Numbered [OpenPRD](https://logicsrc.com/docs/openprd) product requirements documents for Factory Meta (PBI-014). Meta lane only — not Product Beads.",
+  );
+  const report = validatePrdCollection(collection, {
+    strict: true,
+    expectedVersion: "0.3",
+    expectedIndex,
+  });
+  if (!report.ok) {
+    fail("OpenPRD collection validation refused");
+    for (const finding of report.findings ?? []) {
+      if (finding.severity === "error" || finding.severity === "warning") {
+        console.error(
+          `  - ${finding.code} ${finding.file ?? ""}:${finding.line ?? "?"} ${finding.message}`,
+        );
+      }
+    }
+  } else {
+    ok(
+      `OpenPRD collection OK (${report.checked.documents} docs, ${report.checked.sections} sections)`,
+    );
+  }
 }
 
 function walkFiles(dir, pred) {
@@ -383,7 +443,7 @@ function checkRefuseInvalid(validators) {
 }
 
 async function main() {
-  console.log("Factory Meta local gate (PBI-013 / STL-174)");
+  console.log("Factory Meta local gate (PBI-013 + PBI-014 OpenPRD)");
   console.log(`root=${ROOT}`);
 
   checkSpecInventory();
@@ -394,6 +454,7 @@ async function main() {
   const validators = await loadValidators();
   checkLogicsrcValidators(validators);
   checkRefuseInvalid(validators);
+  await checkOpenPrd();
   checkLintPlaceholders();
   checkApps();
 

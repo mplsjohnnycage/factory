@@ -2,7 +2,7 @@
   "name": "@factory/meta",
   "version": "0.1.0",
   "private": true,
-  "description": "Factory Meta repo root — local gate + LogicSRC validators (PBI-013)",
+  "description": "Factory Meta repo root — local gate + LogicSRC validators + OpenPRD (PBI-013/014)",
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -11,9 +11,11 @@
     "local-gate": "node scripts/local-gate.mjs",
     "test": "node --test scripts/local-gate-refuse.test.mjs",
     "test:local-gate": "node --test scripts/local-gate-refuse.test.mjs",
-    "validate:well-known": "node scripts/validate-well-known.mjs"
+    "validate:well-known": "node scripts/validate-well-known.mjs",
+    "validate:openprd": "node scripts/local-gate.mjs"
   },
   "dependencies": {
+    "@logicsrc/openprd": "^0.2.0",
     "@logicsrc/validators": "0.6.0"
   }
 }

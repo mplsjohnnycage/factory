@@ -17,7 +17,8 @@ Emit inventory-mandatory LogicSRC interoperability files from Specs. LogicSRC is
 - **PBI-003 emit (inventory §7 items 1–2 + AGENTS index):** `OpenStack.md` + `/.well-known/openstack.md`; operator `OpenProfile.md` + `/.well-known/openprofile.md`; `AGENTS.md` remains index-only.
 - OpenMCP / OpenAccess well-known JSON emitted under PBI-010 (no Port OAuth create from those files).
 - Full inventory §7 Factory-mandatory checklist beyond M1 Required rows = post-M1.
-- Validate with `@logicsrc/validators@0.6.0` in ASDLC local gate (`npm run local-gate` / PBI-013). OpenPRD bodies under `prd/` are validated as `openprd-prd` when present; well-known OpenMCP/OpenAccess use `scripts/validate-well-known.mjs`.
+- Validate with `@logicsrc/validators@0.6.0` in ASDLC local gate (`npm run local-gate` / PBI-013). Well-known OpenMCP/OpenAccess use `scripts/validate-well-known.mjs`.
+- **PBI-014 (post-M1; author OK / not M1 exit):** OpenPRD collection under `prd/` (`0000-template` + Accepted `0001`…`0005`) validates via `@logicsrc/openprd@0.2.0` (ten sections + front-matter + collection rules) inside the same local gate.
 
 ### Constraints
 
@@ -34,12 +35,14 @@ Emit inventory-mandatory LogicSRC interoperability files from Specs. LogicSRC is
 - **PBI-010:** inventory §7 items 9–10 present (`/.well-known/openmcp.json`, `/.well-known/openaccess.json`); validated by `scripts/validate-well-known.mjs`; zero Port mutations.
 - **M1:** emit + validate only §13.6 Required rows.
 - **Post-M1:** inventory §7 Factory-mandatory checklist green.
+- **PBI-014:** `prd/0001`…`0005` Accepted OpenPRD 0.3 present and gate-validated (not an M1 exit criterion).
 
 ### Regression Guardrails
 
 - No invented catalogs outside inventory + Spec ownership.
-- Validators refuse invalid OpenPRD / schema artifacts in local gate (`scripts/local-gate.mjs` + `@logicsrc/validators`).
+- Validators refuse invalid OpenPRD / schema artifacts in local gate (`scripts/local-gate.mjs` + `@logicsrc/validators` + `@logicsrc/openprd`).
 - Placeholder OpenStack/OpenProfile bodies are not Accepted emissions.
+- OpenPRD batch is Meta product-intent only — never Product Beads.
 
 ### Scenarios
 
@@ -71,5 +74,12 @@ Scenario: PBI-010 OpenMCP and OpenAccess inventory rows present
   Then inventory §7 items 9 and 10 pass shape checks
   And neither file is a scaffold placeholder
   And neither file creates, deletes, or revokes Port External Interface apps
+
+Scenario: PBI-014 OpenPRD 0001-0005 collection present
+  Given prd/0000-template.md and Accepted prd/0001 through prd/0005
+  When npm run local-gate runs @logicsrc/openprd collection validation
+  Then OpenPRD 0.3 front-matter and ten sections pass
+  And numbering has no gaps
+  And this is post-M1 author work (not an M1 Required emit row)
 ```
 
