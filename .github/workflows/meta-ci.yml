@@ -1,0 +1,82 @@
+# Always-on Meta CI presence check (ADR-008 / PBI-011 foundation).
+# Ensures Specs/ADRs/docs-only PRs are never empty of Actions.
+name: meta-ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: meta-ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  meta-ci-presence:
+    name: meta-ci-presence
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Record SHA for accept path
+        run: |
+          set -euo pipefail
+          SHA="$(git rev-parse HEAD)"
+          SHORT="$(git rev-parse --short HEAD)"
+          echo "accept_sha=${SHA}"
+          echo "accept_sha_short=${SHORT}"
+          echo "event=${GITHUB_EVENT_NAME}"
+          echo "ref=${GITHUB_REF}"
+          echo "### Accept-path SHA" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Full:** \`${SHA}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Short:** \`${SHORT}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Event:** \`${GITHUB_EVENT_NAME}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "${SHA}" > "${RUNNER_TEMP}/accept_sha.txt"
+
+      - name: Spec + ADR inventory smoke
+        run: |
+          set -euo pipefail
+          test -f AGENTS.md
+          test -d specs
+          test -d docs/adrs
+
+          echo "## Spec stubs" >> "$GITHUB_STEP_SUMMARY"
+          missing=0
+          while IFS= read -r domain; do
+            path="specs/${domain}/spec.md"
+            if [[ -f "$path" ]]; then
+              echo "- OK \`${path}\`" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "- MISSING \`${path}\`" >> "$GITHUB_STEP_SUMMARY"
+              missing=1
+            fi
+          done <<'EOF'
+          factory-kernel
+          port-governance
+          rivet-execution
+          sandbox-harness
+          developer-os
+          auth-port-oauth
+          logicsrc-interop
+          visibility-accept
+          security-blast-radius
+          asdlc-lifecycle
+          EOF
+
+          adr_count="$(find docs/adrs -maxdepth 1 -type f -name 'ADR-*.md' | wc -l | tr -d ' ')"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "## ADRs" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Count: ${adr_count} (\`docs/adrs/ADR-*.md\`)" >> "$GITHUB_STEP_SUMMARY"
+          if [[ "${adr_count}" -lt 1 ]]; then
+            echo "Expected at least one ADR body under docs/adrs/" >&2
+            exit 1
+          fi
+
+          if [[ "${missing}" -ne 0 ]]; then
+            echo "One or more domain Spec stubs missing" >&2
+            exit 1
+          fi
+
+          echo "OK meta-ci-presence on $(cat "${RUNNER_TEMP}/accept_sha.txt")"

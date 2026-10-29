@@ -2,6 +2,7 @@ name: sandbox-harness
 
 on:
   push:
+    branches: [main]
     paths:
       - "apps/sandbox-harness/**"
       - "agents/coder.factory.json"
@@ -12,8 +13,13 @@ on:
       - "agents/coder.factory.json"
       - ".github/workflows/sandbox-harness.yml"
 
+concurrency:
+  group: sandbox-harness-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  test:
+  sandbox-typecheck-test:
+    name: sandbox-typecheck-test
     runs-on: ubuntu-latest
     defaults:
       run:

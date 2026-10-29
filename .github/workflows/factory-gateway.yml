@@ -2,6 +2,7 @@ name: factory-gateway
 
 on:
   push:
+    branches: [main]
     paths:
       - "apps/factory-gateway/**"
       - ".github/workflows/factory-gateway.yml"
@@ -10,8 +11,13 @@ on:
       - "apps/factory-gateway/**"
       - ".github/workflows/factory-gateway.yml"
 
+concurrency:
+  group: factory-gateway-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  test:
+  gateway-typecheck-test:
+    name: gateway-typecheck-test
     runs-on: ubuntu-latest
     defaults:
       run:

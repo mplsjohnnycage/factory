@@ -2,6 +2,7 @@ name: compose-lint
 
 on:
   push:
+    branches: [main]
     paths:
       - "compose/**"
       - "bin/rivet-healthcheck.sh"
@@ -12,8 +13,13 @@ on:
       - "bin/rivet-healthcheck.sh"
       - ".github/workflows/compose-lint.yml"
 
+concurrency:
+  group: compose-lint-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  lint:
+  compose-config-lint:
+    name: compose-config-lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
