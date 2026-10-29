@@ -13,6 +13,7 @@ Port is system of record for Factory catalog, RBAC, workflows-as-MCP-tools, MCP 
 
 - Live catalog blueprints to bind (do not invent parallel names): `product`, `service`, `executionContract`, `deliveryRun`, `executionAttempt`, `executionRunner`, `bot`, `_mcp_server`, `agentPlugin`, `skill`, `harness_session`.
 - Workflows: `factory_create_execution_contract`, `factory_start_delivery_run`, `factory_claim_next_job`, `factory_heartbeat`, `factory_submit_evidence`, `factory_record_review_verdict`, `factory_request_release` (Johnny-only INPUT).
+- **Meta self-service handlers:** `ss_convex_create_preview`, `ss_convex_set_env` WEBHOOK → `factory-gateway` `POST /handlers/self-service` (as-code under `port/workflows/`). Prospect / Painter `ss_*` NEEDS HANDLER stubs stay Product lane.
 - **§4.2.1 catalog write fencing:** single-writer per `{blueprint}:{entityIdentifier}` inside the thin Factory gateway (`apps/factory-gateway/`); `catalogVersion` bump; reject stale writes; lease/claim fields mutate only in the same apply.
 - **Meta fences vs Ocean mirrors:** Factory-governed blueprints listed above are **Meta-fenced** — Ocean sync and Port MCP entity upserts must enter via `POST /catalog/sync-write` (or `/catalog/write`) and cannot set `bypassFence`. Context Lake mirror blueprints (`github*` / `linear*` / `vercel*` / `convex*`) may continue via Port Ocean native sync; they are not Meta-fenced. Unknown blueprints fail closed as Meta-fenced. See `docs/ocean-mcp-write-fencing.md`.
 - **§4.2.2 stack assembly:** Port validates stack compatibility as machine rules before provision / Coding admit.
@@ -20,11 +21,12 @@ Port is system of record for Factory catalog, RBAC, workflows-as-MCP-tools, MCP 
 
 ### Constraints
 
-- WEBHOOK backend targets Factory gateway (`POST /webhooks/port` with Port HMAC).
+- WEBHOOK backend targets Factory gateway (`POST /webhooks/port` with Port HMAC for admit; `POST /handlers/self-service` for Meta SS handlers with HMAC or shared bearer).
 - All catalog writes use §4.2.1 fencing — no raw dual-write from Ocean sync, MCP, or Rivet onto Meta-fenced blueprints.
 - Ocean mappings must not target Meta-fenced blueprints unless the apply path POSTs the gateway sync ingress.
 - Rivet `ProjectSupervisor` fences execution admission only — it does not replace §4.2.1 for catalog bytes.
 - Port entity upserts are create-or-update only (no product CAS); Factory supplies version fence.
+- Do not implement Product-lane Prospect / Painter OS self-service backends in Meta gateway.
 
 ## Contract
 
@@ -90,5 +92,12 @@ Scenario: PBI-010 OpenMCP inventory item 9
   Then the required mcp key names the Factory MCP entry (Port remote MCP)
   And factory.no_port_oauth_mutation is true
   And this unit does not create or delete Port External Interface apps
+
+Scenario: Meta Convex self-service uses gateway handler
+  Given workflow ss_convex_create_preview is published
+  When Johnny approves a run with convexProjectId and kind=preview
+  Then Port WEBHOOK POSTs to factory-gateway /handlers/self-service
+  And the gateway calls Convex Management create_deployment when CONVEX_TEAM_TOKEN is set
+  And Prospect/Painter ss_* stubs remain product_lane_stub (HTTP 501) if invoked on the gateway
 ```
 

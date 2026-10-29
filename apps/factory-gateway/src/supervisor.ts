@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { resolveFactoryActionIdentifier } from "./factory-workflows.js";
 import type { PortWebhookBody, SupervisorAdmit } from "./types.js";
 
 /**
@@ -28,12 +29,7 @@ export class ProjectSupervisorQueue {
     const admit: SupervisorAdmit = {
       id: randomUUID(),
       receivedAt: new Date().toISOString(),
-      actionIdentifier:
-        typeof payload.action === "string"
-          ? payload.action
-          : typeof (payload as { actionIdentifier?: unknown }).actionIdentifier === "string"
-            ? ((payload as { actionIdentifier: string }).actionIdentifier)
-            : undefined,
+      actionIdentifier: resolveFactoryActionIdentifier({ body: payload }),
       runId:
         typeof payload.runId === "string"
           ? payload.runId

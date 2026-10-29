@@ -10,6 +10,12 @@ export {
   isOceanMirrorBlueprint,
   listMetaFencedBlueprints,
 } from "./meta-fences.js";
+export {
+  FACTORY_WORKFLOW_IDS,
+  isFactoryWorkflowId,
+  resolveFactoryActionIdentifier,
+} from "./factory-workflows.js";
+export type { FactoryWorkflowId } from "./factory-workflows.js";
 export { MemoryCatalogStore, writerKey } from "./memory-store.js";
 export { ProjectSupervisorQueue } from "./supervisor.js";
 export { createGatewayServer, buildDefaultDeps } from "./server.js";
@@ -67,6 +73,26 @@ export type {
   SyncWriteRequest,
   SyncWriteResult,
 } from "./sync-ingress.js";
+export {
+  dispatchSelfService,
+  verifyHandlerBearer,
+  convexClientFromEnv,
+  META_SELF_SERVICE_ACTIONS,
+  PRODUCT_SELF_SERVICE_STUBS,
+} from "./self-service-handlers.js";
+export {
+  createConvexManagementClient,
+  CONVEX_MANAGEMENT_BASE,
+} from "./convex-management.js";
+export type {
+  SelfServiceRequest,
+  SelfServiceResult,
+  MetaSelfServiceAction,
+} from "./self-service-handlers.js";
+export type {
+  ConvexManagementClient,
+  CreateDeploymentInput,
+} from "./convex-management.js";
 
 const isMain =
   process.argv[1]?.endsWith("src/index.ts") ||

@@ -15,6 +15,7 @@ Thin Meta gateway for **PBI-005 / STL-166** + **PBI-011 / STL-172** + **PBI-012 
 |--------|------|---------|
 | `GET` | `/health` | Liveness (not rate-limited) |
 | `POST` | `/webhooks/port` | HMAC-gated Port webhook → supervisor enqueue |
+| `POST` | `/webhooks/port/<factory_*>` | Same HMAC path; allowlisted workflow ID from path (Port WEBHOOK URL templates) |
 | `POST` | `/fleet/spawn` | OpenFleet ceiling gate; refuse → `ceiling.refuse` |
 | `GET` | `/fleet/ledger` | List ledger events / ceiling refuses for a fleet |
 | `POST` | `/accept/evaluate` | ADR-008 accept eligibility for exact SHA (no Port mutation) |
@@ -23,6 +24,7 @@ Thin Meta gateway for **PBI-005 / STL-166** + **PBI-011 / STL-172** + **PBI-012 
 | `POST` | `/catalog/write` | §4.2.1 fenced catalog apply |
 | `POST` | `/catalog/sync-write` | Ocean/MCP/workflow sync ingress; rejects Meta fence bypass |
 | `POST` | `/catalog/claim-next` | `factory_claim_next_job` lease patch via same writer |
+| `POST` | `/handlers/self-service` | Meta Port SS handlers (Convex preview/env); HMAC or Bearer |
 
 Mutating routes (except `/health`) are rate-limited (`GATEWAY_RATE_LIMIT_RPM`, default 60/min). Over limit → HTTP 429 + `Retry-After`.
 
@@ -31,6 +33,22 @@ Mutating routes (except `/health`) are rate-limited (`GATEWAY_RATE_LIMIT_RPM`, d
 Factory-governed blueprints (`product`, `service`, `executionContract`, …) are **Meta-fenced**: Ocean and MCP must call `/catalog/sync-write` (never raw Port dual-write, never `bypassFence: true`). Context Lake mirrors (`github*` / `linear*` / `vercel*` / `convex*`) stay on Port Ocean native sync.
 
 Design + ops: [`docs/ocean-mcp-write-fencing.md`](../../docs/ocean-mcp-write-fencing.md).
+
+## Self-service handlers (Meta)
+
+Replaces Port **NEEDS HANDLER** stubs that belong on the Meta lane:
+
+| Action | Lane | Behavior |
+|--------|------|----------|
+| `ss_convex_create_preview` | Meta | Convex Management `create_deployment` + catalog project `convexDeployment` |
+| `ss_convex_set_env` | Meta | Convex Management `update_default_environment_variables` |
+| `ss_prospect_*` / `ss_painter_*` | **Product** | HTTP 501 `product_lane_stub` — do not implement here |
+
+Auth: Port classic HMAC (`PORT_CLIENT_SECRET`) **or** `Authorization: Bearer` matching `FACTORY_GATEWAY_HANDLER_TOKEN`.
+
+As-code Port workflows: `port/workflows/`. Live Port WEBHOOK URL:
+
+`{{ .secrets["FACTORY_GATEWAY_BASE_URL"] }}/handlers/self-service`
 
 ## OpenFleet ceilings (PBI-012)
 
@@ -59,7 +77,7 @@ Optional `OPENFLEET_HOME` writes JSONL under `$OPENFLEET_HOME/fleets/<fleet>/led
 
 ## Secrets
 
-Copy `.env.example`. Set `PORT_CLIENT_SECRET` from Port (never git). Optional `RIVET_SUPERVISOR_URL` forwards admits over HTTP when Rivet is reachable.
+Copy `.env.example`. Set `PORT_CLIENT_SECRET` from Port (never git). Optional `RIVET_SUPERVISOR_URL` forwards admits over HTTP when Rivet is reachable. For Meta SS handlers also set `FACTORY_GATEWAY_HANDLER_TOKEN` + `CONVEX_TEAM_TOKEN`, and matching Port secrets `FACTORY_GATEWAY_BASE_URL` / `FACTORY_GATEWAY_HANDLER_TOKEN` / `CONVEX_TEAM_TOKEN`.
 
 ## Verify
 
@@ -69,6 +87,8 @@ npm install
 npm run typecheck
 npm test
 ```
+
+HTTP proof for all seven `factory_*` WEBHOOK admits (HMAC reject + 202 enqueue + path allowlist): `test/webhooks-port.test.ts`. Live Port wiring inventory: `docs/port-workflow-webhooks.md`.
 
 ## Lane hard rules
 
