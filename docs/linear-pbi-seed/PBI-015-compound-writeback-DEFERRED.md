@@ -1,11 +1,14 @@
-# PBI-015: CE compound writeback after first coding PBI (DEFERRED)
+# PBI-015: CE compound writeback after first coding PBI
 
 ## Status
 
-**DEFERRED / later** — HITL `/ce-compound`; depends PBI-007 (**Done** / STL-168). Do **not** auto-start. Flag human (Johnny) for writeback when a qualifying verified Meta coding lesson is chosen.
+**In progress / first writeback landed** — HITL hold lifted for planning/building (FE-145). First durable learning under `docs/solutions/` via reversible `/ce-compound` (docs-only). AGENTS.md discoverability tip **not** applied (needs Johnny consent). Depends PBI-007 (**Done** / STL-168).
 
-**Readiness (Project store):** `docs/pbi-015-readiness.md`  
-**Linear:** [STL-176](https://linear.app/johnny-cage/issue/STL-176/pbi-015-ce-compound-writeback-after-first-coding-pbi-deferred)
+**Linear:** [STL-176](https://linear.app/johnny-cage/issue/STL-176/pbi-015-ce-compound-writeback-after-first-coding-pbi-deferred)  
+**First learning:** `docs/solutions/workflow-issues/ignore-linear-gitbranchname-fresh-branch-from-main.md`  
+**Vocabulary seed:** `CONCEPTS.md` (Meta Beads / Project worker / Linear gitBranchName)
+
+Filename keeps `DEFERRED` suffix for stable seed links; status body above is authoritative.
 
 ## Lane
 
@@ -32,18 +35,18 @@
 | # | Field | Content |
 |---|--------|---------|
 | 1 | Acceptance criteria | One qualifying durable learning landed (or explicit skip); HITL consent for instruction-file tip; Meta lane only |
-| 2 | Exact task | Interactive `/ce-compound` writeback after Johnny picks the learning target — **prep ≠ start** |
+| 2 | Exact task | Interactive `/ce-compound` writeback after Johnny picks the learning target — **prep ≠ start**; Auto build may land first reversible learning when hold lifted |
 | 3 | Directories | `docs/solutions/` (created on first write); optional `.compound-engineering/`; `AGENTS.md` tip only with consent |
 | 4 | What not to touch | Product Beads; Port OAuth create/delete; non-interactive compound for this PBI; batching multiple learnings; pre-seeded Linear branch names |
 | 5 | Skills | Compound Engineering `/ce-compound` (HITL Full); ASDLC living-docs awareness |
 | 6 | MCPs | Linear (status); GitHub (PR) |
-| 7 | Agent type | Coding agent **with Johnny HITL** — not unattended |
+| 7 | Agent type | Coding agent **with Johnny HITL** for AGENTS tip / multi-learning choice — first reversible learning may land under Auto when hold lifted |
 | 8 | CI requirements | Docs/markdown PR; no Port accept required for learning-only writeback |
 | 9 | Dependencies | PBI-007; at least one verified Meta coding PBI (satisfied) |
 | 10 | Branch / worktree | Fresh branch from current `main` at start time — **do not** pin Linear `gitBranchName` |
 | 11 | Failure / rollback | If durable bar fails: write nothing, comment Linear; revert learning PR if bad; keep Deferred until Johnny clears |
-| 12 | Reviewer | Johnny Cage (HITL) + adversarial CE review when learning PR is non-trivial |
-| 13 | Environment prerequisites | CE plugin available; Meta repo checkout on current `main`; Johnny available for interactive prompts |
+| 12 | Reviewer | Independent agent (author ≠ reviewer) + Johnny for merge; adversarial CE review when learning PR is non-trivial |
+| 13 | Environment prerequisites | CE plugin available; Meta repo checkout on current `main`; Johnny available for interactive prompts when tip consent needed |
 
 ## Branch / implement path
 
@@ -63,3 +66,4 @@
 - Linear STL-176
 - `AGENTS.md` Skills roster (PBI-015)
 - Compound Engineering `ce-compound` skill (interactive Full / durable bar)
+- FE-89 branch-policy scrub (verified Meta coding episode for first learning)
