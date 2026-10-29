@@ -6,8 +6,19 @@ import {
   type CheckRunSummary,
 } from "./accept-sha.js";
 import { CatalogWriter, claimNextJob } from "./catalog-writer.js";
+import { gateFleetSpawn } from "./fleet-spawn.js";
 import { verifyPortWebhookHmac } from "./hmac.js";
 import { MemoryCatalogStore } from "./memory-store.js";
+import type { ApprovalsMode, OpenFleetCeiling } from "./openfleet-ceilings.js";
+import {
+  buildOpenFleetLedger,
+  type OpenFleetLedger,
+} from "./openfleet-ledger.js";
+import {
+  rateLimitConfigFromEnv,
+  rateLimitKeyFromRequest,
+  SlidingWindowRateLimiter,
+} from "./rate-limit.js";
 import { ProjectSupervisorQueue } from "./supervisor.js";
 import type { CatalogWriteRequest, PortWebhookBody } from "./types.js";
 
@@ -16,6 +27,10 @@ export type GatewayDeps = {
   writer: CatalogWriter;
   supervisor: ProjectSupervisorQueue;
   acceptLedger: AcceptLedger;
+  /** OpenFleet ledger for ceiling.refuse (PBI-012). */
+  openFleetLedger: OpenFleetLedger;
+  /** Gateway rate limiter (PBI-012). */
+  rateLimiter: SlidingWindowRateLimiter;
 };
 
 async function readRawBody(req: IncomingMessage): Promise<string> {
@@ -26,13 +41,46 @@ async function readRawBody(req: IncomingMessage): Promise<string> {
   return Buffer.concat(chunks).toString("utf8");
 }
 
-function sendJson(res: ServerResponse, status: number, body: unknown): void {
+function sendJson(
+  res: ServerResponse,
+  status: number,
+  body: unknown,
+  extraHeaders?: Record<string, string | number>,
+): void {
   const payload = JSON.stringify(body);
   res.writeHead(status, {
     "content-type": "application/json",
     "content-length": Buffer.byteLength(payload),
+    ...extraHeaders,
   });
   res.end(payload);
+}
+
+function applyRateLimit(
+  deps: GatewayDeps,
+  req: IncomingMessage,
+  res: ServerResponse,
+  path: string,
+): boolean {
+  const key = rateLimitKeyFromRequest({
+    headers: req.headers as Record<string, string | string[] | undefined>,
+    remoteAddress: req.socket.remoteAddress,
+    path,
+  });
+  const result = deps.rateLimiter.take(key);
+  res.setHeader("x-ratelimit-limit", String(result.limit));
+  res.setHeader("x-ratelimit-remaining", String(result.remaining));
+  res.setHeader("x-ratelimit-reset", String(Math.ceil(result.resetAt / 1000)));
+  if (!result.ok) {
+    sendJson(
+      res,
+      429,
+      { ok: false, error: "rate_limited", retryAfterSec: result.retryAfterSec },
+      { "retry-after": result.retryAfterSec },
+    );
+    return false;
+  }
+  return true;
 }
 
 export function createGatewayServer(deps: GatewayDeps) {
@@ -46,6 +94,8 @@ export function createGatewayServer(deps: GatewayDeps) {
       }
 
       if (req.method === "POST" && url.pathname === "/webhooks/port") {
+        if (!applyRateLimit(deps, req, res, url.pathname)) return;
+
         const rawBody = await readRawBody(req);
         const signature = String(req.headers["x-port-signature"] ?? "");
         const timestamp = String(req.headers["x-port-timestamp"] ?? "");
@@ -78,6 +128,7 @@ export function createGatewayServer(deps: GatewayDeps) {
       }
 
       if (req.method === "POST" && url.pathname === "/catalog/write") {
+        if (!applyRateLimit(deps, req, res, url.pathname)) return;
         const rawBody = await readRawBody(req);
         let request: CatalogWriteRequest;
         try {
@@ -103,8 +154,97 @@ export function createGatewayServer(deps: GatewayDeps) {
         return;
       }
 
+      // PBI-012 — OpenFleet ceiling-gated spawn (over-ceiling → ledger ceiling.refuse).
+      if (req.method === "POST" && url.pathname === "/fleet/spawn") {
+        if (!applyRateLimit(deps, req, res, url.pathname)) return;
+        const rawBody = await readRawBody(req);
+        let body: {
+          fleet?: string;
+          swarm?: string;
+          member?: string;
+          by?: string;
+          host?: string;
+          approvals?: ApprovalsMode;
+          proposedDepth?: number;
+          currentSwarmMembers?: number;
+          fleetCeiling?: OpenFleetCeiling;
+          swarmCeiling?: OpenFleetCeiling;
+          spendSoFar?: number;
+          proposedSpend?: number;
+        };
+        try {
+          body = JSON.parse(rawBody) as typeof body;
+        } catch {
+          sendJson(res, 400, { ok: false, error: "invalid_json" });
+          return;
+        }
+        if (
+          !body.fleet ||
+          !body.swarm ||
+          !body.member ||
+          !body.by ||
+          !body.host ||
+          !body.approvals ||
+          typeof body.proposedDepth !== "number" ||
+          typeof body.currentSwarmMembers !== "number" ||
+          typeof body.fleetCeiling !== "object" ||
+          body.fleetCeiling === null
+        ) {
+          sendJson(res, 400, { ok: false, error: "invalid_fleet_spawn" });
+          return;
+        }
+        const result = gateFleetSpawn(deps.openFleetLedger, {
+          fleet: body.fleet,
+          swarm: body.swarm,
+          member: body.member,
+          by: body.by,
+          host: body.host,
+          approvals: body.approvals,
+          proposedDepth: body.proposedDepth,
+          currentSwarmMembers: body.currentSwarmMembers,
+          fleetCeiling: body.fleetCeiling,
+          swarmCeiling: body.swarmCeiling,
+          spendSoFar: body.spendSoFar,
+          proposedSpend: body.proposedSpend,
+        });
+        if (!result.ok) {
+          sendJson(res, 403, {
+            ok: false,
+            error: "ceiling_refuse",
+            reason: result.reason,
+            detail: result.detail,
+            ledgerEvent: result.ledgerEvent,
+            effectiveCeiling: result.effectiveCeiling,
+          });
+          return;
+        }
+        sendJson(res, 200, {
+          ok: true,
+          effectiveCeiling: result.effectiveCeiling,
+          note: "spawn_allowed; caller writes member record + member.start",
+        });
+        return;
+      }
+
+      if (req.method === "GET" && url.pathname === "/fleet/ledger") {
+        const fleet = url.searchParams.get("fleet") ?? "";
+        if (!fleet) {
+          sendJson(res, 400, { ok: false, error: "fleet_required" });
+          return;
+        }
+        const events = deps.openFleetLedger.list(fleet);
+        sendJson(res, 200, {
+          ok: true,
+          fleet,
+          events,
+          ceilingRefuses: deps.openFleetLedger.listCeilingRefuses(fleet),
+        });
+        return;
+      }
+
       // PBI-011 — evaluate accept eligibility for exact SHA (no Port mutation).
       if (req.method === "POST" && url.pathname === "/accept/evaluate") {
+        if (!applyRateLimit(deps, req, res, url.pathname)) return;
         const rawBody = await readRawBody(req);
         let body: {
           sha?: string;
@@ -145,6 +285,7 @@ export function createGatewayServer(deps: GatewayDeps) {
       // PBI-011 — record Cockpit/human accept evidence after green CI on exact SHA.
       // Refuses agent/self. Does not call Port MCP write APIs.
       if (req.method === "POST" && url.pathname === "/accept/record") {
+        if (!applyRateLimit(deps, req, res, url.pathname)) return;
         const actorHeader = String(req.headers["x-factory-accept-actor"] ?? "");
         const rawBody = await readRawBody(req);
         let body: {
@@ -220,6 +361,7 @@ export function createGatewayServer(deps: GatewayDeps) {
       }
 
       if (req.method === "POST" && url.pathname === "/catalog/claim-next") {
+        if (!applyRateLimit(deps, req, res, url.pathname)) return;
         const rawBody = await readRawBody(req);
         let body: {
           blueprint?: string;
@@ -275,5 +417,7 @@ export function buildDefaultDeps(env: NodeJS.ProcessEnv = process.env): GatewayD
       rivetSupervisorUrl: env.RIVET_SUPERVISOR_URL || undefined,
     }),
     acceptLedger: new AcceptLedger(),
+    openFleetLedger: buildOpenFleetLedger(env),
+    rateLimiter: new SlidingWindowRateLimiter(rateLimitConfigFromEnv(env)),
   };
 }
