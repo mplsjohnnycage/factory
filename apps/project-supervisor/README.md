@@ -65,6 +65,10 @@ await supervisor.admit({
 
 CI still uses `createMemorySupervisor()` / `MemoryMetaBeads` (injectable `BdRunner` covers `BdMetaBeads` unit tests). Wire live gateway CatalogWriter + Rivet Actor host in follow-on deploy work.
 
+**Ops kit:** [`docs/ops/bdmetabeads-readiness.md`](../../docs/ops/bdmetabeads-readiness.md) →
+`npm run dry-run:bdmetabeads` · `--memory` runs `test/bd-meta-beads.test.ts` only
+(not the supervisor-admit / Funnel kits).
+
 ## Offline admit entry (no Funnel / no Rivet host)
 
 Ops kit (repo root — markers + optional Memory tests):
