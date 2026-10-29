@@ -111,7 +111,7 @@ npm run typecheck
 npm test
 ```
 
-HTTP proof for all seven `factory_*` WEBHOOK admits (HMAC reject + 202 enqueue + path allowlist): `test/webhooks-port.test.ts`. Live Port wiring inventory: `docs/port-workflow-webhooks.md`.
+HTTP proof for all seven `factory_*` WEBHOOK admits (HMAC reject + 202 enqueue + path allowlist): `test/webhooks-port.test.ts`. Live Port wiring inventory: `docs/port-workflow-webhooks.md`. Funnel/tailnet health + unsigned HMAC smoke: `scripts/gateway-tailnet-health.mjs` · `docs/gateway-hmac-smoke.md`. Beads admit path: `docs/beads-admit-gateway-path.md`.
 
 ## Lane hard rules
 
