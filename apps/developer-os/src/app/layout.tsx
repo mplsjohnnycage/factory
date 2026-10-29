@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Code Atlas · Factory",
   description:
-    "Factory Developer OS — Cockpit home, Code Atlas, Codebase Intelligence, Rivet sessions. Port Context Lake entry; no Sandbox from the browser.",
+    "Factory Developer OS — Cockpit home, Code Atlas, Codebase Intelligence, provider widgets, Rivet sessions. Port Context Lake entry; no Sandbox from the browser.",
 };
 
 export default function RootLayout({
