@@ -1,3 +1,4 @@
+import { CockpitShell } from "@/components/CockpitShell";
 import { SessionStream } from "@/components/SessionStream";
 
 type Props = {
@@ -7,8 +8,8 @@ type Props = {
 export default async function SessionPage({ params }: Props) {
   const { sessionId } = await params;
   return (
-    <main>
+    <CockpitShell mode="cockpit">
       <SessionStream sessionId={sessionId} />
-    </main>
+    </CockpitShell>
   );
 }

@@ -1,0 +1,197 @@
+.shell {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: var(--cockpit-ink);
+  background:
+    radial-gradient(50% 60% at 78% 28%, rgba(10, 132, 255, 0.3) 0%, rgba(10, 132, 255, 0) 70%),
+    radial-gradient(40% 50% at 12% 0%, rgba(191, 90, 242, 0.22) 0%, rgba(191, 90, 242, 0) 70%),
+    radial-gradient(45% 40% at 30% 100%, rgba(48, 209, 88, 0.1) 0%, rgba(48, 209, 88, 0) 70%),
+    radial-gradient(40% 40% at 95% 95%, rgba(255, 159, 10, 0.1) 0%, rgba(255, 159, 10, 0) 70%),
+    var(--cockpit-bg);
+  overflow-x: hidden;
+}
+
+.shellAtlas {
+  color: var(--atlas-ink);
+  background:
+    radial-gradient(50% 55% at 85% 10%, rgba(255, 180, 140, 0.35) 0%, transparent 60%),
+    radial-gradient(40% 45% at 8% 20%, rgba(120, 180, 255, 0.28) 0%, transparent 55%),
+    radial-gradient(45% 40% at 40% 100%, rgba(140, 220, 180, 0.22) 0%, transparent 55%),
+    radial-gradient(35% 40% at 95% 80%, rgba(190, 160, 255, 0.22) 0%, transparent 55%),
+    var(--atlas-bg);
+}
+
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem clamp(1.25rem, 4vw, 3.5rem);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.brandPrimary {
+  font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.brandMuted {
+  font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+  color: var(--cockpit-muted);
+  white-space: nowrap;
+}
+
+.shellAtlas .brandMuted {
+  color: var(--atlas-muted);
+}
+
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: var(--cockpit-glass-edge);
+  backdrop-filter: blur(30px) saturate(1.6);
+  -webkit-backdrop-filter: blur(30px) saturate(1.6);
+}
+
+.shellAtlas .tabs {
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 8px 24px rgba(20, 30, 50, 0.06);
+}
+
+.tab,
+.tabActive {
+  border: none;
+  cursor: pointer;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+  font-weight: 500;
+  background: transparent;
+  color: var(--cockpit-muted);
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.shellAtlas .tab,
+.shellAtlas .tabActive {
+  color: var(--atlas-muted);
+}
+
+.tabActive {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--cockpit-ink);
+  font-weight: 600;
+}
+
+.shellAtlas .tabActive {
+  background: #fff;
+  color: var(--atlas-ink);
+  box-shadow: 0 4px 14px rgba(20, 30, 50, 0.08);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.clock {
+  font-size: 0.95rem;
+  color: var(--cockpit-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.shellAtlas .clock {
+  color: var(--atlas-muted);
+}
+
+.ask {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: none;
+  cursor: pointer;
+  padding: 0.55rem 0.7rem 0.55rem 1.1rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--cockpit-ink);
+  box-shadow: var(--cockpit-glass-edge);
+  transition: background 0.2s, color 0.2s;
+}
+
+.askOpen {
+  background: #f5f7fb;
+  color: #12151d;
+}
+
+.ask kbd {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.4rem;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.askOpen kbd {
+  background: rgba(18, 21, 29, 0.08);
+}
+
+.avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: linear-gradient(140deg, var(--indigo), var(--violet));
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+  flex: none;
+}
+
+.main {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 900px) {
+  .top {
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+  }
+
+  .actions {
+    justify-content: space-between;
+  }
+
+  .tabs {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+  .clock {
+    display: none;
+  }
+}

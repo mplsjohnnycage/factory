@@ -1,17 +1,57 @@
 :root {
-  --bg-deep: #e8eef4;
-  --bg-mid: #f4f7fa;
-  --ink: #15202b;
-  --ink-muted: #4a5a6a;
-  --accent: #0f6e56;
-  --accent-ink: #084c3a;
-  --glass: rgba(255, 255, 255, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.7);
-  --edge: rgba(21, 32, 43, 0.08);
-  --node: #1a6b8a;
-  --node-soft: rgba(26, 107, 138, 0.18);
-  --font-display: var(--font-syne), "Syne", sans-serif;
-  --font-body: var(--font-source-sans), "Source Sans 3", sans-serif;
+  /* Cockpit v3 dark-glass tokens (docs/design/mockups/Factory Cockpit v3) */
+  --cockpit-bg: #0a0d15;
+  --cockpit-ink: #f5f7fb;
+  --cockpit-muted: rgba(235, 240, 250, 0.62);
+  --cockpit-muted-soft: rgba(235, 240, 250, 0.45);
+  --cockpit-glass: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0.05) 45%,
+    rgba(255, 255, 255, 0.09) 100%
+  );
+  --cockpit-glass-soft: rgba(255, 255, 255, 0.08);
+  --cockpit-glass-edge: inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --cockpit-blur: blur(28px) saturate(1.8);
+  --port-green: #16a34a;
+  --link-blue: #0a84ff;
+  --link-cyan: #64d2ff;
+  --violet: #bf5af2;
+  --indigo: #5e6ad2;
+  --amber: #ff9f0a;
+  --mint: #30d158;
+  --danger: #ff453a;
+  --cross-repo: #b06a1a;
+  --radius-pill: 999px;
+  --radius-card: 26px;
+  --radius-hero: 40px;
+  --radius-screen: 28px;
+  --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Helvetica Neue", "Geist", sans-serif;
+  --font-mono: "JetBrains Mono", "Geist Mono", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
+
+  /* Light Atlas mode (v5) — used on /atlas */
+  --atlas-bg: #e5eaf0;
+  --atlas-ink: #1c1e22;
+  --atlas-muted: #6b717c;
+  --atlas-glass: rgba(255, 255, 255, 0.46);
+
+  /* Compat aliases used by older modules */
+  --bg-deep: var(--cockpit-bg);
+  --bg-mid: #12151d;
+  --ink: var(--cockpit-ink);
+  --ink-muted: var(--cockpit-muted);
+  --accent: var(--port-green);
+  --accent-ink: #86efac;
+  --glass: var(--cockpit-glass-soft);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --edge: rgba(255, 255, 255, 0.1);
+  --node: var(--link-blue);
+  --node-soft: rgba(10, 132, 255, 0.22);
+  --font-display: var(--font-ui);
+  --font-body: var(--font-ui);
 }
 
 * {
@@ -25,12 +65,9 @@ body {
 }
 
 body {
-  color: var(--ink);
-  font-family: var(--font-body);
-  background:
-    radial-gradient(1200px 700px at 70% 15%, rgba(26, 107, 138, 0.16), transparent 60%),
-    radial-gradient(900px 600px at 10% 80%, rgba(15, 110, 86, 0.12), transparent 55%),
-    linear-gradient(165deg, var(--bg-mid) 0%, var(--bg-deep) 100%);
+  color: var(--cockpit-ink);
+  font-family: var(--font-ui);
+  background: var(--cockpit-bg);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -41,4 +78,38 @@ a {
 
 button {
   font: inherit;
+  color: inherit;
+}
+
+@keyframes dcFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes dcRise {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes caPulse {
+  from {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(2.8);
+    opacity: 0;
+  }
 }

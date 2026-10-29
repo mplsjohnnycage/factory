@@ -1,9 +1,10 @@
-import { AtlasHero } from "@/components/AtlasHero";
+import { CockpitHome } from "@/components/CockpitHome";
+import { CockpitShell } from "@/components/CockpitShell";
 
 export default function HomePage() {
   return (
-    <main>
-      <AtlasHero />
-    </main>
+    <CockpitShell mode="cockpit">
+      <CockpitHome />
+    </CockpitShell>
   );
 }

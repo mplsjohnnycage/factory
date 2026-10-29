@@ -48,10 +48,10 @@ export function SessionStream({ sessionId }: Props) {
     <section className={styles.panel} aria-label="AgentSession stream">
       <header className={styles.header}>
         <div>
-          <p className={styles.brand}>Factory</p>
+          <p className={styles.brand}>Rivet · AgentSession</p>
           <h1 className={styles.title}>Session stream</h1>
           <p className={styles.meta}>
-            <code>{sessionId}</code> · Rivet-native · no CopilotKit
+            <code>{sessionId}</code> · Rivet-native · no CopilotKit · no Sandbox from browser
           </p>
         </div>
         <div className={styles.status} data-state={state}>

@@ -1,6 +1,6 @@
 # developer-os (PBI-008 / STL-169 + Port OAuth e2e)
 
-Factory **Developer OS** shell: Next.js App Router on Vercel, Code Atlas hero first viewport, Port OAuth Authorization Code + PKCE (Factory External Interface client — never Observatory / Clerk / CopilotKit).
+Factory **Developer OS** shell: Next.js App Router on Vercel, **Factory Cockpit v3** home + Code Atlas light surface, Port OAuth Authorization Code + PKCE (Factory External Interface client — never Observatory / Clerk / CopilotKit).
 
 Lane: **Meta only** · browser never calls Sandbox Agent · no Port OAuth create/delete · no Product Beads.
 
@@ -10,8 +10,11 @@ Lane: **Meta only** · browser never calls Sandbox Agent · no Port OAuth create
 
 | Path | Role |
 |------|------|
-| `src/app/page.tsx` | Atlas hero shell (first viewport) |
-| `src/components/AtlasHero.tsx` | Full-bleed Code Atlas composition + overlay toggles |
+| `src/app/page.tsx` | Cockpit home (Port Context Lake hero · Assembly · Apps) |
+| `src/components/CockpitShell.tsx` | Dark/light chrome · pill tabs · Ask Factory ⌘J |
+| `src/components/CockpitHome.tsx` | Cockpit v3 first vertical slice |
+| `src/app/atlas/page.tsx` | Code Atlas light-glass surface |
+| `src/components/AtlasHero.tsx` | Atlas graph + overlay toggles (STL-154) |
 | `src/lib/atlas/` | STL-154 four-overlay read projection + MCP tools |
 | `src/app/api/atlas/subgraph` | Viewport-capped subgraph JSON |
 | `src/app/api/atlas/tools` | Bounded `atlas.*` tool list + invoke |
