@@ -16,6 +16,7 @@ Rivet 2.x is the Factory execution kernel (ADR-002): actors, queues, and workflo
 - Port projection upserts from Rivet go through the Port catalog writer (§4.2.1), never raw dual-write.
 - Port → HMAC gateway (`apps/factory-gateway` `/webhooks/port`) → ProjectSupervisor enqueue (push-only).
 - `ProjectSupervisor` fencing + Meta Beads ready gate live under `apps/project-supervisor/` (PBI-007); duplicate `workKey` → one `WorkAttempt`.
+- Offline / local admit consumer: `apps/project-supervisor` `POST /admit` (or in-process `admitFromPayload`) — point `RIVET_SUPERVISOR_URL` at this listener for dry-run; Compose Rivet engine URL alone is not an admit entry.
 - Developer OS subscribes to `AgentSession` Actor streams via Rivet-native client (PBI-009) — reconnect from last `sequence`; no CopilotKit; browser never calls Sandbox Agent.
 - LogicSRC map (authorship): OpenInstall for non-Compose boxes; OpenFleet ledger alongside Rivet Inspector. M1 Required rows for this Spec beyond vertical-slice Contracts: none (OpenInstall/OpenFleet production = post-M1).
 
@@ -76,6 +77,13 @@ Scenario: PBI-007 duplicate workKey yields one WorkAttempt
   When a second Port-authorized admit arrives for K
   Then the existing WorkAttempt is returned as duplicate
   And no second attempt is created
+
+Scenario: Gateway forward reaches offline admit listener
+  Given factory-gateway has RIVET_SUPERVISOR_URL set to a ProjectSupervisor POST /admit listener
+  And the forwarded body carries beadId or audited portBypassId
+  When the gateway enqueues and POSTs the SupervisorAdmit blob
+  Then ProjectSupervisor.admit runs push-only without polling Port
+  And Rivet engine :6420 is not required for this dry-run path
 
 Scenario: PBI-009 Dev OS reconnects from last sequence
   Given an AgentSession Actor has persisted events through sequence N

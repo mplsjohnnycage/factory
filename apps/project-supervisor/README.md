@@ -19,6 +19,9 @@ Lane hard rules: **Meta Beads only** · never Product Beads · Rivet never polls
 | `src/project-supervisor.ts` | Rivet-shaped `ProjectSupervisorActor` |
 | `src/meta-beads.ts` | Meta Beads gate + `MemoryMetaBeads` (CI) |
 | `src/bd-meta-beads.ts` | Live `BdMetaBeads` via `bd` CLI (`factory-` only) |
+| `src/admit-entry.ts` | Map gateway/dry-run JSON → `AdmitRequest` + in-process admit |
+| `src/admit-http.ts` | Thin `POST /admit` + `GET /health` (no Rivet SDK) |
+| `src/session-spawn.ts` | Injectable `admitAndSpawn` / `SessionSpawner` (G10 stub) |
 | `src/port-projections.ts` | Port blueprint mapping via catalog writer |
 | `src/memory-catalog.ts` | In-process §4.2.1 stand-in for tests |
 | `../../.beads/` | Meta Beads instance config (prefix `factory`) |
@@ -62,6 +65,33 @@ await supervisor.admit({
 
 CI still uses `createMemorySupervisor()` / `MemoryMetaBeads` (injectable `BdRunner` covers `BdMetaBeads` unit tests). Wire live gateway CatalogWriter + Rivet Actor host in follow-on deploy work.
 
+## Offline admit entry (no Funnel / no Rivet host)
+
+In-process:
+
+```ts
+import { admitFromPayload, createMemorySupervisor, listenAdmitServer } from "@factory/project-supervisor";
+
+const { supervisor, beads } = createMemorySupervisor();
+beads.seed({ beadId: "factory-…", projectId: "meta", ready: true });
+await admitFromPayload(supervisor, {
+  projectId: "meta",
+  beadId: "factory-…",
+  workKey: "demo-1",
+  claimedBy: "ops",
+  claimedAt: new Date().toISOString(),
+});
+```
+
+HTTP dry-run (point gateway `RIVET_SUPERVISOR_URL` here — not at Rivet engine `:6420`):
+
+```ts
+const { baseUrl } = await listenAdmitServer({ supervisor });
+// POST ${baseUrl}/admit  with SupervisorAdmit JSON (payload must include beadId or portBypassId)
+```
+
+Session spawn stub (Memory `AgentSessionActor` via injectable `SessionSpawner` — see `test/admit-entry.test.ts`). Docker Sandbox Agent remains operator/desktop.
+
 ## Spec
 
-`specs/factory-kernel/spec.md` — updated in the same PR.
+`specs/factory-kernel/spec.md` · `specs/rivet-execution/spec.md` — updated in the same PR.
