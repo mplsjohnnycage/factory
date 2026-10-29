@@ -83,6 +83,11 @@ Copy `.env.example`. Set `PORT_CLIENT_SECRET` from Port (never git). Optional `R
 
 Multi-stage production image (`Dockerfile`): Node 20 Alpine → `npm ci` + `tsc` → non-root `factory` user → `EXPOSE 8787` → `HEALTHCHECK` `GET /health` → `node dist/index.js`.
 
+Ops checklist (offline kit, no Funnel admit / no Port mutate):
+
+- [`docs/ops/gateway-dockerfile-health.md`](../../docs/ops/gateway-dockerfile-health.md)
+- `npm run dry-run:gateway-dockerfile-health` (+ optional `--lint`)
+
 ```bash
 cd apps/factory-gateway
 docker build -t factory-gateway:local .
@@ -100,7 +105,7 @@ cd compose
 docker compose --profile gateway up -d --build
 ```
 
-**Port remount path (FE-114):** keep the repo **public**. Put Tailscale **Funnel** (M1) or a PaaS (Fly/Railway/Render/Cloud Run) in front of `:8787`, confirm `GET /health` from a non-tailnet client, then set Port secret `FACTORY_GATEWAY_BASE_URL` and remount WEBHOOKs. Do not remount onto a dead base URL.
+**Port remount path (FE-114):** keep the repo **public**. Put Tailscale **Funnel** (M1) or a PaaS (Fly/Railway/Render/Cloud Run) in front of `:8787`, confirm `GET /health` from a non-tailnet client, then set Port secret `FACTORY_GATEWAY_BASE_URL` and remount WEBHOOKs. Do not remount onto a dead base URL. Live BASE_URL preflight: [`docs/gateway-remount-dry-run.md`](../../docs/gateway-remount-dry-run.md).
 
 ## Windows logon auto-start (DESKTOP-3APDBKG)
 
