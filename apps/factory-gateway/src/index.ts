@@ -2,9 +2,18 @@ import { buildDefaultDeps, createGatewayServer } from "./server.js";
 
 export { verifyPortWebhookHmac, portJsonBody } from "./hmac.js";
 export { CatalogWriter, claimNextJob } from "./catalog-writer.js";
+export {
+  META_FENCED_BLUEPRINTS,
+  OCEAN_MIRROR_PREFIXES,
+  classifyBlueprint,
+  isMetaFencedBlueprint,
+  isOceanMirrorBlueprint,
+  listMetaFencedBlueprints,
+} from "./meta-fences.js";
 export { MemoryCatalogStore, writerKey } from "./memory-store.js";
 export { ProjectSupervisorQueue } from "./supervisor.js";
 export { createGatewayServer, buildDefaultDeps } from "./server.js";
+export { applySyncWrite, isSyncSource } from "./sync-ingress.js";
 export {
   AcceptLedger,
   evaluateAcceptOnSha,
@@ -49,6 +58,15 @@ export type {
 } from "./openfleet-ledger.js";
 export type { FleetSpawnRequest, FleetSpawnResult } from "./fleet-spawn.js";
 export type { RateLimitConfig, RateLimitResult } from "./rate-limit.js";
+export type {
+  BlueprintFenceClass,
+  MetaFencedBlueprint,
+} from "./meta-fences.js";
+export type {
+  SyncSource,
+  SyncWriteRequest,
+  SyncWriteResult,
+} from "./sync-ingress.js";
 
 const isMain =
   process.argv[1]?.endsWith("src/index.ts") ||

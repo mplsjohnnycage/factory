@@ -14,13 +14,15 @@ Port is system of record for Factory catalog, RBAC, workflows-as-MCP-tools, MCP 
 - Live catalog blueprints to bind (do not invent parallel names): `product`, `service`, `executionContract`, `deliveryRun`, `executionAttempt`, `executionRunner`, `bot`, `_mcp_server`, `agentPlugin`, `skill`, `harness_session`.
 - Workflows: `factory_create_execution_contract`, `factory_start_delivery_run`, `factory_claim_next_job`, `factory_heartbeat`, `factory_submit_evidence`, `factory_record_review_verdict`, `factory_request_release` (Johnny-only INPUT).
 - **§4.2.1 catalog write fencing:** single-writer per `{blueprint}:{entityIdentifier}` inside the thin Factory gateway (`apps/factory-gateway/`); `catalogVersion` bump; reject stale writes; lease/claim fields mutate only in the same apply.
+- **Meta fences vs Ocean mirrors:** Factory-governed blueprints listed above are **Meta-fenced** — Ocean sync and Port MCP entity upserts must enter via `POST /catalog/sync-write` (or `/catalog/write`) and cannot set `bypassFence`. Context Lake mirror blueprints (`github*` / `linear*` / `vercel*` / `convex*`) may continue via Port Ocean native sync; they are not Meta-fenced. Unknown blueprints fail closed as Meta-fenced. See `docs/ocean-mcp-write-fencing.md`.
 - **§4.2.2 stack assembly:** Port validates stack compatibility as machine rules before provision / Coding admit.
 - LogicSRC map: OpenMCP `/.well-known/openmcp.json` (PBI-010 — advertises Port remote MCP `https://mcp.port.io/v1` as Factory’s one MCP entry); OpenOntology/OpenContext post-M1; OpenAccess scopes documented (Port issues tokens).
 
 ### Constraints
 
 - WEBHOOK backend targets Factory gateway (`POST /webhooks/port` with Port HMAC).
-- All catalog writes use §4.2.1 fencing — no raw dual-write from Ocean sync, MCP, or Rivet.
+- All catalog writes use §4.2.1 fencing — no raw dual-write from Ocean sync, MCP, or Rivet onto Meta-fenced blueprints.
+- Ocean mappings must not target Meta-fenced blueprints unless the apply path POSTs the gateway sync ingress.
 - Rivet `ProjectSupervisor` fences execution admission only — it does not replace §4.2.1 for catalog bytes.
 - Port entity upserts are create-or-update only (no product CAS); Factory supplies version fence.
 
@@ -33,11 +35,13 @@ Port is system of record for Factory catalog, RBAC, workflows-as-MCP-tools, MCP 
 - Audit entries exist for catalog mutations.
 - Concurrent catalog writers cannot both apply — stale `catalogVersion` rejected by `apps/factory-gateway` writer.
 - Claim races impossible under §4.2.1 single-writer + version bump (`POST /catalog/claim-next`).
-- Unit tests cover HMAC reject + stale `catalogVersion` reject (PBI-005).
+- Ocean/MCP sync cannot bypass Meta fences (`meta_fence_bypass_forbidden` when `bypassFence` is set on Meta-fenced blueprints).
+- Unit tests cover HMAC reject + stale `catalogVersion` reject (PBI-005) + Ocean/MCP Meta fence reject.
 
 ### Regression Guardrails
 
 - No bypass path for “sync-only” or “claim-only” callers around the gateway writer.
+- Ocean / MCP cannot dual-write Meta-fenced blueprints outside `CatalogWriter`.
 - Machine-validated stack conflicts reject before scaffold / provision / Coding admit.
 
 ### Scenarios
@@ -60,6 +64,25 @@ Scenario: PBI-005 factory-gateway hosts §4.2.1 writer
   When two concurrent claim-next applies share expectedCatalogVersion N
   Then exactly one apply succeeds and bumps catalogVersion to N+1
   And the other is rejected as stale_catalog_version with no partial apply
+
+Scenario: Ocean sync cannot bypass Meta fences
+  Given blueprint executionContract is Meta-fenced
+  When an Ocean sync proposal sets bypassFence true on POST /catalog/sync-write
+  Then the gateway rejects with meta_fence_bypass_forbidden
+  And no entity bytes are applied
+
+Scenario: MCP sync of Meta-fenced entity uses CatalogWriter
+  Given blueprint product is Meta-fenced with catalogVersion N
+  When MCP posts /catalog/sync-write with expectedCatalogVersion N
+  Then CatalogWriter applies and bumps catalogVersion to N+1
+  When a second MCP post reuses expectedCatalogVersion N
+  Then the write is rejected as stale_catalog_version with no partial apply
+
+Scenario: Ocean mirror blueprints stay on Port Ocean path
+  Given blueprint githubRepository is an Ocean mirror
+  When Ocean posts /catalog/sync-write for that blueprint
+  Then the gateway returns ocean_mirror_not_via_gateway
+  And Port Ocean native sync remains the mirror apply path
 
 Scenario: PBI-010 OpenMCP inventory item 9
   Given /.well-known/openmcp.json exists

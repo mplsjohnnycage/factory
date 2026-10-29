@@ -20,6 +20,7 @@ import {
   SlidingWindowRateLimiter,
 } from "./rate-limit.js";
 import { ProjectSupervisorQueue } from "./supervisor.js";
+import { applySyncWrite, isSyncSource } from "./sync-ingress.js";
 import type { CatalogWriteRequest, PortWebhookBody } from "./types.js";
 
 export type GatewayDeps = {
@@ -150,6 +151,58 @@ export function createGatewayServer(deps: GatewayDeps) {
         }
 
         const result = await deps.writer.apply(request);
+        sendJson(res, result.ok ? 200 : 409, result);
+        return;
+      }
+
+      // §4.2.1 — Ocean/MCP sync ingress; Meta-fenced blueprints cannot bypass CatalogWriter.
+      if (req.method === "POST" && url.pathname === "/catalog/sync-write") {
+        if (!applyRateLimit(deps, req, res, url.pathname)) return;
+        const rawBody = await readRawBody(req);
+        let body: CatalogWriteRequest & {
+          source?: unknown;
+          bypassFence?: unknown;
+        };
+        try {
+          body = JSON.parse(rawBody) as typeof body;
+        } catch {
+          sendJson(res, 400, { ok: false, error: "invalid_json" });
+          return;
+        }
+
+        if (
+          !body.blueprint ||
+          !body.entityIdentifier ||
+          typeof body.expectedCatalogVersion !== "number" ||
+          typeof body.patch !== "object" ||
+          body.patch === null ||
+          !isSyncSource(body.source)
+        ) {
+          sendJson(res, 400, { ok: false, error: "invalid_sync_write" });
+          return;
+        }
+
+        const result = await applySyncWrite(deps.writer, {
+          source: body.source,
+          blueprint: body.blueprint,
+          entityIdentifier: body.entityIdentifier,
+          expectedCatalogVersion: body.expectedCatalogVersion,
+          patch: body.patch,
+          bypassFence: body.bypassFence === true,
+        });
+
+        if (!result.ok && result.reason === "meta_fence_bypass_forbidden") {
+          sendJson(res, 403, result);
+          return;
+        }
+        if (!result.ok && result.reason === "ocean_mirror_not_via_gateway") {
+          sendJson(res, 409, result);
+          return;
+        }
+        if (!result.ok && result.reason === "invalid_sync_source") {
+          sendJson(res, 400, result);
+          return;
+        }
         sendJson(res, result.ok ? 200 : 409, result);
         return;
       }
