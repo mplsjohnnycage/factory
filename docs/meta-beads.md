@@ -46,6 +46,67 @@ bd ready
 `sync.remote` (`git+https://github.com/mplsjohnnycage/factory.git`) when
 `refs/dolt/data` is present.
 
+## Safe bootstrap / upgrade (backup + dry-run)
+
+Prefer the helper over ad-hoc force paths. Default is **dry-run**; `--execute`
+only runs when the plan is a reversible local hydrate (clone/validate). It
+**never** runs `bd init --force` or `bd dolt push`.
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+chmod 700 .beads   # recommended once
+
+# 1) Backup tip + tracked config (+ embeddeddolt tar if present)
+./scripts/bd-bootstrap-safe.sh --backup-only
+
+# 2) Dry-run plan (also takes a backup)
+./scripts/bd-bootstrap-safe.sh --dry-run
+# expect JSON action sync/clone from refs/dolt/data when DB missing
+
+# 3) Execute only if gate PASS (local embeddeddolt only; remote untouched)
+./scripts/bd-bootstrap-safe.sh --execute
+```
+
+Manual equivalents:
+
+```bash
+# Dry-run
+bd bootstrap --dry-run
+bd bootstrap --dry-run --json
+
+# Execute (non-destructive; never deletes existing issues)
+bd bootstrap --yes
+
+# CLI upgrade awareness (local metadata only — not a Dolt rewrite)
+bd upgrade status
+bd upgrade review
+bd upgrade ack
+```
+
+### Backup locations
+
+| Artifact | Path | Notes |
+|----------|------|--------|
+| Helper snapshots | `.beads/backup/pre-bootstrap-<UTC>/` | gitignored; config copy + `preflight.txt` (`refs/dolt/data` tip) + optional `embeddeddolt.tar.gz` / `issues.jsonl` |
+| Last backup pointer | `.beads/backup/LAST_BACKUP_DIR.txt` | local only |
+
+### Reverse (local only)
+
+```bash
+# Undo a hydrate without touching origin refs/dolt/data
+rm -rf .beads/embeddeddolt
+# Optional: restore prior local DB
+# tar -C .beads -xzf .beads/backup/pre-bootstrap-<ts>/embeddeddolt.tar.gz
+bd bootstrap --yes   # re-clone from refs/dolt/data
+```
+
+### Explicit non-actions
+
+- No live `bd dolt push` / remote Dolt rewrite from this helper.
+- No `bd init --force`.
+- No Port schema / Observatory work.
+- No Product Beads.
+
 ## Day-to-day (Meta admit)
 
 ```bash

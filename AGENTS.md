@@ -56,7 +56,12 @@ Hybrid layout: track `.beads/config.yaml` + `metadata.json`; gitignore `embedded
 curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash
 export PATH="$HOME/.local/bin:$PATH"
 
-# Fresh clone hydrate (git clone does not fetch refs/dolt/data)
+# Preferred: backup + dry-run, then reversible local hydrate (no dolt push)
+./scripts/bd-bootstrap-safe.sh --dry-run
+./scripts/bd-bootstrap-safe.sh --execute   # only if gate PASS
+
+# Or direct hydrate (git clone does not fetch refs/dolt/data)
+bd bootstrap --dry-run
 bd bootstrap --yes
 bd where
 bd status
@@ -64,7 +69,7 @@ bd ready
 bd update <bead-id> --claim
 ```
 
-Linear remains human visibility; Meta Beads is ready/claim/parallel SoT for meta coding admit. Do not `bd init` per worktree. Sync: `bd dolt push` / `bd dolt pull` when authorized — do not commit Dolt DB blobs.
+Linear remains human visibility; Meta Beads is ready/claim/parallel SoT for meta coding admit. Do not `bd init` per worktree. Sync: `bd dolt push` / `bd dolt pull` when authorized — do not commit Dolt DB blobs. Safe bootstrap/upgrade: `docs/meta-beads.md` § Safe bootstrap.
 ## Judgment boundaries
 
 - **NEVER** call Sandbox Agent from the browser.
