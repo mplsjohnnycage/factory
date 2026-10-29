@@ -73,7 +73,15 @@ Signed claim already verified under FE-142 — ops recipe [`ops/signed-admit-smo
 
 ## Local Beads dry-run (no Funnel)
 
-Ops kit (markers + optional Memory admit-entry tests):
+BdMetaBeads adapter readiness (markers + optional injectable-`BdRunner` tests):
+
+```bash
+npm run dry-run:bdmetabeads
+npm run dry-run:bdmetabeads -- --memory
+# docs: docs/ops/bdmetabeads-readiness.md
+```
+
+Supervisor admit ops kit (markers + optional Memory admit-entry tests):
 
 ```bash
 npm run dry-run:supervisor-admit

@@ -125,6 +125,10 @@ via `createBdSupervisor({ cwd })` — shells out to `bd`. Offline admit entry:
 `admitFromPayload` / `POST /admit` (no Funnel / Rivet engine required for dry-run).
 Production admit→sandbox still needs Rivet Actor host + §4.2.1 catalog writer + Docker SA.
 
+**Ops kit (BdMetaBeads readiness):** [`docs/ops/bdmetabeads-readiness.md`](./ops/bdmetabeads-readiness.md) →
+`npm run dry-run:bdmetabeads` (markers) · `--memory` (injectable `BdRunner` unit tests).
+Does not duplicate gateway unsigned/signed or supervisor-admit kits.
+
 ## Verify remote Dolt exists
 
 ```bash
