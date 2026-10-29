@@ -1,6 +1,6 @@
 # logicsrc-interop
 
-> **Status:** Stub authored — PBI-001 / STL-162 (Meta). OpenStack + OpenProfile + AGENTS.md index emitted under **PBI-003 / STL-164**. Stub authorship only — not M1 implement DoD (§13.5).
+> **Status:** PBI-003 OpenStack/OpenProfile + PBI-010 OpenMCP/OpenAccess well-knowns (Meta). Stub authorship (PBI-001) remains the Blueprint base.
 > **Do not Feature-Assemble until Spec review + EGM Goldfish are green for this Spec.**
 
 ## Blueprint
@@ -15,8 +15,8 @@ Emit inventory-mandatory LogicSRC interoperability files from Specs. LogicSRC is
 - Owning Specs map artifacts per master §5 emission matrix.
 - **M1 emit cut (§13.6 Required):** AGENTS.md, OpenStack, OpenProfile, OpenMCP, OpenAccess descriptor.
 - **PBI-003 emit (inventory §7 items 1–2 + AGENTS index):** `OpenStack.md` + `/.well-known/openstack.md`; operator `OpenProfile.md` + `/.well-known/openprofile.md`; `AGENTS.md` remains index-only.
-- OpenMCP / OpenAccess well-known JSON remain scaffold until PBI-010 (no Port OAuth create from those files).
-- Full inventory §7 Factory-mandatory checklist = post-M1.
+- OpenMCP / OpenAccess well-known JSON emitted under PBI-010 (no Port OAuth create from those files).
+- Full inventory §7 Factory-mandatory checklist beyond M1 Required rows = post-M1.
 - Validate with `@logicsrc/validators` / `logicsrc prd validate --strict` in ASDLC local gate (PBI-013).
 
 ### Constraints
@@ -31,6 +31,7 @@ Emit inventory-mandatory LogicSRC interoperability files from Specs. LogicSRC is
 ### Definition of Done
 
 - **PBI-003:** inventory §7 items 1–2 present (OpenStack root + well-known; OpenProfile operator well-known); AGENTS.md indexes Specs/ADRs/emits without dumping design.
+- **PBI-010:** inventory §7 items 9–10 present (`/.well-known/openmcp.json`, `/.well-known/openaccess.json`); validated by `scripts/validate-well-known.mjs`; zero Port mutations.
 - **M1:** emit + validate only §13.6 Required rows.
 - **Post-M1:** inventory §7 Factory-mandatory checklist green.
 
@@ -63,4 +64,12 @@ Scenario: PBI-003 OpenStack and OpenProfile inventory rows present
   Then both artifacts are present with real bodies (not placeholders)
   And AGENTS.md does not dump Spec design
   And this unit does not mutate Port External Interface apps
+
+Scenario: PBI-010 OpenMCP and OpenAccess inventory rows present
+  Given /.well-known/openmcp.json and /.well-known/openaccess.json
+  When scripts/validate-well-known.mjs runs
+  Then inventory §7 items 9 and 10 pass shape checks
+  And neither file is a scaffold placeholder
+  And neither file creates, deletes, or revokes Port External Interface apps
 ```
+

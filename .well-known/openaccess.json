@@ -1,1 +1,30 @@
-{"$comment":"Placeholder descriptor — PBI-010. Port issues tokens; ADR-005 create deferred.","version":"0.0.0-scaffold"}
+{
+  "openaccess": "0.1",
+  "name": "Factory",
+  "url": "https://github.com/mplsjohnnycage/factory",
+  "operator": "https://github.com/mplsjohnnycage/factory/blob/main/.well-known/openprofile.md",
+  "redirect_uris": [
+    "http://localhost:3000/api/auth/callback",
+    "http://127.0.0.1:3000/api/auth/callback"
+  ],
+  "scopes": {
+    "catalog:read": "Read Port catalog entities bound by Factory Meta",
+    "workflow:invoke": "Invoke Port workflows-as-tools on the Factory action surface",
+    "audit:read": "Read Port audit entries for Factory catalog mutations"
+  },
+  "hubs": [],
+  "factory": {
+    "lane": "meta",
+    "spec": "auth-port-oauth",
+    "adr": "ADR-005",
+    "token_issuer": "port",
+    "openaccess_hub_v1": false,
+    "external_interface_app": "Factory",
+    "port_client_id": "tnPUmUX5M0h8CdTZtaEbhhMOX0VFkUc0",
+    "port_client_id_env": "PORT_FACTORY_CLIENT_ID",
+    "canonical_live_record": "Project store docs/port-factory-oauth-live.md",
+    "observatory_forbidden": true,
+    "no_port_oauth_create_delete": true,
+    "https_callbacks_before_non_localhost": true
+  }
+}

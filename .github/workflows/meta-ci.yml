@@ -79,4 +79,15 @@ jobs:
             exit 1
           fi
 
-          echo "OK meta-ci-presence on $(cat "${RUNNER_TEMP}/accept_sha.txt")"
+          echo "OK meta-ci inventory on $(cat "${RUNNER_TEMP}/accept_sha.txt")"
+
+      - name: Validate OpenMCP + OpenAccess well-knowns (PBI-010)
+        run: |
+          set -euo pipefail
+          node scripts/validate-well-known.mjs
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "## LogicSRC well-knowns (§7 items 9–10)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`/.well-known/openmcp.json\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`/.well-known/openaccess.json\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Validator: \`scripts/validate-well-known.mjs\` (no Port mutations)" >> "$GITHUB_STEP_SUMMARY"
+          echo "OK well-known validation on $(git rev-parse HEAD)"

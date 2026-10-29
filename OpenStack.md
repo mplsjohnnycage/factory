@@ -35,7 +35,8 @@ Autonomous software-delivery control plane (Meta): Port SoT → thin `factory-ga
 ### MCP
 
 - Port MCP gateway (SoT tools/workflows) — Factory binds live names only
-- `/.well-known/openmcp.json` descriptor (scaffold until PBI-010)
+- `/.well-known/openmcp.json` descriptor (PBI-010 — Port remote MCP entry)
+- `/.well-known/openaccess.json` descriptor (PBI-010 — Factory client scopes/redirects; Port issues tokens)
 
 ### Execution
 
