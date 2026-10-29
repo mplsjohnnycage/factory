@@ -29,7 +29,8 @@
     "dry-run:gateway-unsigned": "node scripts/gateway-unsigned-admit-dry-run.mjs",
     "dry-run:gateway-signed": "node scripts/gateway-signed-admit-dry-run.mjs",
     "dry-run:supervisor-admit": "node scripts/supervisor-admit-dry-run.mjs",
-    "dry-run:windows-logon": "node scripts/gateway-windows-logon-dry-run.mjs"
+    "dry-run:windows-logon": "node scripts/gateway-windows-logon-dry-run.mjs",
+    "dry-run:rivet-compose-serve": "node scripts/rivet-compose-serve-dry-run.mjs"
   },
   "dependencies": {
     "@logicsrc/openprd": "^0.2.0",

@@ -71,3 +71,14 @@ Paste into the PR or Linear when live evidence exists:
 - [ ] Serve URL noted in PR comment (hostname OK; no tokens)
 
 Cloud agents without Docker/Tailscale author the files and CI lint; **live Serve evidence stays desktop-pilot**.
+
+## Ops kit (Projects Manager)
+
+Offline markers + optional compose lint (no Port upserts, no secrets):
+
+```bash
+npm run dry-run:rivet-compose-serve
+npm run dry-run:rivet-compose-serve -- --lint
+```
+
+Full checklist: [`docs/ops/rivet-compose-serve-smoke.md`](./ops/rivet-compose-serve-smoke.md).
