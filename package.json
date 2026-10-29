@@ -27,6 +27,7 @@
     "smoke:atlas-bff": "node scripts/atlas-bff-smoke.mjs",
     "dry-run:omniroute-desktop": "node scripts/omniroute-desktop-dry-run.mjs",
     "dry-run:gateway-unsigned": "node scripts/gateway-unsigned-admit-dry-run.mjs",
+    "dry-run:gateway-signed": "node scripts/gateway-signed-admit-dry-run.mjs",
     "dry-run:supervisor-admit": "node scripts/supervisor-admit-dry-run.mjs",
     "dry-run:windows-logon": "node scripts/gateway-windows-logon-dry-run.mjs"
   },

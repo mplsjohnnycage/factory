@@ -3,7 +3,7 @@
 **Lane:** Meta · **Audience:** Projects Manager  
 **Purpose:** Harden and verify the **unsigned** Funnel gates on the Beads admit → `factory-gateway` path without secrets, Port schema upserts, or spend.  
 **Scripts:** `scripts/gateway-unsigned-admit-dry-run.mjs` · `scripts/gateway-tailnet-health.mjs`  
-**Map:** [`docs/beads-admit-gateway-path.md`](../beads-admit-gateway-path.md) · [`docs/gateway-hmac-smoke.md`](../gateway-hmac-smoke.md)
+**Map:** [`docs/beads-admit-gateway-path.md`](../beads-admit-gateway-path.md) · [`docs/gateway-hmac-smoke.md`](../gateway-hmac-smoke.md) · [`docs/ops/signed-admit-smoke.md`](./signed-admit-smoke.md)
 
 ## FE-142 status (do not re-ask secrets)
 
@@ -61,7 +61,7 @@ Any client (cloud OK)
   → Beads claim / Rivet / Sandbox never reached
 ```
 
-After green unsigned: signed admit + supervisor forward are covered by FE-142 close + library admit path ([#48](https://github.com/mplsjohnnycage/factory/pull/48)); do not remount WEBHOOKs or upsert blueprints for this kit.
+After green unsigned: signed admit + handler-token ops recipe is [`signed-admit-smoke.md`](./signed-admit-smoke.md) (env-only; FE-142 closed). Supervisor forward remains library-ready ([#48](https://github.com/mplsjohnnycage/factory/pull/48)); do not remount WEBHOOKs or upsert blueprints for this kit.
 
 ## Port schema
 

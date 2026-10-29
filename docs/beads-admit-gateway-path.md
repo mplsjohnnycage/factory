@@ -3,7 +3,7 @@
 **Lane:** Meta only (`factory-` Beads) · **Audience:** Projects Manager  
 **Purpose:** Single map of Port `gateway_admit` → Funnel gateway → ProjectSupervisor / Meta Beads claim after public `/health` is green.  
 **Live base:** `https://desktop-3apdbkg.taildf3a4b.ts.net`  
-**Related:** [`gateway-hmac-smoke.md`](./gateway-hmac-smoke.md) · [`ops/beads-gateway-unsigned-admit.md`](./ops/beads-gateway-unsigned-admit.md) · [`meta-beads.md`](./meta-beads.md) · [`port-workflow-webhooks.md`](./port-workflow-webhooks.md)
+**Related:** [`gateway-hmac-smoke.md`](./gateway-hmac-smoke.md) · [`ops/signed-admit-smoke.md`](./ops/signed-admit-smoke.md) · [`ops/beads-gateway-unsigned-admit.md`](./ops/beads-gateway-unsigned-admit.md) · [`meta-beads.md`](./meta-beads.md) · [`port-workflow-webhooks.md`](./port-workflow-webhooks.md)
 
 ## FE-142 (closed — no secret re-ask)
 
@@ -52,6 +52,7 @@ Gateway wraps as `SupervisorAdmit` `{ id, receivedAt, actionIdentifier, runId, p
 ```bash
 # Kit markers (offline)
 npm run dry-run:gateway-unsigned
+npm run dry-run:gateway-signed
 
 # Unsigned gates + health (safe anytime Funnel is up)
 npm run dry-run:gateway-unsigned -- --live
@@ -60,12 +61,15 @@ node scripts/gateway-tailnet-health.mjs \
   --base-url https://desktop-3apdbkg.taildf3a4b.ts.net \
   --unsigned-only
 
+# Signed / handler (env secrets already present — never print values)
+# GATEWAY_HMAC_SMOKE=1 npm run dry-run:gateway-signed -- --live
+
 # Remount path print-only (also refuses Port mutate)
 node scripts/gateway-remount-dry-run.mjs \
   --base-url https://desktop-3apdbkg.taildf3a4b.ts.net
 ```
 
-Signed claim already verified under FE-142 — see [`gateway-hmac-smoke.md`](./gateway-hmac-smoke.md). Do **not** re-ask for secret fill.
+Signed claim already verified under FE-142 — ops recipe [`ops/signed-admit-smoke.md`](./ops/signed-admit-smoke.md). Do **not** re-ask for secret fill.
 
 ## Local Beads dry-run (no Funnel)
 
