@@ -110,15 +110,12 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  // Prefer redirect_uri derived from the request origin so it matches the
-  // authorize step when NEXT_PUBLIC_DEVOS_URL / VERCEL_URL differ.
-  const requestOrigin = url.origin;
-  const redirectUri = `${requestOrigin}/api/auth/callback`;
-  const exchangeConfig = { ...config, redirectUri };
-
+  // Token exchange must use the same allowlisted redirect_uri as authorize
+  // (stable NEXT_PUBLIC_DEVOS_URL / STABLE_DEVOS_ORIGIN — never request Host /
+  // VERCEL_URL deployment aliases).
   let tokens;
   try {
-    tokens = await exchangePortToken(exchangeConfig, {
+    tokens = await exchangePortToken(config, {
       grant_type: "authorization_code",
       code,
       code_verifier: verifier,
@@ -133,7 +130,10 @@ export async function GET(req: NextRequest) {
     return res;
   }
 
-  const res = NextResponse.redirect(new URL("/?port=signed-in", url.origin), 302);
+  const postLogin = new URL(config.redirectUri);
+  postLogin.pathname = "/";
+  postLogin.search = "port=signed-in";
+  const res = NextResponse.redirect(postLogin, 302);
   clearOauthCookies(res);
 
   const accessMaxAge = Math.max(60, tokens.expires_in);

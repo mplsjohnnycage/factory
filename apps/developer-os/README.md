@@ -39,7 +39,7 @@ Optional:
 
 | Variable | Default | Notes |
 |----------|---------|-------|
-| `NEXT_PUBLIC_DEVOS_URL` | `http://localhost:3000` (or `https://$VERCEL_URL`) | Origin used for `redirect_uri` |
+| `NEXT_PUBLIC_DEVOS_URL` | `https://factory-developer-os.vercel.app` (Vercel default if unset) | Origin for Port `redirect_uri` — **never** `VERCEL_URL` |
 | `PORT_AUTH0_DOMAIN` | `auth.getport.io` | EU Auth0 |
 | `PORT_API_BASE` | `https://api.getport.io` | JWT `audience` |
 | `PORT_OAUTH_SCOPES` | `openid profile email offline_access` | |
@@ -49,14 +49,9 @@ Optional:
 Set on **Production**, **Preview**, and **Development**:
 
 1. `PORT_FACTORY_CLIENT_ID` = `tnPUmUX5M0h8CdTZtaEbhhMOX0VFkUc0` (plain)
-2. Optionally `NEXT_PUBLIC_DEVOS_URL` = production custom domain / stable URL once registered on the Port app
+2. `NEXT_PUBLIC_DEVOS_URL` = `https://factory-developer-os.vercel.app` (also the code fallback on Vercel — never `VERCEL_URL`)
 
-**Port redirect URIs (live today):** only localhost —
-
-- `http://localhost:3000/api/auth/callback`
-- `http://127.0.0.1:3000/api/auth/callback`
-
-Before non-localhost sign-in works, an org admin must add the exact HTTPS callback(s) via Port MCP `upsert_external_interface_app` (full replace-set). Preview wildcards are not supported (max 5 exact URIs).
+**Port redirect URIs (Factory EI app):** path is always `/api/auth/callback` (login is `/api/auth/port/login`). Allowlist the stable host + localhost; do not rely on rotating `*.vercel.app` deployment hosts (max 5 exact URIs, no wildcards).
 
 Session cookies after successful exchange: `factory_port_access_token` (+ optional refresh / id token). HttpOnly; no `client_secret`.
 

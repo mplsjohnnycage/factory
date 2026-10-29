@@ -51,6 +51,31 @@ describe("Port OAuth config + PKCE", () => {
     assert.throws(() => resolvePortOAuthConfig({}), /PORT_FACTORY_CLIENT_ID/);
   });
 
+  it("never uses VERCEL_URL for Port redirect_uri (stable allowlist pin)", () => {
+    const config = resolvePortOAuthConfig({
+      PORT_FACTORY_CLIENT_ID: "factory-client-abc",
+      VERCEL: "1",
+      VERCEL_URL: "factory-developer-n5tdoht4l-johnnyc.vercel.app",
+    });
+    assert.equal(
+      config.redirectUri,
+      "https://factory-developer-os.vercel.app/api/auth/callback",
+    );
+  });
+
+  it("NEXT_PUBLIC_DEVOS_URL wins over VERCEL_URL", () => {
+    const config = resolvePortOAuthConfig({
+      PORT_FACTORY_CLIENT_ID: "factory-client-abc",
+      NEXT_PUBLIC_DEVOS_URL: "https://factory-developer-os.vercel.app",
+      VERCEL_URL: "factory-developer-rotating-johnnyc.vercel.app",
+      VERCEL: "1",
+    });
+    assert.equal(
+      config.redirectUri,
+      "https://factory-developer-os.vercel.app/api/auth/callback",
+    );
+  });
+
   it("generates URL-safe PKCE verifier and S256 challenge", () => {
     const verifier = randomUrlSafeString();
     assert.ok(verifier.length >= 40);
