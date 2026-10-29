@@ -35,6 +35,34 @@ export { MemoryCatalogWriter } from "./memory-catalog.js";
 export { PortProjectionMapper } from "./port-projections.js";
 export { ProjectSupervisorActor } from "./project-supervisor.js";
 
+export type {
+  AdmitFromPayloadResult,
+  AdmitMapOk,
+  AdmitMapRefuse,
+  AdmitMapRefuseReason,
+  AdmitMapResult,
+} from "./admit-entry.js";
+export {
+  admitFromPayload,
+  mapToAdmitRequest,
+  unwrapAdmitBody,
+} from "./admit-entry.js";
+
+export type {
+  AdmitServerDeps,
+  ListenAdmitServerResult,
+} from "./admit-http.js";
+export { createAdmitServer, listenAdmitServer } from "./admit-http.js";
+
+export type {
+  AdmitAndSpawnOk,
+  AdmitAndSpawnRefused,
+  AdmitAndSpawnResult,
+  SessionSpawner,
+  SpawnedSession,
+} from "./session-spawn.js";
+export { admitAndSpawn, SessionSpawnRegistry } from "./session-spawn.js";
+
 /** Local dry-run: Memory Meta Beads + Memory catalog (no live Port / bd). */
 export function createMemorySupervisor(): {
   supervisor: ProjectSupervisorActor;

@@ -16,6 +16,8 @@ End-to-end Factory vertical slice: authorize → durable run → harness → Git
 - **Post-M1:** `CapacityManager`, `AssemblyWorkflow` (see master §13.0 Non-Goals / §13.5).
 - **ProjectSupervisor (PBI-007):** Rivet-shaped admit owner under `apps/project-supervisor/` — single fence per `workKey`; Meta Beads ready/claim gate; Port projections for `executionContract` / `deliveryRun` / `executionAttempt` via §4.2.1 writer only.
 - **`ReadyTaskEvent` (M1):** `{ beadId, projectId, claimedBy, claimedAt, executionContractId? }` after Meta Beads `bd ready` + `bd update --claim`. CI stand-in: `MemoryMetaBeads`. Live/local adapter: `BdMetaBeads` (`bd` CLI, `factory-` prefix only) via `createBdSupervisor` — no public gateway required for the gate itself; Rivet host + §4.2.1 writer remain deploy follow-on.
+- **Offline admit entry (G6):** `admitFromPayload` / `POST /admit` map gateway-forward or explicit dry-run JSON → `AdmitRequest` → `ProjectSupervisorActor.admit` (Memory or `createBdSupervisor`). Opaque `{action,runId}` alone refuses (`claim_or_bypass_required`) until bead/bypass fields are present.
+- **Session spawn stub (G10):** injectable `SessionSpawner` + `admitAndSpawn` after successful non-duplicate admit; CI wires `AgentSessionActor` + `MemorySandboxLease`. Docker / Rivet Actor host remain ops.
 - LogicSRC map (authorship): `logicsrc.task`, `logicsrc.agent_run`, `logicsrc.event`; OpenFleet member records for sessions; OpenWorkflow `admit-and-run`. M1 emit cut is §13.6.
 
 ### Constraints
@@ -74,6 +76,19 @@ Scenario: Meta Beads ready gate
   Given a mapped Meta Beads bead that is not ready
   When ProjectSupervisor.admit is called with that beadId
   Then admit is refused with bead_not_ready
+
+Scenario: Offline HTTP/in-process admit entry
+  Given a ProjectSupervisor backed by Memory or BdMetaBeads
+  When POST /admit (or admitFromPayload) receives beadId or portBypassId fields
+  Then ProjectSupervisor.admit runs without Rivet Actor host or public gateway
+  When the body is only {action, runId} without bead or bypass
+  Then the entry refuses with claim_or_bypass_required and no WorkAttempt is created
+
+Scenario: Admit then Memory session spawn
+  Given a successful non-duplicate admit
+  When admitAndSpawn uses a Memory SessionSpawner
+  Then an AgentSession identity is created for the WorkAttempt
+  And a duplicate admit for the same workKey does not spawn a second session
 
 Scenario: CI green on exact SHA accepts; rewrite denies
   Given evidence recorded for commit SHA S
