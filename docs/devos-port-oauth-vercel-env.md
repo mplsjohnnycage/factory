@@ -45,3 +45,5 @@ HTTPS preview/production callbacks must be added explicitly on the Port app (max
 - Set env via Vercel dashboard or MCP `create_project_env` (upsert).
 - Redeploy after env change.
 - Confirm sign-in locally first; Port `lastLoginAt` updates after a successful person login.
+- Linkage smoke (well-knowns ↔ callback path ↔ Factory client id; no Port mutate):
+  `npm run dry-run:openaccess-linkage` — see [`docs/ops/openaccess-linkage-smoke.md`](./ops/openaccess-linkage-smoke.md).

@@ -2,6 +2,10 @@
 /**
  * PBI-010 — validate OpenMCP + OpenAccess well-known descriptors.
  * No Port mutations. JSON shape checks only (LogicSRC validators optional later).
+ *
+ * Ops kit (markers + this validator + optional Dev OS OAuth tests):
+ *   npm run dry-run:openaccess-linkage
+ *   @see docs/ops/openaccess-linkage-smoke.md
  */
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
