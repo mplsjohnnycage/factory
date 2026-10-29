@@ -11,7 +11,7 @@ Operator profile for the Factory Meta lane — building the Factory kernel. Not 
 ## Accounts
 
 - [GitHub repo](https://github.com/mplsjohnnycage/factory)
-- [Linear — Factory Meta](https://linear.app/johnny-cage/project/factory-meta-66aabc4a3e16)
+- [Linear — Factory Meta](https://linear.app/johnny-cage/project/factory-meta-1c7e5c372e3d)
 
 ## Topics
 
