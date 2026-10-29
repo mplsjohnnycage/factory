@@ -1,4 +1,4 @@
-# Local gate (PBI-013 / STL-174)
+# Local gate (PBI-013 / PBI-014)
 
 One ASDLC command refuses dirty/invalid trees. CI runs the same command on every PR and `main` push.
 
@@ -20,7 +20,8 @@ npm run local-gate
 | M1 emits | Missing OpenStack/OpenProfile/AGENTS/well-knowns |
 | Placeholders | `0.0.0-scaffold` (or equivalent) in gated trees |
 | Well-knowns | `scripts/validate-well-known.mjs` fails |
-| `@logicsrc/validators` | Invalid LogicSRC fixtures / OpenPRD bodies |
+| `@logicsrc/validators` | Invalid LogicSRC fixtures |
+| OpenPRD (`@logicsrc/openprd`) | Missing/invalid `prd/` collection; 0001–0005 not Accepted; section/front-matter fail |
 | Invalid ratchet | Broken fixture unexpectedly validates |
 | Apps | Typecheck or tests fail under `apps/*` |
 
@@ -32,4 +33,4 @@ Workflow: `.github/workflows/local-gate.yml` — job `local-gate-refuse`.
 
 ## Spec
 
-`specs/asdlc-lifecycle/spec.md` — Contract scenarios for local gate + CI refuse.
+`specs/asdlc-lifecycle/spec.md` — Contract scenarios for local gate + CI refuse + OpenPRD 0001–0005.

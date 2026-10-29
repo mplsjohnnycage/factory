@@ -81,5 +81,6 @@ See `README.md` and master production plan. Apps: `apps/factory-gateway/`, `apps
 | OpenStack | `OpenStack.md` · `/.well-known/openstack.md` |
 | OpenProfile (operator) | `OpenProfile.md` · `/.well-known/openprofile.md` |
 | OpenMCP / OpenAccess | `/.well-known/openmcp.json`, `openaccess.json` (PBI-010) |
+| OpenPRD 0001–0005 | `prd/` (PBI-014; post-M1; Meta product-intent) |
 
 This file indexes; it does not dump Spec Blueprint/Contract design.

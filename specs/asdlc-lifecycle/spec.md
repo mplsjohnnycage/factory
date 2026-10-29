@@ -1,8 +1,8 @@
 # asdlc-lifecycle
 
-> **Status:** PBI-013 local gate + CI refuse live (Meta). Stub authorship (PBI-001) remains the Blueprint base; gate is deterministic tooling, not Feature Assembly unlock alone.
+> **Status:** Living Spec — PBI-001 stubs + PBI-013 local gate + PBI-014 OpenPRD 0001–0005 (Meta). Stub/Feature-Assembly gates still apply until Spec review + EGM Goldfish are green.
 > **Do not Feature-Assemble until Spec review + EGM Goldfish are green for this Spec.**
-> **Role:** Pointer Spec for PBI-001 verification (Blueprint+Contract authorship norms) and owner of lifecycle/gates mapping — including the local gate Contract (PBI-013 / STL-174).
+> **Role:** Pointer Spec for PBI-001 verification (Blueprint+Contract authorship norms), owner of lifecycle/gates mapping, local refuse tooling, and Factory Meta OpenPRD product-intent batch.
 
 ## Blueprint
 
@@ -16,31 +16,33 @@ LogicSRC ASDLC nine phases + Context Gates / Workflow-as-Code / Domain-Driven Sp
 - Context gates before Feature Assembly: Spec review + EGM Goldfish (feature_spec) green.
 - Living Specs: Contract changes update Spec in the same PR (default refinement rule).
 - Accepted ADR bodies under `docs/adrs/` are immutable Nygard records (Title, Status, Context, Decision, Consequences, Alternatives Considered). ADR-007 is Superseded by ADR-011. Supersede; do not edit a merged body.
-- **Local gate (PBI-013):** one command `npm run local-gate` / `bin/local-gate` (`scripts/local-gate.mjs`) runs inventory, placeholder refuse, well-known validate, `@logicsrc/validators@0.6.0`, and app typecheck/test — tooling refuses dirty/invalid.
-- **CI refuse (PBI-013):** `.github/workflows/local-gate.yml` runs the same gate (+ refuse-ratchet unit tests) on every PR and `main` push.
+- Local gate + CI refuse dirty/invalid (PBI-013): `npm run local-gate` / `bin/local-gate` → `scripts/local-gate.mjs` with `@logicsrc/validators@0.6.0`.
 - LogicSRC map: OpenPRD for product capability decisions; OpenWorkflow release/promote; OpenInstall activate health.
+- **PBI-014 OpenPRD batch (post-M1 emit; author OK / not M1 exit):** `prd/0000-template.md` + `prd/0001`…`0005-*.md` Accepted OpenPRD 0.3 (ten sections + front-matter), indexed by `prd/README.md`, validated by `@logicsrc/openprd@0.2.0` inside the local gate. Meta product-intent only — not Product Beads / user-project PRDs.
 
 ### Constraints
 
 - Constraints in Blueprint are positive rules (pink-elephant); failure modes live in Gherkin Contract scenarios.
 - PBIs are typed-contract deltas that point at Specs — they are not the Spec.
 - AGENTS.md indexes; it does not dump design.
-- Local gate and CI must refuse scaffold placeholders and invalid LogicSRC documents; agents must not treat a red gate as green.
+- OpenPRD numbering is four-digit, monotonic, no gaps; `0000` is template-only.
+- OpenPRD status for 0001–0005 in this Meta batch is Accepted; Formal GitHub APPROVE / merge remains a separate protection concern.
 
 ## Contract
 
 ### Definition of Done
 
-- One local gate command refuses dirty/invalid: `npm run local-gate` (or `bin/local-gate`).
-- CI refuses dirty/invalid via `local-gate-refuse` (`.github/workflows/local-gate.yml`).
-- `@logicsrc/validators` is wired into the gate; invalid fixtures are refused (ratchet tests green).
+- One local gate command refuses dirty/invalid (PBI-013).
+- CI refuses dirty/invalid (`local-gate-refuse` job).
 - Living Specs updated in the same PR as Contract changes.
+- **PBI-014:** OpenPRD `prd/0001`…`0005` exist with status Accepted; each validates OpenPRD 0.3 (front-matter + ten sections in order); collection has no numbering gaps; local gate refuses Draft/invalid OpenPRD for those ids.
 
 ### Regression Guardrails
 
 - Feature Assembly does not start against scaffold-placeholder Contracts.
 - Spec review + EGM Goldfish gate Feature Assembly per domain Spec.
-- A tree containing a scaffold placeholder token (or an invalid LogicSRC agent fixture treated as valid) must fail the local gate and CI.
+- Local gate does not treat front-matter-only AJV as sufficient OpenPRD conformance when `prd/` is present — `@logicsrc/openprd` strict collection validation is required.
+- Meta OpenPRDs do not author Product Beads or product Linear boards.
 
 ### Scenarios
 
@@ -64,17 +66,18 @@ Scenario: Accepted ADR bodies carry six anatomy sections
   And ADR-011 is present with Status Accepted
   And ADR-007 Status is Superseded by ADR-011
 
-Scenario: Local gate refuses dirty or invalid trees
-  Given the Factory Meta repo with Specs, ADRs, and LogicSRC emits
-  When an operator or agent runs npm run local-gate (or bin/local-gate)
-  And the tree contains a scaffold placeholder token or an invalid LogicSRC document
-  Then the command exits non-zero
-  And the dirty or invalid condition is reported
+Scenario: Local gate refuses dirty Specs and invalid LogicSRC
+  Given npm run local-gate (or bin/local-gate) is the one refuse command
+  When a Spec contains a scaffold placeholder or a LogicSRC fixture is invalid
+  Then the gate exits non-zero
+  And CI job local-gate-refuse runs the same command path
 
-Scenario: CI refuses dirty or invalid on the same gate
-  Given a pull request or push to main
-  When the local-gate-refuse GitHub Actions job runs
-  Then it executes the same local gate command used locally
-  And refuse-ratchet unit tests prove invalid LogicSRC is rejected
-  And a dirty or invalid tree fails the check on that SHA
+Scenario: OpenPRD 0001-0005 Accepted align Meta product intent
+  Given prd/0000-template.md and prd/0001 through prd/0005 Markdown OpenPRDs
+  When @logicsrc/openprd validates the collection with --strict / expectedVersion 0.3
+  Then each of 0001-0005 has status Accepted
+  And each document has OpenPRD 0.3 ten sections in order with valid front-matter
+  And numbering has no gaps
+  And Specs named in tags remain the build-against IR (OpenPRD is product-intent emission, not the Spec)
+  And Meta lane rules hold (no Product Beads)
 ```
