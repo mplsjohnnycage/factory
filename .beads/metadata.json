@@ -3,5 +3,6 @@
   "backend": "dolt",
   "dolt_mode": "embedded",
   "dolt_database": "factory",
-  "project_id": "8097551d-13a3-409b-a53e-5ab97987e1b9"
+  "project_id": "8097551d-13a3-409b-a53e-5ab97987e1b9",
+  "last_bd_version": "1.3.2"
 }
