@@ -14,12 +14,14 @@ AGENTS.md
 OpenStack.md                 # PBI-003
 specs/{domain}/spec.md       # ten domains — stubs now; PBI-001 authors
 docs/adrs/                   # Nygard bodies ADR-001…011 (PBI-002)
-docs/
+docs/rivet-tailscale-serve.md # PBI-004
+compose/                     # Rivet 2.x desktop pilot (PBI-004)
 tasks/                       # optional PBI mirrors
 prd/ agents/ workflows/
 apps/developer-os/
 apps/factory-gateway/
 bin/install.sh
+bin/rivet-healthcheck.sh
 .well-known/
 .github/workflows/
 ```

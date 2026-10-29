@@ -1,0 +1,31 @@
+# Factory Meta — Rivet 2.x desktop pilot (PBI-004 / STL-165)
+# Official shape: https://rivet.dev/actors/self-host/control-plane/docker-compose/
+# Pin 2.x — do not float to rivetdev/engine:next (3.0 Preview; ADR-002 / engineering Spec §3.2).
+name: factory-rivet
+
+services:
+  rivet-engine:
+    image: ${RIVET_ENGINE_IMAGE:-rivetdev/engine:2.3.3}
+    container_name: factory-rivet-engine
+    ports:
+      - "${RIVET_HOST_PORT:-6420}:6420"
+    volumes:
+      - rivet-data:/data
+    environment:
+      RIVET__FILE_SYSTEM__PATH: "/data"
+      RIVET__AUTH__ADMIN_TOKEN: "${RIVET_ADMIN_TOKEN:?set RIVET_ADMIN_TOKEN in compose/.env}"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- http://127.0.0.1:6420/health >/dev/null 2>&1 || curl -fsS http://127.0.0.1:6420/health >/dev/null 2>&1 || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    restart: unless-stopped
+
+volumes:
+  rivet-data:
+    name: factory-rivet-data
