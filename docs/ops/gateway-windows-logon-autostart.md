@@ -132,14 +132,18 @@ powershell -File .\scripts\windows\factory-gateway-register-logon-task.ps1 -Acti
 ## Cloud / CI dry-run (no Windows)
 
 ```bash
-node scripts/gateway-windows-logon-dry-run.mjs
+npm run dry-run:windows-logon
+# or: node scripts/gateway-windows-logon-dry-run.mjs
 # exit 0 = kit files present + markers OK
 ```
+
+**PM condensed checklist (post-#59):** [`gateway-windows-logon-pm-checklist.md`](./gateway-windows-logon-pm-checklist.md)
 
 ---
 
 ## Related
 
+- PM checklist (Projects Manager): [`gateway-windows-logon-pm-checklist.md`](./gateway-windows-logon-pm-checklist.md)
 - Remount dry-run: `docs/gateway-remount-dry-run.md`
 - Funnel / Port remount armed path: store `docs/remount-armed-runbook.md` / `docs/funnel-remount-status.md`
 - Gateway README Docker / Funnel: `apps/factory-gateway/README.md`

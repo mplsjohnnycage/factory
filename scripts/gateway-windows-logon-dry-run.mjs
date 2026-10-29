@@ -5,10 +5,12 @@
  * Verifies scripts/docs exist and contain required markers.
  * Does not run PowerShell, touch Port, or print secrets.
  *
- * Usage: node scripts/gateway-windows-logon-dry-run.mjs
+ * Usage: npm run dry-run:windows-logon
+ *    or: node scripts/gateway-windows-logon-dry-run.mjs
  * Exit 0 = kit OK. Exit 1 = missing/broken kit.
  *
  * @see docs/ops/gateway-windows-logon-autostart.md
+ * @see docs/ops/gateway-windows-logon-pm-checklist.md
  */
 import { readFileSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -47,6 +49,18 @@ const REQUIRED = [
       "DESKTOP-3APDBKG",
       "factory-gateway-register-logon-task.ps1",
       "never commit",
+      "gateway-windows-logon-pm-checklist.md",
+    ],
+  },
+  {
+    path: "docs/ops/gateway-windows-logon-pm-checklist.md",
+    markers: [
+      "Audience:** Projects Manager",
+      "FE-142",
+      "dry-run:windows-logon",
+      "DESKTOP-3APDBKG",
+      "Port schema upsert: REFUSED",
+      "do not re-ask",
     ],
   },
 ];
