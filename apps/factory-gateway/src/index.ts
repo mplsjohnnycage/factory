@@ -5,7 +5,19 @@ export { CatalogWriter, claimNextJob } from "./catalog-writer.js";
 export { MemoryCatalogStore, writerKey } from "./memory-store.js";
 export { ProjectSupervisorQueue } from "./supervisor.js";
 export { createGatewayServer, buildDefaultDeps } from "./server.js";
+export {
+  AcceptLedger,
+  evaluateAcceptOnSha,
+  isForbiddenAcceptActor,
+  META_ALWAYS_REQUIRED_CHECKS,
+} from "./accept-sha.js";
 export type * from "./types.js";
+export type {
+  AcceptActor,
+  AcceptRecord,
+  AcceptEvaluateResult,
+  CheckRunSummary,
+} from "./accept-sha.js";
 
 const isMain =
   process.argv[1]?.endsWith("src/index.ts") ||

@@ -12,6 +12,9 @@ Thin Meta gateway for **PBI-005 / STL-166**:
 |--------|------|---------|
 | `GET` | `/health` | Liveness |
 | `POST` | `/webhooks/port` | HMAC-gated Port webhook → supervisor enqueue |
+| `POST` | `/accept/evaluate` | ADR-008 accept eligibility for exact SHA (no Port mutation) |
+| `POST` | `/accept/record` | Cockpit/human accept evidence only (`X-Factory-Accept-Actor`) |
+| `GET` | `/accept/status` | Whether recorded accept still matches tip SHA |
 | `POST` | `/catalog/write` | §4.2.1 fenced catalog apply |
 | `POST` | `/catalog/claim-next` | `factory_claim_next_job` lease patch via same writer |
 

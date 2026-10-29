@@ -1,0 +1,98 @@
+# PBI-011 — Accept-on-exact-SHA gate evidence (ADR-008).
+# Evaluates required Meta checks for a candidate SHA. Does NOT Port-accept.
+# Cockpit/human performs Port governance accept only after this is green.
+name: meta-accept-gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: Exact commit SHA to evaluate (required)
+        required: true
+        type: string
+      delivery_key:
+        description: Delivery / Linear id for rewrite tracking (optional)
+        required: false
+        default: ""
+  pull_request:
+    paths:
+      - ".github/workflows/meta-accept-gate.yml"
+      - "apps/factory-gateway/src/accept-sha.ts"
+      - "apps/factory-gateway/test/accept-sha.test.ts"
+      - "scripts/accept-on-sha.ts"
+      - "docs/ci/**"
+      - "specs/visibility-accept/**"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/meta-accept-gate.yml"
+      - "apps/factory-gateway/src/accept-sha.ts"
+      - "scripts/accept-on-sha.ts"
+      - "docs/ci/**"
+
+concurrency:
+  group: meta-accept-gate-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ inputs.sha || '' }}
+  cancel-in-progress: true
+
+jobs:
+  accept-sha-unit:
+    name: accept-sha-rewrite-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/factory-gateway/package-lock.json
+      - name: Install + test accept-sha
+        working-directory: apps/factory-gateway
+        run: |
+          npm ci
+          npm test
+
+  accept-evaluate:
+    name: accept-evaluate-exact-sha
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    needs: [accept-sha-unit]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/factory-gateway/package-lock.json
+
+      - name: Install gateway (tsx)
+        working-directory: apps/factory-gateway
+        run: npm ci
+
+      - name: Fetch check-runs for exact SHA + evaluate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          REQUESTED="${{ inputs.sha }}"
+          FULL="$(git rev-parse HEAD)"
+          echo "requested=${REQUESTED}"
+          echo "checked_out=${FULL}"
+          case "${FULL}" in
+            ${REQUESTED}*) ;;
+            *)
+              echo "Checked-out tip ${FULL} does not match requested SHA ${REQUESTED}" >&2
+              exit 1
+              ;;
+          esac
+          npx --prefix apps/factory-gateway tsx scripts/accept-on-sha.ts \
+            --sha "${FULL}" \
+            --repo "${{ github.repository }}" \
+            --required meta-ci-presence
+          echo "### Accept evaluate" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **SHA:** \`${FULL}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **delivery_key:** \`${{ inputs.delivery_key }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Result: eligible (exit 0). Port accept remains Cockpit/human." >> "$GITHUB_STEP_SUMMARY"
+          echo "- Rewrite of tip invalidates any prior accept for a different SHA." >> "$GITHUB_STEP_SUMMARY"
