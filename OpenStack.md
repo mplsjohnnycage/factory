@@ -47,7 +47,7 @@ Autonomous software-delivery control plane (Meta): Port SoT → thin `factory-ga
 - Port catalog: system of record (ADR-001)
 - Git: source of truth for Specs, ADRs, apps
 - Linear: PBI / human tracker facet (Factory Meta)
-- Meta Beads: readiness/claim graph (from PBI-007)
+- Meta Beads: readiness/claim graph (PBI-007 — `apps/project-supervisor/` + `.beads/`)
 
 ## Services
 

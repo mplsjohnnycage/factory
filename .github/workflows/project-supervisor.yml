@@ -1,0 +1,32 @@
+name: project-supervisor
+
+on:
+  push:
+    paths:
+      - "apps/project-supervisor/**"
+      - ".beads/**"
+      - "specs/factory-kernel/**"
+      - ".github/workflows/project-supervisor.yml"
+  pull_request:
+    paths:
+      - "apps/project-supervisor/**"
+      - ".beads/**"
+      - "specs/factory-kernel/**"
+      - ".github/workflows/project-supervisor.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/project-supervisor
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/project-supervisor/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test

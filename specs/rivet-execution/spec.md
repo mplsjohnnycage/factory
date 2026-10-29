@@ -1,6 +1,6 @@
 # rivet-execution
 
-> **Status:** PBI-004 Compose health + PBI-005 gateway HMAC → ProjectSupervisor enqueue (Meta). Stub authorship (PBI-001) remains the Blueprint base.
+> **Status:** PBI-004 Compose + PBI-005 gateway enqueue + PBI-007 ProjectSupervisor fencing / Meta Beads gate (Meta). Stub authorship (PBI-001) remains the Blueprint base.
 > **Do not Feature-Assemble until Spec review + EGM Goldfish are green for this Spec.**
 
 ## Blueprint
@@ -15,6 +15,7 @@ Rivet 2.x is the Factory execution kernel (ADR-002): actors, queues, and workflo
 - Per-actor ordered queues; single-writer semantics for attempt lifecycle.
 - Port projection upserts from Rivet go through the Port catalog writer (§4.2.1), never raw dual-write.
 - Port → HMAC gateway (`apps/factory-gateway` `/webhooks/port`) → ProjectSupervisor enqueue (push-only).
+- `ProjectSupervisor` fencing + Meta Beads ready gate live under `apps/project-supervisor/` (PBI-007); duplicate `workKey` → one `WorkAttempt`.
 - LogicSRC map (authorship): OpenInstall for non-Compose boxes; OpenFleet ledger alongside Rivet Inspector. M1 Required rows for this Spec beyond vertical-slice Contracts: none (OpenInstall/OpenFleet production = post-M1).
 
 ### Constraints
@@ -68,4 +69,10 @@ Scenario: PBI-005 invalid HMAC never enqueues
   When a POST /webhooks/port arrives with a bad x-port-signature
   Then the gateway responds 401
   And ProjectSupervisor is not enqueued
+
+Scenario: PBI-007 duplicate workKey yields one WorkAttempt
+  Given ProjectSupervisor has admitted workKey K
+  When a second Port-authorized admit arrives for K
+  Then the existing WorkAttempt is returned as duplicate
+  And no second attempt is created
 ```
