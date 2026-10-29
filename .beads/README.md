@@ -14,7 +14,10 @@ lane (PBI-007). Prefix **`factory-`**. Never create Product Beads here.
 ```bash
 curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash
 export PATH="$HOME/.local/bin:$PATH"
-bd bootstrap --yes
+# Prefer safe helper from repo root (backup + dry-run; execute only if reversible)
+./scripts/bd-bootstrap-safe.sh --dry-run
+./scripts/bd-bootstrap-safe.sh --execute
+# Or: bd bootstrap --yes
 bd status
 ```
 
