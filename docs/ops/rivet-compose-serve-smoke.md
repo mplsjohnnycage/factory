@@ -21,9 +21,9 @@ Cloud agents: run **kit dry-run** (and optional `--lint`). Live Compose + Serve 
 
 Signed Funnel claim + handler-token path are **CLOSED**. Do not ask Johnny for HMAC / handler-token again. This kit never touches Funnel admit secrets.
 
-## FE-172 note (PM ops — do not block)
+## FE-172 note (CLOSED — do not ask Johnny)
 
-Port human Sign-in verify remains **PM ops**. Do not block Rivet Compose/Serve smoke on Sign-in.
+Port human Sign-in verify is **CLOSED** (curl pin PASS, allowlist 3 keepers, `lastLoginAt` today). Do **not** ask Johnny for Sign-in. Do not block Rivet Compose/Serve smoke on Sign-in.
 
 ## Kit dry-run (no Docker required)
 

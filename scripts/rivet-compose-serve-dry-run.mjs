@@ -129,7 +129,7 @@ console.log("Repo root:", root);
 console.log("Port mutate: REFUSED");
 console.log("Secrets print: REFUSED");
 console.log("FE-142 secret re-ask: CLOSED");
-console.log("FE-172 human Sign-in: PM ops (do not block)");
+console.log("FE-172 human Sign-in: CLOSED (do not ask Johnny)");
 console.log("Live Compose/Serve: DESKTOP PILOT ONLY");
 console.log("");
 
