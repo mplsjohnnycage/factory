@@ -1,0 +1,28 @@
+[
+  {
+    "id": "factory-r9f",
+    "status": "open",
+    "title": "Meta Seeds — wire gateway health probe",
+    "feId": "FE-181"
+  },
+  {
+    "id": "factory-w3n",
+    "status": "open",
+    "title": "Docs — remount checklist refresh",
+    "feId": "FE-182"
+  },
+  {
+    "id": "factory-cvl",
+    "status": "open",
+    "title": "Already claimed — should stay In Progress only",
+    "feId": "FE-161"
+  },
+  {
+    "id": "factory-hitl",
+    "status": "open",
+    "title": "PBI-015 compound engineering hold",
+    "feId": "FE-145",
+    "linear": "PBI-015",
+    "hitlHeld": true
+  }
+]

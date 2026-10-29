@@ -1,0 +1,27 @@
+[
+  {
+    "identifier": "FAC-201",
+    "title": "OpenAccess linkage follow-up",
+    "state": "Todo",
+    "feId": "FE-183"
+  },
+  {
+    "identifier": "FAC-202",
+    "title": "Already done sample",
+    "state": "Todo",
+    "feId": "FE-177"
+  },
+  {
+    "identifier": "FAC-015",
+    "title": "PBI-015 /ce-compound HITL hold",
+    "state": "Backlog",
+    "feId": "FE-115",
+    "hitlHeld": true
+  },
+  {
+    "identifier": "FAC-099",
+    "title": "Must exclude Done state",
+    "state": "Done",
+    "feId": "FE-099"
+  }
+]

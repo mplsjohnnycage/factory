@@ -134,6 +134,11 @@ Does not duplicate gateway unsigned/signed or supervisor-admit kits.
 Owns `refs/dolt/data` + bootstrap-safe docs — does **not** duplicate BdMetaBeads (#80)
 or gateway Dockerfile health (#82). Kit default: never bd dolt push.
 
+**Ops kit (queue mirror):** [`docs/ops/factory-queue-mirror.md`](./ops/factory-queue-mirror.md) →
+`npm run dry-run:factory-queue-mirror`. Mirrors `bd ready` (else Linear Todo) into Project
+`notes.md` `### Queued` on the coordinator tick only; kit dry-run parses fixtures and never
+mutates Beads or writes notes.
+
 ## Verify remote Dolt exists
 
 ```bash

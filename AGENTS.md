@@ -70,6 +70,8 @@ bd update <bead-id> --claim
 ```
 
 Linear remains human visibility; Meta Beads is ready/claim/parallel SoT for meta coding admit. Do not `bd init` per worktree. Sync: `bd dolt push` / `bd dolt pull` when authorized — do not commit Dolt DB blobs. Safe bootstrap/upgrade: `docs/meta-beads.md` § Safe bootstrap.
+
+**Queue mirror (factory-done loop):** each loop tick mirrors `bd ready` (else Linear Factory Meta Todo/Backlog) into Project store `notes.md` `### Queued` as FE-* rows — see `docs/ops/factory-queue-mirror.md` · `npm run dry-run:factory-queue-mirror`. Live notes write = coordinator tick only; kit dry-run never mutates Beads or writes notes.
 ## Judgment boundaries
 
 - **NEVER** call Sandbox Agent from the browser.

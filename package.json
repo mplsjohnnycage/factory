@@ -35,7 +35,8 @@
     "dry-run:bdmetabeads": "node scripts/bdmetabeads-dry-run.mjs",
     "dry-run:gateway-dockerfile-health": "node scripts/gateway-dockerfile-health-dry-run.mjs",
     "dry-run:beads-dolt-health": "node scripts/beads-dolt-health-dry-run.mjs",
-    "dry-run:openaccess-linkage": "node scripts/openaccess-linkage-dry-run.mjs"
+    "dry-run:openaccess-linkage": "node scripts/openaccess-linkage-dry-run.mjs",
+    "dry-run:factory-queue-mirror": "node scripts/factory-queue-mirror-dry-run.mjs"
   },
   "dependencies": {
     "@logicsrc/openprd": "^0.2.0",
