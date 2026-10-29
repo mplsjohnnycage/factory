@@ -23,7 +23,7 @@ External Developer OS for humans — intent, approvals UI, live progress, and co
 
 - UI / deferred AG-UI / CopilotKit are display channels; privileged mutations via Port actions only.
 - Vercel MCP OAuth helpers do not replace Port External Interface person OAuth.
-- Sign-in target is the dedicated Factory External Interface app. ADR-005 is deferred: Developer OS does not create or delete that app.
+- Sign-in target is the dedicated Factory External Interface app (ADR-005 Accepted — live). Developer OS does not create, delete, or revoke that app.
 - Browser does not call Sandbox Agent control APIs.
 - Clerk is absent; Harness Observatory OAuth client is not configured for Developer OS.
 
