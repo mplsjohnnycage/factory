@@ -20,9 +20,20 @@ Do **not** float `:latest` / `:full`. Override only via `SANDBOX_AGENT_IMAGE` fo
 |------|------|
 | `src/agent-session.ts` | create → prompt → stream → checkpoint; kill preserves identity |
 | `src/docker-lease.ts` | Live Docker provider (`sandbox-agent/docker`) |
-| `src/memory-lease.ts` | CI / unit lease (no Docker, no Claude creds) |
+| `src/memory-lease.ts` | `MemorySandboxLease` — CI / unit lease (no Docker, no Claude creds) |
 | `src/image-pin.ts` | Deliberate image + SDK pin |
 | `../../agents/coder.factory.json` | Optional OpenAgent `coder.factory` stub |
+
+## Morning / readiness dry-run (ops)
+
+PM kit (markers + optional Memory tests; no Docker / Claude / Port upserts):
+
+```bash
+npm run dry-run:sandbox-harness
+npm run dry-run:sandbox-harness -- --memory
+```
+
+See `docs/ops/sandbox-harness-readiness.md`. Does **not** duplicate Rivet Compose + Tailscale Serve smoke (separate kit).
 
 ## Verify (CI)
 
