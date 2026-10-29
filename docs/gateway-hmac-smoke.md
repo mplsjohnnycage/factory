@@ -3,7 +3,7 @@
 **Lane:** Meta · **Audience:** Projects Manager  
 **Purpose:** Prove Port classic HMAC + allowlist + SS bearer gates on a **public** Funnel base without applying Port schema or remounting workflows.  
 **Script:** `scripts/gateway-tailnet-health.mjs`  
-**Ops kit:** [`ops/beads-gateway-unsigned-admit.md`](./ops/beads-gateway-unsigned-admit.md)  
+**Ops kits:** [`ops/signed-admit-smoke.md`](./ops/signed-admit-smoke.md) (signed / handler, env-only) · [`ops/beads-gateway-unsigned-admit.md`](./ops/beads-gateway-unsigned-admit.md) (unsigned regression)  
 **Related:** [`beads-admit-gateway-path.md`](./beads-admit-gateway-path.md) · [`gateway-remount-dry-run.md`](./gateway-remount-dry-run.md) · [`port-workflow-webhooks.md`](./port-workflow-webhooks.md)
 
 ## FE-142 verdict (closed)
@@ -15,7 +15,7 @@
 | Port org secrets | **PATCHed** |
 | Further secret fill / Windows desktop for HMAC | **Do not ask** |
 
-Unsigned probes stay the cloud-safe regression after secrets match — bad/missing auth must still return **401** / **404** / **401**. Never print or commit secret values (status codes + error keys only).
+Unsigned probes stay the cloud-safe regression after secrets match — bad/missing auth must still return **401** / **404** / **401**. Signed re-checks use **env vars only**. Never print or commit secret values (status codes + error keys only).
 
 ## Live Funnel base (operator paste)
 
@@ -54,13 +54,29 @@ curl -sS -o /dev/null -w '%{http_code}\n' -X POST \
 # → 401
 ```
 
-## Signed / handler-token (already closed under FE-142)
+## Signed / handler-token smoke (env vars only)
 
-Do **not** re-run signed smoke from cloud agents that lack vault access, and do **not** ask PM/Johnny to re-fill secrets. Status codes only if an operator re-checks locally:
+FE-142 closed the first PASS. Ops recipe for a host that already has secrets in the environment (never paste values into argv/chat):
 
-- Signed claim → **202** `{ ok, admitId, actionIdentifier }`
-- Good SS bearer with empty/fixture body → **400** `action_required` (not **401**)
-- Bad SS bearer → still **401** `unauthorized_handler`
+```bash
+# Kit markers offline (safe on any cloud agent)
+npm run dry-run:gateway-signed
+
+# Live — secrets must already be in env (PORT_CLIENT_SECRET, optional FACTORY_GATEWAY_HANDLER_TOKEN)
+export FACTORY_GATEWAY_BASE_URL=https://desktop-3apdbkg.taildf3a4b.ts.net
+export GATEWAY_HMAC_SMOKE=1
+npm run dry-run:gateway-signed -- --live
+# Operator regression that must fail if secret ABSENT:
+npm run dry-run:gateway-signed -- --live --require-signed
+```
+
+| # | Probe | Expect |
+|---|-------|--------|
+| 5 | Signed claim (`PORT_CLIENT_SECRET` from env) | **202** `{ ok, admitId, actionIdentifier }` |
+| 6 | Good SS bearer (`FACTORY_GATEWAY_HANDLER_TOKEN` from env) | **400** `action_required` (not **401**) |
+| — | Bad SS bearer | still **401** `unauthorized_handler` |
+
+Presence of each secret is logged as `present` / `ABSENT` only. Digests and bearers are never printed. Full table + chain: [`ops/signed-admit-smoke.md`](./ops/signed-admit-smoke.md).
 
 Contract reminder: Port signs `` `${timestamp}.${rawBody}` `` HMAC-SHA-256 → `x-port-signature: v1,<base64>` + `x-port-timestamp` (`apps/factory-gateway/src/hmac.ts`).
 
