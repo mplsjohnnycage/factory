@@ -1,9 +1,18 @@
 # Beads admit → factory-gateway path (public Funnel)
 
-**Lane:** Meta only (`factory-` Beads)  
+**Lane:** Meta only (`factory-` Beads) · **Audience:** Projects Manager  
 **Purpose:** Single map of Port `gateway_admit` → Funnel gateway → ProjectSupervisor / Meta Beads claim after public `/health` is green.  
 **Live base:** `https://desktop-3apdbkg.taildf3a4b.ts.net`  
-**Related:** [`gateway-hmac-smoke.md`](./gateway-hmac-smoke.md) · [`meta-beads.md`](./meta-beads.md) · [`port-workflow-webhooks.md`](./port-workflow-webhooks.md)
+**Related:** [`gateway-hmac-smoke.md`](./gateway-hmac-smoke.md) · [`ops/beads-gateway-unsigned-admit.md`](./ops/beads-gateway-unsigned-admit.md) · [`meta-beads.md`](./meta-beads.md) · [`port-workflow-webhooks.md`](./port-workflow-webhooks.md)
+
+## FE-142 (closed — no secret re-ask)
+
+| Check | Status |
+|-------|--------|
+| Signed Funnel claim | **202** |
+| Handler-token good bearer | **400 `action_required`** (auth OK) |
+| Port org secrets | **PATCHed** |
+| Cloud unsigned regression | Keep running — gates must stay 401/404 for bad auth |
 
 ## End-to-end chain
 
@@ -23,7 +32,8 @@ Port factory_* workflow (lease/write on Port)
 | Funnel `GET /health` (off-tailnet) | **Live** — `factory-gateway` |
 | Additive `gateway_admit` on 7 `factory_*` | **Live** — URL templated on `FACTORY_GATEWAY_BASE_URL` |
 | Fencing GETs (`api.port.io`) | **Unchanged** — never retarget to gateway |
-| HMAC match desktop ↔ Port | **Pending Johnny** — unsigned → 401 (expected) |
+| HMAC + handler-token (FE-142) | **Closed** — signed claim **202**; good bearer → **400 `action_required`** |
+| Unsigned / bad-auth gates | **Must stay closed** — 401 `invalid_port_signature` / 404 / 401 (see ops kit) |
 | `RIVET_SUPERVISOR_URL` → `POST /admit` | **Library ready** ([#48](https://github.com/mplsjohnnycage/factory/pull/48)); host/Serve still ops |
 | `BdMetaBeads` adapter | **Library ready** ([#46](https://github.com/mplsjohnnycage/factory/pull/46)) |
 | Coding-work ready beads | **Ops** — morning ready set is Meta scaffolding |
@@ -40,16 +50,22 @@ Gateway wraps as `SupervisorAdmit` `{ id, receivedAt, actionIdentifier, runId, p
 ## Operator health (no remount)
 
 ```bash
+# Kit markers (offline)
+npm run dry-run:gateway-unsigned
+
 # Unsigned gates + health (safe anytime Funnel is up)
+npm run dry-run:gateway-unsigned -- --live
+# equivalent:
 node scripts/gateway-tailnet-health.mjs \
-  --base-url https://desktop-3apdbkg.taildf3a4b.ts.net
+  --base-url https://desktop-3apdbkg.taildf3a4b.ts.net \
+  --unsigned-only
 
 # Remount path print-only (also refuses Port mutate)
 node scripts/gateway-remount-dry-run.mjs \
   --base-url https://desktop-3apdbkg.taildf3a4b.ts.net
 ```
 
-After secrets match: set `GATEWAY_HMAC_SMOKE=1` + `PORT_CLIENT_SECRET` (never print) for **202** signed claim — see [`gateway-hmac-smoke.md`](./gateway-hmac-smoke.md).
+Signed claim already verified under FE-142 — see [`gateway-hmac-smoke.md`](./gateway-hmac-smoke.md). Do **not** re-ask for secret fill.
 
 ## Local Beads dry-run (no Funnel)
 
@@ -70,7 +86,7 @@ Compose Rivet engine `:6420` is **not** an admit consumer.
 
 ## Port schema
 
-**Read / dry-run only this tick.** Factory blueprints (`executionContract`, `deliveryRun`, `executionAttempt`, `executionRunner`, `product`, …) already exist. Do **not** `upsert_blueprint` to advance this path — remount + HMAC/env are the blockers, not schema.
+**Read / dry-run only.** Factory blueprints (`executionContract`, `deliveryRun`, `executionAttempt`, `executionRunner`, `product`, …) already exist. Do **not** `upsert_blueprint` to advance this path — remount + HMAC/env are closed for FE-142; unsigned regression is the remaining cloud check.
 
 ## Explicit non-goals
 
@@ -79,3 +95,4 @@ Compose Rivet engine `:6420` is **not** an admit consumer.
 - No OAuth External Interface mutate / URI prune  
 - No PBI-015 / Observatory / Product Beads  
 - No Sandbox Agent from browser  
+- No secret re-ask (FE-142 closed)  
