@@ -42,7 +42,20 @@ curl -fsS -X PUT "http://127.0.0.1:6420/runner-configs/default?namespace=default
   -d '{"datacenters":{"default":{"normal":{}}}}'
 ```
 
-Factory Actor nodes / gateway attach in later PBIs (005–007). This unit stops at **Compose health + Serve docs**.
+Factory Actor nodes attach in later PBIs (005–007). This unit’s default path stops at **Compose health + Serve docs**.
+
+## Optional: factory-gateway (profile `gateway`)
+
+Production-minded image lives at `apps/factory-gateway/Dockerfile` (Node 20, `:8787`, `GET /health`). Rivet default path is unchanged — enable the gateway only when you need a container for Funnel/PaaS remount (FE-114):
+
+```bash
+cd compose
+# set PORT_CLIENT_SECRET (+ optional FACTORY_GATEWAY_HANDLER_TOKEN) in .env
+docker compose --profile gateway up -d --build
+curl -fsS http://127.0.0.1:8787/health
+```
+
+Default `docker compose up -d` still starts **rivet-engine only**. Public HTTPS for Port SaaS: Tailscale **Funnel** (or a PaaS) in front of host port `8787` — do not flip the repo private. Details: `apps/factory-gateway/README.md` § Docker.
 
 ## Tear down
 
