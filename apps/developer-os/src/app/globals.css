@@ -36,7 +36,10 @@
   --atlas-bg: #e5eaf0;
   --atlas-ink: #1c1e22;
   --atlas-muted: #6b717c;
+  --atlas-muted-soft: #8a909a;
   --atlas-glass: rgba(255, 255, 255, 0.46);
+  --atlas-blur: blur(22px) saturate(1.9);
+  --atlas-link: #2f6fe0;
 
   /* Compat aliases used by older modules */
   --bg-deep: var(--cockpit-bg);

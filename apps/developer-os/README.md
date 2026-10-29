@@ -13,9 +13,11 @@ Lane: **Meta only** · browser never calls Sandbox Agent · no Port OAuth create
 | `src/app/page.tsx` | Cockpit home (Port Context Lake hero · Assembly · Apps) |
 | `src/components/CockpitShell.tsx` | Dark/light chrome · pill tabs · Ask Factory ⌘J |
 | `src/components/CockpitHome.tsx` | Cockpit v3 first vertical slice |
-| `src/app/atlas/page.tsx` | Code Atlas light-glass surface |
-| `src/components/AtlasHero.tsx` | Atlas graph + overlay toggles (STL-154) |
-| `src/lib/atlas/` | STL-154 four-overlay read projection + MCP tools |
+| `src/app/atlas/page.tsx` | Code Atlas v5 light-glass lake + ⌘K |
+| `src/components/AtlasLake.tsx` | Lake catalog / activity / detail + view pills |
+| `src/components/CommandPalette.tsx` | Search everything (⌘K) over fixtures |
+| `src/components/AtlasHero.tsx` | Map view — graph + overlay toggles (STL-154) |
+| `src/lib/atlas/` | STL-154 projection + MCP tools + lake fixtures |
 | `src/app/api/atlas/subgraph` | Viewport-capped subgraph JSON |
 | `src/app/api/atlas/tools` | Bounded `atlas.*` tool list + invoke |
 | `src/app/api/auth/port/login` | Begin Port OAuth (PKCE challenge + state cookies) |
