@@ -61,3 +61,13 @@ ADR-007 is **Superseded by ADR-011**.
 ## Layout (mandated §2)
 
 See `README.md` and master production plan. Apps: `apps/factory-gateway/`, `apps/developer-os/`.
+
+## LogicSRC emits (index)
+
+| Artifact | Path |
+|----------|------|
+| OpenStack | `OpenStack.md` · `/.well-known/openstack.md` |
+| OpenProfile (operator) | `OpenProfile.md` · `/.well-known/openprofile.md` |
+| OpenMCP / OpenAccess | `/.well-known/openmcp.json`, `openaccess.json` (PBI-010) |
+
+This file indexes; it does not dump Spec Blueprint/Contract design.
