@@ -5,7 +5,8 @@
   "operator": "https://github.com/mplsjohnnycage/factory/blob/main/.well-known/openprofile.md",
   "redirect_uris": [
     "http://localhost:3000/api/auth/callback",
-    "http://127.0.0.1:3000/api/auth/callback"
+    "http://127.0.0.1:3000/api/auth/callback",
+    "https://factory-developer-os.vercel.app/api/auth/callback"
   ],
   "scopes": {
     "catalog:read": "Read Port catalog entities bound by Factory Meta",
