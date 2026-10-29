@@ -21,7 +21,9 @@ export PATH="$HOME/.local/bin:$PATH"
 bd status
 ```
 
-See [`docs/meta-beads.md`](../docs/meta-beads.md) and root `AGENTS.md`.
+See [`docs/meta-beads.md`](../docs/meta-beads.md),
+[`docs/ops/beads-dolt-health.md`](../docs/ops/beads-dolt-health.md)
+(`npm run dry-run:beads-dolt-health`), and root `AGENTS.md`.
 
 ## Essential commands
 
