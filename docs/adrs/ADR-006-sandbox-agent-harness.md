@@ -22,6 +22,8 @@ We will use Rivet-orchestrated **Sandbox Agent** as the coding harness. Isolatio
 
 **Reconsider when:** A successor ADR names a different harness or isolation provider. Pointing the browser at the Sandbox Agent control API is not that successor.
 
+**Ops readiness:** Morning dry-run kit — `docs/ops/sandbox-harness-readiness.md` · `npm run dry-run:sandbox-harness` (Memory path only; Compose/Serve is a separate Rivet kit).
+
 ## Alternatives Considered
 
 - **Browser-hosted agent control.** Rejected. It violates authorization and the orchestration architecture. Specs ban it.

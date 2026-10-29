@@ -30,7 +30,8 @@
     "dry-run:gateway-signed": "node scripts/gateway-signed-admit-dry-run.mjs",
     "dry-run:supervisor-admit": "node scripts/supervisor-admit-dry-run.mjs",
     "dry-run:windows-logon": "node scripts/gateway-windows-logon-dry-run.mjs",
-    "dry-run:rivet-compose-serve": "node scripts/rivet-compose-serve-dry-run.mjs"
+    "dry-run:rivet-compose-serve": "node scripts/rivet-compose-serve-dry-run.mjs",
+    "dry-run:sandbox-harness": "node scripts/sandbox-harness-dry-run.mjs"
   },
   "dependencies": {
     "@logicsrc/openprd": "^0.2.0",
