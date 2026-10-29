@@ -5,8 +5,9 @@ Thin Meta gateway for **PBI-005 / STL-166** + **PBI-011 / STL-172** + **PBI-012 
 1. Verify Port classic webhook **HMAC-SHA-256** (`x-port-signature` / `x-port-timestamp`)
 2. Enqueue **ProjectSupervisor** (push-only — Rivet never polls Port)
 3. Host **§4.2.1 catalog writer** (single-writer per `{blueprint}:{entityIdentifier}` + `catalogVersion` reject-stale)
-4. Accept-on-exact-SHA evaluate/record (ADR-008) — Cockpit/human only
-5. **OpenFleet ceilings** + **gateway rate limit** (PBI-012) — over-ceiling → ledger `ceiling.refuse`
+4. **Ocean/MCP sync ingress** — Meta-fenced blueprints cannot bypass the writer (`POST /catalog/sync-write`)
+5. Accept-on-exact-SHA evaluate/record (ADR-008) — Cockpit/human only
+6. **OpenFleet ceilings** + **gateway rate limit** (PBI-012) — over-ceiling → ledger `ceiling.refuse`
 
 ## Endpoints
 
@@ -21,10 +22,17 @@ Thin Meta gateway for **PBI-005 / STL-166** + **PBI-011 / STL-172** + **PBI-012 
 | `POST` | `/accept/record` | Cockpit/human accept evidence only (`X-Factory-Accept-Actor`) |
 | `GET` | `/accept/status` | Whether recorded accept still matches tip SHA |
 | `POST` | `/catalog/write` | §4.2.1 fenced catalog apply |
+| `POST` | `/catalog/sync-write` | Ocean/MCP/workflow sync ingress; rejects Meta fence bypass |
 | `POST` | `/catalog/claim-next` | `factory_claim_next_job` lease patch via same writer |
 | `POST` | `/handlers/self-service` | Meta Port SS handlers (Convex preview/env); HMAC or Bearer |
 
 Mutating routes (except `/health`) are rate-limited (`GATEWAY_RATE_LIMIT_RPM`, default 60/min). Over limit → HTTP 429 + `Retry-After`.
+
+## Ocean / MCP Meta fences
+
+Factory-governed blueprints (`product`, `service`, `executionContract`, …) are **Meta-fenced**: Ocean and MCP must call `/catalog/sync-write` (never raw Port dual-write, never `bypassFence: true`). Context Lake mirrors (`github*` / `linear*` / `vercel*` / `convex*`) stay on Port Ocean native sync.
+
+Design + ops: [`docs/ocean-mcp-write-fencing.md`](../../docs/ocean-mcp-write-fencing.md).
 
 ## Self-service handlers (Meta)
 
