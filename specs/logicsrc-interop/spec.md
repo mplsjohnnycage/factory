@@ -17,7 +17,7 @@ Emit inventory-mandatory LogicSRC interoperability files from Specs. LogicSRC is
 - **PBI-003 emit (inventory §7 items 1–2 + AGENTS index):** `OpenStack.md` + `/.well-known/openstack.md`; operator `OpenProfile.md` + `/.well-known/openprofile.md`; `AGENTS.md` remains index-only.
 - OpenMCP / OpenAccess well-known JSON emitted under PBI-010 (no Port OAuth create from those files).
 - Full inventory §7 Factory-mandatory checklist beyond M1 Required rows = post-M1.
-- Validate with `@logicsrc/validators` / `logicsrc prd validate --strict` in ASDLC local gate (PBI-013).
+- Validate with `@logicsrc/validators@0.6.0` in ASDLC local gate (`npm run local-gate` / PBI-013). OpenPRD bodies under `prd/` are validated as `openprd-prd` when present; well-known OpenMCP/OpenAccess use `scripts/validate-well-known.mjs`.
 
 ### Constraints
 
@@ -38,7 +38,7 @@ Emit inventory-mandatory LogicSRC interoperability files from Specs. LogicSRC is
 ### Regression Guardrails
 
 - No invented catalogs outside inventory + Spec ownership.
-- Validators refuse invalid OpenPRD / schema artifacts in local gate when that gate is live.
+- Validators refuse invalid OpenPRD / schema artifacts in local gate (`scripts/local-gate.mjs` + `@logicsrc/validators`).
 - Placeholder OpenStack/OpenProfile bodies are not Accepted emissions.
 
 ### Scenarios

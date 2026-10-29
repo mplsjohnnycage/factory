@@ -1,0 +1,4 @@
+# Intentionally invalid — used by local-gate refuse self-test (PBI-013).
+# Missing required LogicSRC agent fields (name, did, owner_did, skills, permissions_requested).
+type: logicsrc.agent
+version: "0.1"

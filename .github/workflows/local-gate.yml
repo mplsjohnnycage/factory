@@ -1,0 +1,46 @@
+# PBI-013 / STL-174 — CI refuses dirty/invalid (same command as local gate).
+name: local-gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: local-gate-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  local-gate-refuse:
+    name: local-gate-refuse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            apps/factory-gateway/package-lock.json
+            apps/project-supervisor/package-lock.json
+            apps/sandbox-harness/package-lock.json
+            apps/developer-os/package-lock.json
+
+      - name: Install root (validators)
+        run: npm ci
+
+      - name: Refuse-ratchet unit tests
+        run: npm test
+
+      - name: Local gate (one command refuses dirty/invalid)
+        run: |
+          set -euo pipefail
+          npm run local-gate
+          echo "### Local gate" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Command: \`npm run local-gate\` / \`bin/local-gate\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- SHA: \`$(git rev-parse HEAD)\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Spec: \`specs/asdlc-lifecycle/spec.md\` (PBI-013)" >> "$GITHUB_STEP_SUMMARY"

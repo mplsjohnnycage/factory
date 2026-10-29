@@ -1,0 +1,19 @@
+{
+  "name": "@factory/meta",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Factory Meta repo root — local gate + LogicSRC validators (PBI-013)",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "local-gate": "node scripts/local-gate.mjs",
+    "test": "node --test scripts/local-gate-refuse.test.mjs",
+    "test:local-gate": "node --test scripts/local-gate-refuse.test.mjs",
+    "validate:well-known": "node scripts/validate-well-known.mjs"
+  },
+  "dependencies": {
+    "@logicsrc/validators": "0.6.0"
+  }
+}
