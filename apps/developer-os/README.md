@@ -76,19 +76,28 @@ gap replay then live SSE; on blip, reconnects from last `sequence`. Memory fixtu
 
 Four overlays (Beads / Polygraph / Graft / Langfuse) as separate graphs. Only
 source-proven joins are authority. Langfuse is historical — Rivet owns live
-sessions. Port MCP tool names are advertised in `/.well-known/openmcp.json`;
-live Port blueprint/workflow bind is Johnny-gated (prep only from this lane).
+sessions. OpenMCP advertises **dotted** `atlas.*` names in `/.well-known/openmcp.json`;
+Port workflow IDs use underscores (`atlas_find_node`) because Port disallows `.`.
+The BFF accepts both; responses always echo the canonical dotted name.
 
 ```bash
 curl -s 'http://localhost:3000/api/atlas/subgraph?overlays=beads,polygraph,graft&role=anonymous' | jq .
 curl -s -X POST http://localhost:3000/api/atlas/tools \
   -H 'content-type: application/json' \
   -d '{"tool":"atlas.find_node","args":{"query":"STL-154"},"role":"operator"}' | jq .
+
+# Repo-root smoke (prod default; zero Port mutations)
+npm run smoke:atlas-bff
+ATLAS_BFF_BASE=http://localhost:3000 npm run smoke:atlas-bff
+npm run smoke:atlas-bff -- --dry-run
 ```
+
+BFF hardening: JSON content-type required, 64 KiB body cap, `Cache-Control: no-store`,
+subgraph depth clamped, Port underscore aliases normalized.
 
 ## Follow-ons
 
 - Register production/preview HTTPS callbacks on the Port Factory app when deploy URLs are stable
 - Live Rivet Serve wiring when desktop Tailscale URL is stable
-- Johnny approval to bind atlas.* tools into live Port MCP workflows (schema apply)
+- Live Beads/Polygraph/Graft/Langfuse joins beyond the M4 fixture graph
 

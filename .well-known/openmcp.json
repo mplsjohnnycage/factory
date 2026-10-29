@@ -55,6 +55,19 @@
       "skill",
       "harness_session"
     ],
-    "no_port_oauth_mutation": true
+    "no_port_oauth_mutation": true,
+    "atlas_tools": {
+      "naming": "openmcp-dotted",
+      "bff": "https://factory-developer-os.vercel.app/api/atlas/tools",
+      "port_workflow_id_charset": "underscore (Port disallows '.')",
+      "map": {
+        "atlas.find_node": "atlas_find_node",
+        "atlas.expand_dependencies": "atlas_expand_dependencies",
+        "atlas.get_task_impact": "atlas_get_task_impact",
+        "atlas.get_related_sessions": "atlas_get_related_sessions",
+        "atlas.get_agent_traces": "atlas_get_agent_traces"
+      },
+      "note": "tools[] advertises OpenMCP dotted names only. Port SELF_SERVE workflows use underscore IDs; Dev OS BFF accepts both."
+    }
   }
 }
