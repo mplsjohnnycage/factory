@@ -11,6 +11,23 @@ export {
   isForbiddenAcceptActor,
   META_ALWAYS_REQUIRED_CHECKS,
 } from "./accept-sha.js";
+export {
+  evaluateSpawnAgainstCeiling,
+  mergeCeilingsNarrow,
+  parseBudgetAmount,
+} from "./openfleet-ceilings.js";
+export {
+  MemoryOpenFleetLedger,
+  FileOpenFleetLedger,
+  buildOpenFleetLedger,
+  recordCeilingRefuse,
+} from "./openfleet-ledger.js";
+export { gateFleetSpawn } from "./fleet-spawn.js";
+export {
+  SlidingWindowRateLimiter,
+  rateLimitConfigFromEnv,
+  rateLimitKeyFromRequest,
+} from "./rate-limit.js";
 export type * from "./types.js";
 export type {
   AcceptActor,
@@ -18,6 +35,20 @@ export type {
   AcceptEvaluateResult,
   CheckRunSummary,
 } from "./accept-sha.js";
+export type {
+  OpenFleetCeiling,
+  ApprovalsMode,
+  CeilingRefuseReason,
+  SpawnCeilingInput,
+  SpawnCeilingResult,
+} from "./openfleet-ceilings.js";
+export type {
+  OpenFleetLedger,
+  OpenFleetLedgerEvent,
+  CeilingRefuseEvent,
+} from "./openfleet-ledger.js";
+export type { FleetSpawnRequest, FleetSpawnResult } from "./fleet-spawn.js";
+export type { RateLimitConfig, RateLimitResult } from "./rate-limit.js";
 
 const isMain =
   process.argv[1]?.endsWith("src/index.ts") ||
