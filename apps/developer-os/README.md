@@ -98,6 +98,21 @@ Operator guide (PASS criteria, naming, post-deploy verify):
 BFF hardening: JSON content-type required, 64 KiB body cap, `Cache-Control: no-store`,
 subgraph depth clamped, Port underscore aliases normalized.
 
+## OpenAccess linkage smoke (PBI-010 ops kit)
+
+Repo-root kit verifies OpenAccess / OpenMCP well-knowns stay aligned with this app’s
+`CALLBACK_PATH` (`/api/auth/callback`), Factory client id env, and Observatory refuse.
+Does **not** mutate Port; does **not** replace Atlas BFF smoke or human Sign-in verify.
+
+```bash
+# from repo root
+npm run dry-run:openaccess-linkage
+npm run dry-run:openaccess-linkage -- --memory
+npm run dry-run:openaccess-linkage -- --live
+```
+
+Operator guide: [`docs/ops/openaccess-linkage-smoke.md`](../../docs/ops/openaccess-linkage-smoke.md).
+
 ## Follow-ons
 
 - Register production/preview HTTPS callbacks on the Port Factory app when deploy URLs are stable
