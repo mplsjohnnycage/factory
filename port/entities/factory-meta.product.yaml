@@ -1,0 +1,28 @@
+# Seed entity — Factory Meta product
+# Applied live via Port MCP upsert_entity.
+blueprint: product
+identifier: factory-meta
+title: Factory Meta
+properties:
+  repoFullName: mplsjohnnycage/factory
+  repoUrl: https://github.com/mplsjohnnycage/factory
+  defaultBranch: main
+  status: active
+  linearProjectUrl: https://linear.app/johnny-cage/project/factory-meta-1c7e5c372e3d
+  highRiskPaths:
+    - apps/factory-gateway/
+    - apps/project-supervisor/
+    - compose/
+    - .github/workflows/
+    - specs/auth-port-oauth/
+    - .well-known/
+  lowRiskAllowlist:
+    - docs/
+    - README.md
+    - AGENTS.md
+    - OpenStack.md
+    - OpenProfile.md
+  catalogVersion: 0
+relations:
+  githubRepository: factory
+  linearProject: 66aabc4a-3e16-49a1-81c5-39f3f259656a
