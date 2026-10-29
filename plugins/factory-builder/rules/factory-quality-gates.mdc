@@ -1,0 +1,17 @@
+---
+description: Quality gates when authoring Factory Specs, PBIs, ADRs, or this plugin.
+alwaysApply: true
+---
+
+# Factory quality gates
+
+When changing Factory Specs, PBIs, ADRs, workflow docs, or this plugin:
+
+1. **Master first** — edit `factory-master-spec` (or `/specs/{domain}/spec.md`) before derived docs; then propagate.
+2. **Lane label** — every new artifact row/file is Meta or Product with a stated reason; never Both.
+3. **Typed contract DoR** — refuse to start Feature Assembly if C1–C3 or fields 1–16 are incomplete; field 7 = roster + task kind.
+4. **Spec+Contract before assembly** — Blueprint (Context / Architecture / Constraints) + Contract (DoD / Guardrails / Scenarios) present; Spec review + EGM Goldfish green before Feature Assembly for that Spec.
+5. **Living specs** — Spec/Contract changes travel in the **same PR** as code (default refinement) unless the PBI says otherwise.
+6. **ADRs** — Accepted ADR bodies are immutable; supersede, never edit history.
+7. **Plugin paths** — if editing this plugin: `.cursor-plugin/plugin.json` has valid `name`; all declared paths relative and real; skills/rules/agents/commands have required frontmatter; README documents install.
+8. **No mutations from docs-only work** — planning / doc writes do not create Port OAuth apps, Linear issues, or Notion pages unless the unit explicitly authorizes those write targets.

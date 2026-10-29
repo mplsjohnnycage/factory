@@ -1,0 +1,39 @@
+{
+  "name": "factory-builder",
+  "displayName": "Factory Builder",
+  "version": "0.1.0",
+  "description": "Build Factory Meta against the master Spec: Meta XOR Product, 19-field typed-contract units, Phase A setup, and the task → standardize → PR → build → loop coding sequence.",
+  "author": {
+    "name": "Johnny",
+    "email": "johnny@factory.local"
+  },
+  "homepage": "https://github.com/mplsjohnnycage/factory",
+  "repository": "https://github.com/mplsjohnnycage/factory",
+  "license": "MIT",
+  "keywords": [
+    "factory",
+    "asdlc",
+    "meta",
+    "typed-contract",
+    "coding-loop",
+    "port",
+    "rivet",
+    "beads"
+  ],
+  "category": "developer-tools",
+  "tags": [
+    "factory",
+    "meta",
+    "workflow"
+  ],
+  "skills": "./skills/",
+  "rules": "./rules/",
+  "agents": "./agents/",
+  "commands": [
+    "commands/factory-loop.md",
+    "commands/factory-standardize.md",
+    "commands/factory-classify-lane.md",
+    "commands/factory-dor-check.md",
+    "commands/factory-setup.md"
+  ]
+}

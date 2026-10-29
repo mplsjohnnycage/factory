@@ -1,0 +1,46 @@
+---
+description: Factory Meta hard rules — Meta XOR Product, equivalence chain, coding-loop order, accept path.
+alwaysApply: true
+---
+
+# Factory hard rules
+
+Canonical SoT is **factory-master-spec**. Derived docs (workflow, meta-vs-product, coding-loop) must match it. Master first, then propagate. Do not invent parallel SoTs.
+
+## Equivalence chain
+
+Linear ticket ≡ bead ≡ GitHub issue ≡ PBI ≡ typed contract — **one unit, five names**. A PBI **is** the typed contract. Do not treat them as separate startable things.
+
+## Meta XOR Product
+
+Every artifact, board, Beads instance, repo, and Port ownership is **Meta** *xor* **Product** — never Both / shared / either. Cross-contamination is a defect.
+
+- **Meta** = building Factory itself (this meta-repo, Factory Meta Linear, Meta Beads, seed PBIs).
+- **Product** = Factory assembling a user project (separate boards/repos/Beads instance).
+- Beads write targets must name **Meta Beads** or **Product Beads** explicitly — never vague “Beads”.
+- **PBI-007 = Meta only** (wires Meta Beads). Product Beads needs a future Product-lane PBI.
+
+## Coding loop (coding-agent units)
+
+Always **task → standardize → PR → build → loop**. No independent-review / “Merge!” step. Cursor is not the only agent. Field **7** on the unit must name a §0.7 roster type **and** `personal-agent` *xor* `coding-agent`.
+
+## Accept path
+
+Agent “done” ≠ Port accept. Accept = Port governance + green CI on **exact SHA** (ADR-008).
+
+## Coordination scratch
+
+Cursor Project `notes.md` = coordination only — never Spec, accept, claim, or work-queue SoT.
+
+## DoR
+
+Unit not startable until the full 19-field body is filled (C1–C3 + fields 1–16 + Spec / Verification / Refinement pointers). Prefer Port-native / Spec Contract / workflow INPUT schemas — no parallel type system.
+
+## Hard bans
+
+- Inventing Port tool IDs outside the live catalog.
+- Treating LogicSRC as primary IR.
+- Port OAuth create/delete without Johnny authorization (ADR-005 deferred; never Observatory reuse).
+- Self-admitting Sandbox Agent coding from a personal-agent / Cockpit unit.
+- Two in-progress units sharing write-set paths without serial dependency or Beads merge-slot.
+- `bd init` inside every git worktree (worktrees share one `.beads`).
