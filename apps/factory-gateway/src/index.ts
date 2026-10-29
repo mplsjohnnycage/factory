@@ -2,6 +2,12 @@ import { buildDefaultDeps, createGatewayServer } from "./server.js";
 
 export { verifyPortWebhookHmac, portJsonBody } from "./hmac.js";
 export { CatalogWriter, claimNextJob } from "./catalog-writer.js";
+export {
+  FACTORY_WORKFLOW_IDS,
+  isFactoryWorkflowId,
+  resolveFactoryActionIdentifier,
+} from "./factory-workflows.js";
+export type { FactoryWorkflowId } from "./factory-workflows.js";
 export { MemoryCatalogStore, writerKey } from "./memory-store.js";
 export { ProjectSupervisorQueue } from "./supervisor.js";
 export { createGatewayServer, buildDefaultDeps } from "./server.js";
