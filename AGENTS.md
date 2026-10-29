@@ -40,8 +40,16 @@ See `docs/adrs/`. Bodies immutable after PBI-002; supersede, do not edit.
 | Linear project **Factory Meta** | Human tracker facet for seed PBIs |
 | Port | Catalog SoT; workflows as tools — bind live names only |
 | Rivet 2.x Compose + Tailscale Serve | Execution kernel (PBI-004+) |
-| Beads (**Meta Beads**) | Ready/claim from PBI-007; optional earlier scaffolding (OQ-1) |
+| Beads (**Meta Beads**) | **Scaffolded now** (OQ-1 hybrid locked). Prefix `factory-`. **Linear remains admit/claim SoT until PBI-007.** Not a day-one human board. Product Beads never in this repo. |
 | GitHub Actions | Accept path on exact SHA (PBI-011) |
+
+## Meta Beads (scaffold — hybrid OQ-1)
+
+Instance lives in `.beads/` (embedded Dolt). Issue ids: `factory-<hash>`. CLI: `bd ready` → `bd update --claim` → `bd close`.
+
+**Until PBI-007:** use Meta Beads for deps / `bd ready` practice only. **Do not** treat Beads claim as Rivet admit authority or replace Linear assignee as the human/admit SoT. After PBI-007, `ProjectSupervisor` admits only when Meta Beads reports ready (or audited Port bypass). Sync: `bd dolt push` / `bd dolt pull` against `refs/dolt/data` — do not `bd init` per worktree.
+
+Full Project write-up: Project store `docs/meta-beads-scaffold.md`.
 
 ## Judgment boundaries
 
