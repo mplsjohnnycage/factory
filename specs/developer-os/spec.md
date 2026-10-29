@@ -1,6 +1,6 @@
 # developer-os
 
-> **Status:** Stub authored — PBI-001 / STL-162 (Meta). Stub authorship only — not M1 implement DoD (§13.5).
+> **Status:** PBI-008 Next.js shell + atlas hero + Port OAuth Route Handler stub (Meta). Stub authorship (PBI-001) remains the Blueprint base.
 > **Do not Feature-Assemble until Spec review + EGM Goldfish are green for this Spec.**
 
 ## Blueprint
@@ -11,12 +11,13 @@ External Developer OS for humans — intent, approvals UI, live progress, and co
 
 ### Architecture
 
-- **Shell:** Next.js App Router (RSC default + Client Components + Route Handlers for Port OAuth callback / BFF).
-- **Host:** Vercel preview/production (`*.vercel.app`).
-- **Streaming (kernel):** Rivet Actor native realtime into `AgentSession` event sequence — not CopilotKit.
-- **Integrations UI:** MCP Apps (sandboxed iframes) or Port iframe/plugins for Vercel, Convex, Docker, Port, Turso, GitHub; frosted dock under Code Atlas hero.
+- **Shell:** Next.js App Router under `apps/developer-os/` (RSC default + Client Components + Route Handlers for Port OAuth callback / BFF).
+- **Host:** Vercel preview/production (`*.vercel.app`); monorepo root directory `apps/developer-os`.
+- **First viewport (PBI-008):** full-bleed Code Atlas hero composition — brand **Factory**, headline Developer OS, one CTA (Port sign-in).
+- **Streaming (kernel):** Rivet Actor native realtime into `AgentSession` event sequence — not CopilotKit (PBI-009).
+- **Integrations UI:** MCP Apps (sandboxed iframes) or Port iframe/plugins for Vercel, Convex, Docker, Port, Turso, GitHub; frosted dock under Code Atlas hero (post-shell).
 - **Deferred:** AG-UI (Agent↔User) and CopilotKit — optional later; not kernel streaming dependencies.
-- Visual: frosted-glass; full-bleed code-atlas hero (Polygraph + Beads + Trailcode).
+- Visual: frosted-glass atmosphere; full-bleed code-atlas hero plane.
 - LogicSRC map: OpenStack Interfaces/Web + Hosting/Vercel; OpenProfile operator link (M1 Required via PBI-003).
 
 ### Constraints
@@ -25,14 +26,15 @@ External Developer OS for humans — intent, approvals UI, live progress, and co
 - Vercel MCP OAuth helpers do not replace Port External Interface person OAuth.
 - Sign-in target is the dedicated Factory External Interface app (ADR-005 Accepted — live). Developer OS does not create, delete, or revoke that app.
 - Browser does not call Sandbox Agent control APIs.
-- Clerk is absent; Harness Observatory OAuth client is not configured for Developer OS.
+- Clerk is absent; Harness Observatory OAuth client is not configured for Developer OS (`PORT_OBSERVATORY_CLIENT_ID` refused).
 
 ## Contract
 
 ### Definition of Done
 
-- Next.js app deploys on Vercel; atlas hero is first viewport.
-- Rivet native stream reconnects from last `sequence`.
+- Next.js app builds; atlas hero is first viewport.
+- Port OAuth login + callback Route Handlers compile; Factory client id via `PORT_FACTORY_CLIENT_ID` only.
+- Rivet native stream reconnects from last `sequence` (PBI-009).
 - Port sign-in Route Handler targets the intended Factory client redirects and does not reuse Observatory or Clerk.
 
 ### Regression Guardrails
@@ -40,15 +42,22 @@ External Developer OS for humans — intent, approvals UI, live progress, and co
 - Browser does not call Sandbox Agent control APIs.
 - Clerk is absent.
 - Observatory client id configured as Factory auth fails Contract review.
+- No CopilotKit / AG-UI on the kernel streaming path.
 
 ### Scenarios
 
 ```gherkin
 Scenario: Preview deploy serves shell
-  Given Developer OS is deployed to a Vercel preview URL
-  When an operator opens the preview
+  Given Developer OS is built for a Vercel preview
+  When an operator opens the shell
   Then the Code Atlas hero is the first viewport composition
   And privileged mutations are not available without Port auth
+
+Scenario: PBI-008 OAuth Route Handler stub compiles
+  Given PORT_FACTORY_CLIENT_ID names the Factory External Interface app
+  When GET /api/auth/port/login and GET /api/auth/port/callback are typechecked and built
+  Then the handlers compile
+  And configuring PORT_OBSERVATORY_CLIENT_ID is refused
 
 Scenario: Session events survive browser disconnect
   Given an AgentSession streaming via Rivet native realtime
