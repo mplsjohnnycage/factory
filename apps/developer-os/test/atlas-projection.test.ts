@@ -3,6 +3,10 @@ import { describe, it } from "node:test";
 import { createFixtureAtlasGraph } from "../src/lib/atlas/fixture-graph.js";
 import { projectSubgraph } from "../src/lib/atlas/projection.js";
 import { redactGraph } from "../src/lib/atlas/redaction.js";
+import {
+  atlasPortWorkflowId,
+  normalizeAtlasToolName,
+} from "../src/lib/atlas/tool-names.js";
 import { invokeAtlasTool } from "../src/lib/atlas/tools.js";
 
 describe("Code Atlas four-overlay read projection (STL-154)", () => {
@@ -143,5 +147,17 @@ describe("Code Atlas four-overlay read projection (STL-154)", () => {
     const publicTrace = data.traces.find((t) => t.id === "langfuse:trace-atlas-1");
     assert.equal(publicTrace?.attrs?.costUsd, undefined);
     assert.ok(result.redactions.some((r) => r.endsWith(".costUsd")));
+  });
+
+  it("normalizes Port underscore workflow ids to OpenMCP dotted names", () => {
+    assert.equal(normalizeAtlasToolName("atlas.find_node"), "atlas.find_node");
+    assert.equal(normalizeAtlasToolName("atlas_find_node"), "atlas.find_node");
+    assert.equal(
+      normalizeAtlasToolName("atlas_get_agent_traces"),
+      "atlas.get_agent_traces",
+    );
+    assert.equal(normalizeAtlasToolName("ATLAS.FIND_NODE"), "atlas.find_node");
+    assert.equal(normalizeAtlasToolName("not_a_tool"), null);
+    assert.equal(atlasPortWorkflowId("atlas.find_node"), "atlas_find_node");
   });
 });

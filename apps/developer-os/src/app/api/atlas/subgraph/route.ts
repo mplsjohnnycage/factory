@@ -7,8 +7,23 @@ import type { AtlasAccessRole } from "@/lib/atlas/types";
 
 export const runtime = "nodejs";
 
+/** Hard ceiling for query depth (projection also clamps node count). */
+const MAX_DEPTH = 8;
+
+const NO_STORE_HEADERS = {
+  "Cache-Control": "no-store",
+  "X-Content-Type-Options": "nosniff",
+} as const;
+
 function parseRole(value: string | null): AtlasAccessRole {
   return value === "operator" ? "operator" : "anonymous";
+}
+
+function json(data: unknown, init?: { status?: number }): Response {
+  return NextResponse.json(data, {
+    status: init?.status,
+    headers: NO_STORE_HEADERS,
+  });
 }
 
 /**
@@ -23,12 +38,15 @@ export async function GET(request: Request): Promise<Response> {
     );
     const focus = url.searchParams.get("focus") ?? url.searchParams.get("atlasFocus");
     const depthRaw = url.searchParams.get("depth");
-    const depth = depthRaw ? Number(depthRaw) : undefined;
+    let depth = depthRaw ? Number(depthRaw) : undefined;
     if (depthRaw && !Number.isFinite(depth)) {
-      return NextResponse.json(
-        { error: "invalid depth" },
-        { status: 400 },
-      );
+      return json({ error: "invalid depth", code: "invalid_args" }, { status: 400 });
+    }
+    if (typeof depth === "number") {
+      if (depth < 0) {
+        return json({ error: "depth must be >= 0", code: "invalid_args" }, { status: 400 });
+      }
+      depth = Math.min(Math.floor(depth), MAX_DEPTH);
     }
     const role = parseRole(url.searchParams.get("role"));
     const { subgraph, redactions } = projectSubgraph({
@@ -37,7 +55,7 @@ export async function GET(request: Request): Promise<Response> {
       depth,
       role,
     });
-    return NextResponse.json({
+    return json({
       ...subgraph,
       redactions,
       authority: {
@@ -48,6 +66,6 @@ export async function GET(request: Request): Promise<Response> {
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "subgraph error";
-    return NextResponse.json({ error: message }, { status: 400 });
+    return json({ error: message, code: "subgraph_error" }, { status: 400 });
   }
 }

@@ -15,7 +15,7 @@ External Developer OS for humans — intent, approvals UI, live progress, and co
 - **Host:** Vercel preview/production (`*.vercel.app`); monorepo root directory `apps/developer-os`.
 - **First viewport (PBI-008):** full-bleed Code Atlas hero composition — brand **Factory**, headline Developer OS, one CTA (Port sign-in).
 - **Streaming (kernel, PBI-009):** Rivet Actor native realtime client (`RivetSessionClient`) into `AgentSession` event sequence — reconnect from last `sequence` via gap replay + live subscribe. BFF routes `/api/rivet/sessions/[sessionId]/events|stream`. **Not** CopilotKit.
-- **Code Atlas (STL-154 M4):** Four separate overlays — Beads (task DAG), Polygraph (session/repo/PR), Graft (symbols), Langfuse (historical traces/cost). Read projection via `GET /api/atlas/subgraph` + bounded MCP tools at `POST /api/atlas/tools` (`atlas.find_node`, `expand_dependencies`, `get_task_impact`, `get_related_sessions`, `get_agent_traces`). Only source-proven joins (`sourceSystem`/`sourceId`/`target`/`evidence`/`observedAt`) are authority; unknown joins stay unknown. Langfuse is **not** live session owner (Rivet is). Port MCP advertise/docs only until Johnny approves live Port schema bind.
+- **Code Atlas (STL-154 M4):** Four separate overlays — Beads (task DAG), Polygraph (session/repo/PR), Graft (symbols), Langfuse (historical traces/cost). Read projection via `GET /api/atlas/subgraph` + bounded MCP tools at `POST /api/atlas/tools` (`atlas.find_node`, `expand_dependencies`, `get_task_impact`, `get_related_sessions`, `get_agent_traces`). OpenMCP advertises **dotted** `atlas.*` names; Port workflow IDs use underscores (`atlas_find_node`) — BFF accepts both and always echoes dotted. Only source-proven joins (`sourceSystem`/`sourceId`/`target`/`evidence`/`observedAt`) are authority; unknown joins stay unknown. Langfuse is **not** live session owner (Rivet is). Live Port bind is Johnny-gated (applied once; no silent re-apply).
 - **Integrations UI:** MCP Apps (sandboxed iframes) or Port iframe/plugins for Vercel, Convex, Docker, Port, Turso, GitHub; frosted dock under Code Atlas hero (post-shell).
 - **Deferred:** AG-UI (Agent↔User) and CopilotKit — optional later; not kernel streaming dependencies.
 - Visual: frosted-glass atmosphere; full-bleed code-atlas hero plane.
@@ -97,4 +97,12 @@ Scenario: Code Atlas MCP tools
   When an agent requests traces with asLiveOwner true
   Then the tool refuses with langfuse_not_live_owner
   And other tools return viewport-capped read-only projection data
+
+Scenario: Code Atlas OpenMCP naming and BFF hardening
+  Given OpenMCP tools[] lists dotted atlas.* names only
+  And factory.atlas_tools.map records Port underscore workflow ids
+  When POST /api/atlas/tools uses tool atlas_find_node
+  Then the BFF normalizes to atlas.find_node
+  And non-JSON content-type is rejected
+  And oversized bodies are rejected
 ```
