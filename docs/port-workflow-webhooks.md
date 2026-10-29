@@ -4,17 +4,19 @@
 **Spec:** `specs/port-governance/spec.md`, `specs/rivet-execution/spec.md`, ADR-003  
 **Gateway:** `apps/factory-gateway` — `POST /webhooks/port` (+ allowlisted `/webhooks/port/<factory_*>`)
 
-## Verdict (2026-10-29)
+## Verdict (2026-10-29 — remount live, HMAC pending)
 
 | Layer | Status |
 |-------|--------|
-| Live Port `factory_*` workflows (7) | **Prepared** — published self-service / MCP tools |
-| Live WEBHOOK **nodes** inside those workflows | Point at **`https://api.port.io/v1/...`** (Port self-API reads), **not** factory-gateway |
+| Live Port `factory_*` workflows (7) | **Published** — Software Factory tools |
+| Fencing WEBHOOK **nodes** (GET/search) | Still **`https://api.port.io/v1/...`** — never retargeted |
+| Additive `gateway_admit` WEBHOOK (7/7) | **Live** → `{{ .secrets["FACTORY_GATEWAY_BASE_URL"] }}/webhooks/port/<id>` |
+| Public Funnel `/health` | **Green** — `https://desktop-3apdbkg.taildf3a4b.ts.net` |
 | Catalog mutations in those workflows | **`UPSERT_ENTITY`** in Port (bypasses §4.2.1 gateway writer) |
-| Gateway HMAC → ProjectSupervisor enqueue | **Proven in-repo** (unit + HTTP proof tests) |
-| Live Port → deployed gateway hop | **Not wired** — no public gateway URL bound in Port |
+| Gateway HMAC → ProjectSupervisor enqueue | **Proven in-repo** + unsigned Funnel **401** smoke |
+| HMAC secret match (desktop ↔ Port) | **Pending Johnny** — expect 401 until `PORT_CLIENT_SECRET` mirrored |
 
-**Do not remount live WEBHOOK URLs onto gateway until a reachable `FACTORY_GATEWAY_BASE_URL` exists.** Remounting to a dead URL would break the Software Factory tools.
+**Do not remount onto a dead Funnel URL.** Re-upsert `gateway_admit` only if the Funnel hostname rotates. HMAC smoke + Beads path: [`gateway-hmac-smoke.md`](./gateway-hmac-smoke.md) · [`beads-admit-gateway-path.md`](./beads-admit-gateway-path.md).
 
 ## Canonical workflow IDs (do not invent)
 
@@ -30,19 +32,19 @@ factory_request_release
 
 ## Live WEBHOOK inventory (read-only Port MCP)
 
-Every WEBHOOK node URL observed 2026-10-29 targets Port’s own API (entity GET/search). Examples:
+**Fencing** WEBHOOK nodes still target Port’s own API (entity GET/search). **Additive** `gateway_admit` notifies the Funnel gateway after the last successful write.
 
-| Workflow | WEBHOOK node role | URL host |
-|----------|-------------------|----------|
-| `factory_claim_next_job` | `fetch_runner`, `find_job`, `fetch_attempt` | `api.port.io` |
-| `factory_heartbeat` | `fetch_attempt` | `api.port.io` |
-| `factory_submit_evidence` | `fetch_attempt`, `fetch_run` | `api.port.io` |
-| `factory_start_delivery_run` | `fetch_contract`, `fetch_existing` | `api.port.io` |
-| `factory_create_execution_contract` | `fetch_existing`, `fetch_product` | `api.port.io` |
-| `factory_record_review_verdict` | `fetch_attempt`, `fetch_run` | `api.port.io` |
-| `factory_request_release` | `fetch_run`, `recheck_run` | `api.port.io` |
+| Workflow | Fencing WEBHOOK role | Fencing host | Admit node |
+|----------|----------------------|--------------|------------|
+| `factory_claim_next_job` | `fetch_runner`, `find_job`, `fetch_attempt` | `api.port.io` | `gateway_admit` → Funnel `/webhooks/port/factory_claim_next_job` |
+| `factory_heartbeat` | `fetch_attempt` | `api.port.io` | `gateway_admit` |
+| `factory_submit_evidence` | `fetch_attempt`, `fetch_run` | `api.port.io` | `gateway_admit` |
+| `factory_start_delivery_run` | `fetch_contract`, `fetch_existing` | `api.port.io` | `gateway_admit` |
+| `factory_create_execution_contract` | `fetch_existing`, `fetch_product` | `api.port.io` | `gateway_admit` |
+| `factory_record_review_verdict` | `fetch_attempt`, `fetch_run` | `api.port.io` | `gateway_admit` |
+| `factory_request_release` | `fetch_run`, `recheck_run` | `api.port.io` | `gateway_admit` |
 
-Writes remain `UPSERT_ENTITY` / `INPUT` (release Johnny-only). **Zero** nodes target `POST /webhooks/port`.
+Writes remain `UPSERT_ENTITY` / `INPUT` (release Johnny-only). Admit nodes use `onFailure: continue` until HMAC/env match.
 
 ## Gateway contract (proven)
 
@@ -63,21 +65,21 @@ npm test
 # HTTP proof suite: test/webhooks-port.test.ts
 ```
 
-## Operator remount (blocked on deploy)
+## Operator remount (done) + next smoke
 
-When a Meta gateway is reachable (Tailscale Serve / operator host — not Vercel CI / OAuth work):
+Additive remount is complete. Remaining:
 
-1. Set `PORT_CLIENT_SECRET` to the Port classic webhook / External Interface client secret used for signatures.
-2. Optional: `RIVET_SUPERVISOR_URL` to forward admits.
-3. Add (or retarget) a synchronized WEBHOOK node on coding-admit workflows to:  
-   `{FACTORY_GATEWAY_BASE_URL}/webhooks/port/<factory_*>`  
-   with Port HMAC enabled. Prefer a **new** notify/admit node after lease write — do not blindly replace Port self-API GETs used for fencing reads.
-4. Route privileged catalog applies through gateway `POST /catalog/write` / `claim-next` (separate from this WEBHOOK proof).
-5. Re-run Port `trigger_run` smoke only after health `GET /health` is green from Port’s network path.
+1. Set Port secret `FACTORY_GATEWAY_BASE_URL` to the Funnel origin (UI — MCP has no secrets tool).
+2. Mirror `PORT_CLIENT_SECRET` + `FACTORY_GATEWAY_HANDLER_TOKEN` onto the desktop gateway process; restart.
+3. Optional: `RIVET_SUPERVISOR_URL` → supervisor `POST /admit` (not Rivet engine `:6420`).
+4. Run `node scripts/gateway-tailnet-health.mjs --base-url …` then optional `GATEWAY_HMAC_SMOKE=1` signed probe ([`gateway-hmac-smoke.md`](./gateway-hmac-smoke.md)).
+5. Johnny-approved `trigger_run` of one `factory_*` only after signed **202**.
+
+Do **not** replace Port self-API GET fencing nodes with gateway URLs. Do **not** apply new Port blueprint schema for this hop.
 
 ## Explicit non-goals (this unit)
 
 - No Port External Interface OAuth create/delete/revoke.
 - No `.beads/` / Dolt mutations.
 - No Vercel CI / `.github/workflows` changes.
-- No live Port workflow upsert until gateway URL is real.
+- No Port `upsert_blueprint` / schema apply for gateway admit.
