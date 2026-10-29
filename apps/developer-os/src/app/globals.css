@@ -31,6 +31,8 @@
     "Helvetica Neue", "Geist", sans-serif;
   --font-mono: "JetBrains Mono", "Geist Mono", ui-monospace, SFMono-Regular, Menlo,
     Consolas, monospace;
+  /* Codebase Intelligence surface only (Archivo per locked comps) */
+  --font-intel: Archivo, "Helvetica Neue", var(--font-ui);
 
   /* Light Atlas mode (v5) — used on /atlas */
   --atlas-bg: #e5eaf0;

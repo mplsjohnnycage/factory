@@ -49,5 +49,6 @@ describe("atlas lake fixtures", () => {
     assert.ok(items.some((i) => i.kind === "view" && i.target === "lake"));
     assert.ok(items.some((i) => i.kind === "entity" && i.target === "svc-devos"));
     assert.ok(items.some((i) => i.kind === "nav" && i.target === "/"));
+    assert.ok(items.some((i) => i.kind === "nav" && i.target === "/intelligence"));
   });
 });

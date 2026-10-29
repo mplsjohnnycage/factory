@@ -10,6 +10,11 @@ const TABS = [
   { href: "/", label: "Home", match: (p: string) => p === "/" },
   { href: "/atlas", label: "Code Atlas", match: (p: string) => p.startsWith("/atlas") },
   {
+    href: "/intelligence",
+    label: "Intelligence",
+    match: (p: string) => p.startsWith("/intelligence"),
+  },
+  {
     href: "/session/demo",
     label: "Session",
     match: (p: string) => p.startsWith("/session"),
@@ -27,7 +32,11 @@ type Props = {
  */
 export function CockpitShell({ children, mode }: Props) {
   const pathname = usePathname() ?? "/";
-  const resolvedMode = mode ?? (pathname.startsWith("/atlas") ? "atlas" : "cockpit");
+  const resolvedMode =
+    mode ??
+    (pathname.startsWith("/atlas") || pathname.startsWith("/intelligence")
+      ? "atlas"
+      : "cockpit");
   const [chatOpen, setChatOpen] = useState(false);
   const [clock, setClock] = useState("");
 
