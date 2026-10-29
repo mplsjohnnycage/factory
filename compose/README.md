@@ -65,6 +65,17 @@ docker compose down
 # wipe pilot state: docker compose down -v
 ```
 
+## Ops kit dry-run (cloud / CI — no Docker required)
+
+Projects Manager kit: [`docs/ops/rivet-compose-serve-smoke.md`](../docs/ops/rivet-compose-serve-smoke.md).
+
+```bash
+npm run dry-run:rivet-compose-serve
+npm run dry-run:rivet-compose-serve -- --lint   # rivet-healthcheck --lint-only
+```
+
+Live `docker compose up` + Tailscale Serve `/health` stays **desktop pilot**.
+
 ## Secrets
 
 Never commit `compose/.env` or admin tokens. Serve URL is operational evidence, not a credential.
