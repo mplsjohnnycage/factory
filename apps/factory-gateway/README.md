@@ -79,6 +79,29 @@ Optional `OPENFLEET_HOME` writes JSONL under `$OPENFLEET_HOME/fleets/<fleet>/led
 
 Copy `.env.example`. Set `PORT_CLIENT_SECRET` from Port (never git). Optional `RIVET_SUPERVISOR_URL` forwards admits over HTTP when Rivet is reachable. For Meta SS handlers also set `FACTORY_GATEWAY_HANDLER_TOKEN` + `CONVEX_TEAM_TOKEN`, and matching Port secrets `FACTORY_GATEWAY_BASE_URL` / `FACTORY_GATEWAY_HANDLER_TOKEN` / `CONVEX_TEAM_TOKEN`.
 
+## Docker (public HTTPS / Port remount)
+
+Multi-stage production image (`Dockerfile`): Node 20 Alpine → `npm ci` + `tsc` → non-root `factory` user → `EXPOSE 8787` → `HEALTHCHECK` `GET /health` → `node dist/index.js`.
+
+```bash
+cd apps/factory-gateway
+docker build -t factory-gateway:local .
+docker run --rm -p 8787:8787 \
+  -e PORT_CLIENT_SECRET \
+  -e FACTORY_GATEWAY_HANDLER_TOKEN \
+  factory-gateway:local
+curl -fsS http://127.0.0.1:8787/health
+```
+
+Compose (opt-in; Rivet default path unchanged):
+
+```bash
+cd compose
+docker compose --profile gateway up -d --build
+```
+
+**Port remount path (FE-114):** keep the repo **public**. Put Tailscale **Funnel** (M1) or a PaaS (Fly/Railway/Render/Cloud Run) in front of `:8787`, confirm `GET /health` from a non-tailnet client, then set Port secret `FACTORY_GATEWAY_BASE_URL` and remount WEBHOOKs. Do not remount onto a dead base URL.
+
 ## Verify
 
 ```bash
