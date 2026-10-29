@@ -1,28 +1,51 @@
 # visibility-accept
 
-> **Status:** Stub — scaffold only (PBI-001 will author). Meta lane.
-> **Do not Feature-Assemble against this stub until Contract is review-green.**
+> **Status:** Stub authored — PBI-001 / STL-162 (Meta). Stub authorship only — not M1 implement DoD (§13.5).
+> **Do not Feature-Assemble until Spec review + EGM Goldfish are green for this Spec.**
 
 ## Blueprint
+
 ### Context
-TBD — see Project store `docs/factory-master-spec.md` §4 for authorship outline.
+
+Visibility and accept path (ADR-008): Port audit + Rivet OTel/Inspector + Polygraph evals + scorecards. GitHub webhooks signal Rivet. Accept only on green checks for the exact commit SHA.
 
 ### Architecture
-TBD
+
+- Trace: attempt → session → commit.
+- Evidence tools record; they do not replace CI.
+- Rewrite of the branch invalidates prior accept for the old SHA.
+- LogicSRC map: `logicsrc.event`; OpenWorkflow `verify-and-accept`.
 
 ### Constraints
-TBD (positive rules only)
+
+- Agent “done” never accepts.
+- Canvas / self-report never accepts.
+- Accept binds to exact SHA only.
 
 ## Contract
+
 ### Definition of Done
-TBD
+
+- Trace links attempt → session → commit.
+- Rewrite invalidates accept.
+- Evidence tools record but do not replace CI.
 
 ### Regression Guardrails
-TBD
+
+- Green checks on a rewritten tip do not revive accept for a prior SHA.
+- Port accept requires independent CI green on the exact SHA under review.
 
 ### Scenarios
+
 ```gherkin
-Scenario: Stub placeholder
-  Given this Spec is still a scaffold stub
-  Then agents must not treat Contract scenarios as implementable DoD
+Scenario: Rewrite invalidates accept
+  Given Port accept was recorded for commit SHA S
+  When the PR branch is force-pushed to SHA S'
+  Then accept for S is invalid
+  And accept for S' requires fresh green checks on S'
+
+Scenario: Evidence does not replace CI
+  Given factory_submit_evidence recorded agent artifacts for SHA S
+  When CI checks on S are red
+  Then Port must not accept S
 ```
