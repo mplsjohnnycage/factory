@@ -15,7 +15,7 @@ End-to-end Factory vertical slice: authorize → durable run → harness → Git
 - **M1 actors:** `ProjectSupervisor`, `WorkAttempt`, `AgentSession`, `SandboxLease`.
 - **Post-M1:** `CapacityManager`, `AssemblyWorkflow` (see master §13.0 Non-Goals / §13.5).
 - **ProjectSupervisor (PBI-007):** Rivet-shaped admit owner under `apps/project-supervisor/` — single fence per `workKey`; Meta Beads ready/claim gate; Port projections for `executionContract` / `deliveryRun` / `executionAttempt` via §4.2.1 writer only.
-- **`ReadyTaskEvent` (M1):** `{ beadId, projectId, claimedBy, claimedAt, executionContractId? }` after Meta Beads `bd ready` + `bd update --claim` (Memory stand-in in CI).
+- **`ReadyTaskEvent` (M1):** `{ beadId, projectId, claimedBy, claimedAt, executionContractId? }` after Meta Beads `bd ready` + `bd update --claim`. CI stand-in: `MemoryMetaBeads`. Live/local adapter: `BdMetaBeads` (`bd` CLI, `factory-` prefix only) via `createBdSupervisor` — no public gateway required for the gate itself; Rivet host + §4.2.1 writer remain deploy follow-on.
 - LogicSRC map (authorship): `logicsrc.task`, `logicsrc.agent_run`, `logicsrc.event`; OpenFleet member records for sessions; OpenWorkflow `admit-and-run`. M1 emit cut is §13.6.
 
 ### Constraints

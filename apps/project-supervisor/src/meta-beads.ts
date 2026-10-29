@@ -3,7 +3,7 @@ import type { ReadyTaskEvent } from "./types.js";
 /**
  * Meta Beads ready/claim gate (Meta lane only — never Product Beads).
  *
- * Live operators use `bd ready` / `bd update --claim` via BdMetaBeads (or CLI).
+ * Live operators: `BdMetaBeads` in `bd-meta-beads.ts` (`bd ready` / `bd update --claim`).
  * CI uses MemoryMetaBeads — no Dolt / no `bd` binary required.
  */
 export type MetaBeadsGate = {

@@ -18,6 +18,7 @@ Lane hard rules: **Meta Beads only** · never Product Beads · Rivet never polls
 |------|------|
 | `src/project-supervisor.ts` | Rivet-shaped `ProjectSupervisorActor` |
 | `src/meta-beads.ts` | Meta Beads gate + `MemoryMetaBeads` (CI) |
+| `src/bd-meta-beads.ts` | Live `BdMetaBeads` via `bd` CLI (`factory-` only) |
 | `src/port-projections.ts` | Port blueprint mapping via catalog writer |
 | `src/memory-catalog.ts` | In-process §4.2.1 stand-in for tests |
 | `../../.beads/` | Meta Beads instance config (prefix `factory`) |
@@ -31,7 +32,7 @@ npm run typecheck
 npm test
 ```
 
-## Live Meta Beads (operator)
+## Live Meta Beads (operator / local dry-run)
 
 ```bash
 # bd CLI on PATH; instance already scaffolded under .beads/
@@ -42,7 +43,24 @@ bd update <bead-id> --claim
 # into ProjectSupervisorActor.admit — never Product Beads.
 ```
 
-Wire live gateway CatalogWriter + Rivet Actor host in follow-on deploy work. Memory path covers CI AC.
+Programmatic path (no public gateway / Funnel / Port login required):
+
+```ts
+import { createBdSupervisor } from "@factory/project-supervisor";
+
+const { supervisor, beads } = createBdSupervisor({ cwd: process.cwd() });
+// beads → BdMetaBeads (spawns `bd`); catalog stays Memory until §4.2.1 writer wired
+await supervisor.admit({
+  projectId: "meta",
+  taskId: "…",
+  workKey: "…",
+  portAuthorized: true,
+  ready: { beadId: "factory-…", projectId: "meta", claimedBy: "ops", claimedAt: new Date().toISOString() },
+  claimedBy: "ops",
+});
+```
+
+CI still uses `createMemorySupervisor()` / `MemoryMetaBeads` (injectable `BdRunner` covers `BdMetaBeads` unit tests). Wire live gateway CatalogWriter + Rivet Actor host in follow-on deploy work.
 
 ## Spec
 
