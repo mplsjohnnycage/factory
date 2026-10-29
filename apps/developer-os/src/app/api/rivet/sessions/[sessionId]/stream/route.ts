@@ -16,7 +16,11 @@ export async function GET(
   ctx: { params: Promise<{ sessionId: string }> },
 ) {
   const { sessionId } = await ctx.params;
-  const after = Number(req.nextUrl.searchParams.get("after") ?? "-1");
+  const afterRaw = req.nextUrl.searchParams.get("after") ?? "-1";
+  const after = Number(afterRaw);
+  if (!Number.isFinite(after)) {
+    return Response.json({ ok: false, error: "invalid_after" }, { status: 400 });
+  }
   const liveBase = liveRivetBase();
 
   if (liveBase) {

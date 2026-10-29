@@ -54,15 +54,10 @@ describe("Ask Factory → Rivet wiring (FE-198)", () => {
     process.env.RIVET_SERVE_URL = "http://127.0.0.1:9"; // deterministic closed port
     try {
       const result = await appendAsk(ASK_SESSION_ID, "hello live");
-      if (result.ok && result.mode === "live") {
-        assert.fail("should not succeed against a closed port");
+      assert.equal(result.ok, false);
+      if (!result.ok) {
+        assert.ok(result.error.startsWith("live_"), result.error);
       }
-      if (result.ok) {
-        // Extremely unlikely timing failure; treat as pass but flag mode.
-        assert.equal(result.mode, "live");
-        return;
-      }
-      assert.ok(result.error.startsWith("live_"));
     } finally {
       if (original === undefined) delete process.env.RIVET_SERVE_URL;
       else process.env.RIVET_SERVE_URL = original;

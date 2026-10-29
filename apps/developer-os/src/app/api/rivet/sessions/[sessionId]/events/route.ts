@@ -5,7 +5,8 @@ import { liveRivetBase } from "@/lib/rivet/ask-session";
 /**
  * Gap-replay endpoint for Rivet native session stream (PBI-009).
  * Serves durable events with sequence > `after`.
- * Live path may proxy Tailscale Serve; Memory fixture used when Rivet unreachable.
+ * Live path proxies Tailscale Serve; explicit 502 when Serve is configured
+ * but unreachable — never fake live. Memory fixture used when Serve is unset.
  * Never proxies Sandbox Agent. No CopilotKit.
  */
 export async function GET(

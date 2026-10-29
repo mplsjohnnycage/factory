@@ -17,7 +17,7 @@ type ChatLine = {
   text: string;
 };
 
-const SESSION_ID = "factory-ask-cockpit";
+const SESSION_ID = "factory-ask-cockpit"; // server-side twin: ASK_SESSION_ID in src/lib/rivet/ask-session.ts
 const MAX_TEXT = 2000;
 
 function eventToLine(event: SessionEvent): ChatLine | null {
@@ -25,6 +25,12 @@ function eventToLine(event: SessionEvent): ChatLine | null {
   const text = typeof payload?.text === "string" ? payload.text : "";
   if (!text) return null;
   return { id: `${event.type}-${event.sequence}`, sender: event.sender, text };
+}
+
+/** Id-deduped append — reconnect gap replay can never double-render a transcript. */
+function appendLine(prev: ChatLine[], line: ChatLine): ChatLine[] {
+  if (prev.some((l) => l.id === line.id)) return prev;
+  return [...prev, line];
 }
 
 /**
@@ -39,19 +45,24 @@ export function AskFactoryDrawer({ open, onClose }: Props) {
   const [state, setState] = useState<string>("idle");
   const [draft, setDraft] = useState("");
   const [sending, setSending] = useState(false);
+  const [mode, setMode] = useState<"live" | "memory" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const clientRef = useRef<RivetSessionClient | null>(null);
   const bodyRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!open) return;
+    // Reset transcript/mode on fresh open — replay rebuilds in one pass.
+    setLines([]);
+    setMode(null);
+    setError(null);
     const transport = new HttpActorTransport(window.location.origin);
     const client = new RivetSessionClient({
       sessionId: SESSION_ID,
       transport,
       onEvent: (event) => {
         const line = eventToLine(event);
-        if (line) setLines((prev) => [...prev, line]);
+        if (line) setLines((prev) => appendLine(prev, line));
       },
       onState: (s) => setState(s),
     });
@@ -89,6 +100,8 @@ export function AskFactoryDrawer({ open, onClose }: Props) {
           const body = (await res.json().catch(() => ({}))) as { error?: string };
           setError(body.error ?? `HTTP ${res.status}`);
         } else {
+          const body = (await res.json()) as { mode?: "live" | "memory" };
+          setMode(body.mode ?? null);
           setDraft("");
         }
       } catch {
@@ -102,7 +115,9 @@ export function AskFactoryDrawer({ open, onClose }: Props) {
 
   if (!open) return null;
 
-  const modeBadge = state === "live" ? "Live session" : `Stream: ${state}`;
+  const modeBadge = mode
+    ? `${mode === "live" ? "Rivet Serve live" : "Memory fixture"} · ${state}`
+    : state === "live" ? "Live session" : `Stream: ${state}`;
 
   return (
     <>

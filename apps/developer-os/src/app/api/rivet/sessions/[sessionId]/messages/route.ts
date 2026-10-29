@@ -9,14 +9,21 @@ import { appendAsk } from "@/lib/rivet/ask-session";
  * a clearly-marked Memory fixture ack is appended. Never mutates Port.
  */
 export async function POST(
-  _req: NextRequest,
+  req: NextRequest,
   ctx: { params: Promise<{ sessionId: string }> },
 ) {
   const { sessionId } = await ctx.params;
 
+  // Require application/json: browsers enforce a CORS preflight for this
+  // content-type, so no-auth cross-site simple-request appends are blocked.
+  const contentType = req.headers.get("content-type")?.split(";")[0]?.trim();
+  if (contentType !== "application/json") {
+    return NextResponse.json({ ok: false, error: "unsupported_media_type" }, { status: 415 });
+  }
+
   let body: unknown;
   try {
-    body = await _req.json();
+    body = await req.json();
   } catch {
     return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
   }
