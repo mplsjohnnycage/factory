@@ -1,0 +1,27 @@
+import { buildDefaultDeps, createGatewayServer } from "./server.js";
+
+export { verifyPortWebhookHmac, portJsonBody } from "./hmac.js";
+export { CatalogWriter, claimNextJob } from "./catalog-writer.js";
+export { MemoryCatalogStore, writerKey } from "./memory-store.js";
+export { ProjectSupervisorQueue } from "./supervisor.js";
+export { createGatewayServer, buildDefaultDeps } from "./server.js";
+export type * from "./types.js";
+
+const isMain =
+  process.argv[1]?.endsWith("src/index.ts") ||
+  process.argv[1]?.endsWith("dist/index.js");
+
+if (isMain) {
+  const host = process.env.GATEWAY_HOST ?? "0.0.0.0";
+  const port = Number(process.env.GATEWAY_PORT ?? "8787");
+  const deps = buildDefaultDeps();
+  if (!deps.secret) {
+    console.warn(
+      "[factory-gateway] PORT_CLIENT_SECRET unset — webhook HMAC will reject all requests",
+    );
+  }
+  const server = createGatewayServer(deps);
+  server.listen(port, host, () => {
+    console.log(`[factory-gateway] listening on http://${host}:${port}`);
+  });
+}
