@@ -1,6 +1,6 @@
 # rivet-execution
 
-> **Status:** Stub authored — PBI-001 / STL-162 (Meta). Compose + Tailscale Serve health authored under **PBI-004 / STL-165**. Stub authorship only — not M1 implement DoD (§13.5).
+> **Status:** PBI-004 Compose health + PBI-005 gateway HMAC → ProjectSupervisor enqueue (Meta). Stub authorship (PBI-001) remains the Blueprint base.
 > **Do not Feature-Assemble until Spec review + EGM Goldfish are green for this Spec.**
 
 ## Blueprint
@@ -14,8 +14,8 @@ Rivet 2.x is the Factory execution kernel (ADR-002): actors, queues, and workflo
 - Execution fencing = single `ProjectSupervisor` admission queue.
 - Per-actor ordered queues; single-writer semantics for attempt lifecycle.
 - Port projection upserts from Rivet go through the Port catalog writer (§4.2.1), never raw dual-write.
+- Port → HMAC gateway (`apps/factory-gateway` `/webhooks/port`) → ProjectSupervisor enqueue (push-only).
 - LogicSRC map (authorship): OpenInstall for non-Compose boxes; OpenFleet ledger alongside Rivet Inspector. M1 Required rows for this Spec beyond vertical-slice Contracts: none (OpenInstall/OpenFleet production = post-M1).
-- **PBI-004 desktop pilot:** `compose/docker-compose.yml` runs pinned `rivetdev/engine` **2.x** with persistent `rivet-data` volume; `bin/rivet-healthcheck.sh` proves `/health` after Compose restart; Tailscale Serve publishes HTTPS on the operator tailnet (`docs/rivet-tailscale-serve.md`). No `factory-edge` in M1.
 
 ### Constraints
 
@@ -23,7 +23,6 @@ Rivet 2.x is the Factory execution kernel (ADR-002): actors, queues, and workflo
 - Actions are parallel by default → use queues for mutations.
 - Rivet never polls Port.
 - Port catalog write fencing is not this Spec’s ownership.
-- Pin Rivet **2.x** images for the Meta pilot — do not float to `rivetdev/engine:next` (3.0 Preview).
 
 ## Contract
 
@@ -33,13 +32,13 @@ Rivet 2.x is the Factory execution kernel (ADR-002): actors, queues, and workflo
 - Webhook signature verified at gateway before enqueue.
 - Rivet never polls Port.
 - Health recovers after Compose restart.
-- **PBI-004:** Compose config present + lintable; healthcheck script; Tailscale Serve operator docs; live Serve URL evidence from desktop pilot when host available.
+- Compose + Tailscale Serve operator artifacts present (PBI-004); live Serve URL evidence when host available.
 
 ### Regression Guardrails
 
 - No raw Port catalog writes from Rivet actors.
 - Duplicate admits do not create parallel attempts for the same work unit.
-- Compose must not require Product Beads or Port OAuth create/delete.
+- Unsigned / invalid Port webhooks never enqueue ProjectSupervisor.
 
 ### Scenarios
 
@@ -50,16 +49,23 @@ Scenario: Health after Compose restart
   Then health endpoints recover
   And ProjectSupervisor resumes ordered admit without polling Port
 
-Scenario: PBI-004 Compose and Tailscale Serve artifacts present
-  Given the Meta repo on the PBI-004 branch
-  Then compose/docker-compose.yml pins rivetdev/engine 2.x with a persistent volume
-  And bin/rivet-healthcheck.sh can lint Compose and wait for /health
-  And docs/rivet-tailscale-serve.md documents Serve for port 6420
-  And no factory-edge relay is introduced
-
 Scenario: Webhook path never polls Port
   Given a Port webhook arrives at the Factory gateway
   When signature verification succeeds
   Then ProjectSupervisor is enqueued
   And Rivet does not poll Port for work
+
+Scenario: PBI-004 Compose and Tailscale Serve artifacts present
+  Given the Meta repo is checked out
+  When an operator reviews compose/ and docs/rivet-tailscale-serve.md
+  Then Rivet engine is pinned to a 2.x image (not :next)
+  And a healthcheck script can lint or wait on /health
+  And Tailscale Serve docs target port 6420 without factory-edge
+  And live Serve URL evidence is attached when a desktop host is available
+
+Scenario: PBI-005 invalid HMAC never enqueues
+  Given PORT_CLIENT_SECRET is configured on factory-gateway
+  When a POST /webhooks/port arrives with a bad x-port-signature
+  Then the gateway responds 401
+  And ProjectSupervisor is not enqueued
 ```
