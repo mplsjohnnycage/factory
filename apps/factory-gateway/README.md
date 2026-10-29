@@ -108,10 +108,11 @@ Prefer Task Scheduler AtLogOn (survives reboot+logon). Operator kit:
 
 - `scripts/windows/factory-gateway-register-logon-task.ps1` (`DryRun` / `Register` / `Status`)
 - `scripts/windows/factory-gateway-logon-start.ps1`
-- Docs: [`docs/ops/gateway-windows-logon-autostart.md`](../../docs/ops/gateway-windows-logon-autostart.md)
-- Kit check (any OS): `node scripts/gateway-windows-logon-dry-run.mjs`
+- Full runbook: [`docs/ops/gateway-windows-logon-autostart.md`](../../docs/ops/gateway-windows-logon-autostart.md)
+- PM checklist (post-#59): [`docs/ops/gateway-windows-logon-pm-checklist.md`](../../docs/ops/gateway-windows-logon-pm-checklist.md)
+- Kit check (any OS): `npm run dry-run:windows-logon`
 
-Secrets live only in `%USERPROFILE%\.factory\gateway.env` (from `scripts/windows/gateway.env.example`). Never commit real values. Live reboot verify is on Johnny’s desktop — cloud agents stage only.
+Secrets live only in `%USERPROFILE%\.factory\gateway.env` (from `scripts/windows/gateway.env.example`). Never commit real values. Live reboot verify is on Johnny’s desktop — cloud agents stage only. FE-142 is **CLOSED** — do not re-ask HMAC / handler-token.
 
 ## Verify
 
