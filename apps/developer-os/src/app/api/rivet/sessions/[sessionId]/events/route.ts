@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getOrCreateDemoTransport } from "@/lib/rivet/demo-store";
+import { liveRivetBase } from "@/lib/rivet/ask-session";
 
 /**
  * Gap-replay endpoint for Rivet native session stream (PBI-009).
  * Serves durable events with sequence > `after`.
- * Live path may proxy Tailscale Serve; Memory fixture used when Rivet unreachable.
+ * Live path proxies Tailscale Serve; explicit 502 when Serve is configured
+ * but unreachable — never fake live. Memory fixture used when Serve is unset.
  * Never proxies Sandbox Agent. No CopilotKit.
  */
 export async function GET(
@@ -17,10 +19,10 @@ export async function GET(
     return NextResponse.json({ ok: false, error: "invalid_after" }, { status: 400 });
   }
 
-  const rivetBase = process.env.RIVET_SERVE_URL?.trim();
-  if (rivetBase) {
+  const liveBase = liveRivetBase();
+  if (liveBase) {
     const url = new URL(
-      `${rivetBase.replace(/\/$/, "")}/actors/agent-session/${encodeURIComponent(sessionId)}/events`,
+      `${liveBase}/actors/agent-session/${encodeURIComponent(sessionId)}/events`,
     );
     url.searchParams.set("after", String(after));
     try {
@@ -36,8 +38,16 @@ export async function GET(
         const body = await upstream.json();
         return NextResponse.json(body);
       }
+      // Live configured but failed → explicit error, never fake live.
+      return NextResponse.json(
+        { ok: false, error: `live_rivet_serve_http_${upstream.status}` },
+        { status: 502 },
+      );
     } catch {
-      // Fall through to Memory fixture — Dev OS shows reconnectable stream.
+      return NextResponse.json(
+        { ok: false, error: "live_rivet_serve_unreachable" },
+        { status: 502 },
+      );
     }
   }
 

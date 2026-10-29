@@ -85,6 +85,14 @@ Scenario: Gateway forward reaches offline admit listener
   Then ProjectSupervisor.admit runs push-only without polling Port
   And Rivet engine :6420 is not required for this dry-run path
 
+Scenario: FE-198 Ask Factory routes through the Developer OS BFF
+  Given the Cockpit Ask Factory drawer posts a message
+  When the BFF has RIVET_SERVE_URL set (Tailscale Serve)
+  Then the client message is appended to the Rivet AgentSession Actor via Serve
+  And when Serve is unset the drawer receives a clearly-marked memory-fixture ack
+  And when Serve is configured but unreachable the ask/stream/events routes return 502 instead of faking live
+  And the browser never calls Sandbox Agent and no Port catalog writes occur
+
 Scenario: PBI-009 Dev OS reconnects from last sequence
   Given an AgentSession Actor has persisted events through sequence N
   When the Developer OS Rivet-native client disconnects and reconnects
