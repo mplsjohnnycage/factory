@@ -38,7 +38,8 @@
     "dry-run:openaccess-linkage": "node scripts/openaccess-linkage-dry-run.mjs",
     "dry-run:factory-queue-mirror": "node scripts/factory-queue-mirror-dry-run.mjs",
     "dry-run:funnel-remount-checklist": "node scripts/funnel-remount-checklist-dry-run.mjs",
-    "dry-run:assemble-first-apply": "node scripts/assemble-first-apply-dry-run.mjs"
+    "dry-run:assemble-first-apply": "node scripts/assemble-first-apply-dry-run.mjs",
+    "dry-run:ci-protection-verify": "node scripts/ci-protection-verify-dry-run.mjs"
   },
   "dependencies": {
     "@logicsrc/openprd": "^0.2.0",
