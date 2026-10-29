@@ -24,7 +24,8 @@
     "lint": "turbo run lint",
     "validate:well-known": "node scripts/validate-well-known.mjs",
     "validate:openprd": "node scripts/local-gate.mjs",
-    "smoke:atlas-bff": "node scripts/atlas-bff-smoke.mjs"
+    "smoke:atlas-bff": "node scripts/atlas-bff-smoke.mjs",
+    "dry-run:omniroute-desktop": "node scripts/omniroute-desktop-dry-run.mjs"
   },
   "dependencies": {
     "@logicsrc/openprd": "^0.2.0",
