@@ -173,7 +173,13 @@ export function createGatewayServer(deps: GatewayDeps) {
           checks: body.checks,
         });
         if (!evalResult.ok) {
-          sendJson(res, 409, { ok: false, error: "accept_denied", ...evalResult });
+          sendJson(res, 409, {
+            ok: false,
+            error: "accept_denied",
+            sha: evalResult.sha,
+            reason: evalResult.reason,
+            detail: evalResult.detail,
+          });
           return;
         }
         const recorded = deps.acceptLedger.record({
