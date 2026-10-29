@@ -6,6 +6,10 @@ import {
   type CheckRunSummary,
 } from "./accept-sha.js";
 import { CatalogWriter, claimNextJob } from "./catalog-writer.js";
+import {
+  isFactoryWorkflowId,
+  resolveFactoryActionIdentifier,
+} from "./factory-workflows.js";
 import { gateFleetSpawn } from "./fleet-spawn.js";
 import { verifyPortWebhookHmac } from "./hmac.js";
 import { MemoryCatalogStore } from "./memory-store.js";
@@ -28,6 +32,19 @@ import {
 import type { ConvexManagementClient } from "./convex-management.js";
 import { ProjectSupervisorQueue } from "./supervisor.js";
 import type { CatalogWriteRequest, PortWebhookBody } from "./types.js";
+
+/** Match POST /webhooks/port or /webhooks/port/<factory_*>. */
+function matchPortWebhookPath(
+  pathname: string,
+): { ok: true; pathAction?: string } | { ok: false } {
+  if (pathname === "/webhooks/port") return { ok: true };
+  const prefix = "/webhooks/port/";
+  if (!pathname.startsWith(prefix)) return { ok: false };
+  const pathAction = pathname.slice(prefix.length);
+  if (!pathAction || pathAction.includes("/")) return { ok: false };
+  if (!isFactoryWorkflowId(pathAction)) return { ok: false };
+  return { ok: true, pathAction };
+}
 
 export type GatewayDeps = {
   secret: string;
@@ -104,8 +121,10 @@ export function createGatewayServer(deps: GatewayDeps) {
         return;
       }
 
-      if (req.method === "POST" && url.pathname === "/webhooks/port") {
-        if (!applyRateLimit(deps, req, res, url.pathname)) return;
+      const webhookMatch =
+        req.method === "POST" ? matchPortWebhookPath(url.pathname) : null;
+      if (webhookMatch?.ok) {
+        if (!applyRateLimit(deps, req, res, "/webhooks/port")) return;
 
         const rawBody = await readRawBody(req);
         const signature = String(req.headers["x-port-signature"] ?? "");
@@ -129,10 +148,20 @@ export function createGatewayServer(deps: GatewayDeps) {
           return;
         }
 
-        const admit = await deps.supervisor.enqueue(body);
+        const actionIdentifier = resolveFactoryActionIdentifier({
+          pathAction: webhookMatch.pathAction,
+          body,
+        });
+        const enriched: PortWebhookBody =
+          actionIdentifier && body.action !== actionIdentifier
+            ? { ...body, action: actionIdentifier }
+            : body;
+
+        const admit = await deps.supervisor.enqueue(enriched);
         sendJson(res, 202, {
           ok: true,
           admitId: admit.id,
+          actionIdentifier: admit.actionIdentifier,
           note: "enqueued_project_supervisor; rivet_never_polls_port",
         });
         return;
