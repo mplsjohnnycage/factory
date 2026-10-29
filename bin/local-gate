@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# PBI-013 — single ASDLC local gate entrypoint (refuse dirty/invalid).
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+if [[ ! -d node_modules/@logicsrc/validators ]]; then
+  npm ci
+fi
+exec node scripts/local-gate.mjs "$@"

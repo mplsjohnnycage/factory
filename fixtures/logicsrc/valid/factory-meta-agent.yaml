@@ -1,0 +1,17 @@
+# Factory Meta — LogicSRC agent fixture for local-gate validators (PBI-013).
+# Not Product Beads. Lane: Meta only.
+type: logicsrc.agent
+version: "0.1"
+name: Factory Meta Coding Agent
+did: factory-meta-coder.factory
+owner_did: factory-meta.factory
+description: Meta-lane coding agent that builds against /specs/*/spec.md and is refused by local gate when dirty/invalid.
+skills:
+  - coding
+  - asdlc
+  - meta-lane
+permissions_requested:
+  - task:read
+  - task:claim
+  - files:write
+  - git:commit

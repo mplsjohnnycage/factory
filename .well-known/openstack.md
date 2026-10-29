@@ -68,7 +68,7 @@ Autonomous software-delivery control plane (Meta): Port SoT → thin `factory-ga
 
 - Cursor Cloud Agents / coding agents against Specs
 - GitHub Actions: accept path on exact SHA
-- Optional `@logicsrc/validators` when local gate lands (PBI-013)
+- `@logicsrc/validators@0.6.0` via `npm run local-gate` / `bin/local-gate` (PBI-013); CI job `local-gate-refuse`
 - Compound Engineering `/ce-compound` HITL after verified coding PBIs (PBI-015)
 
 ## Hosting
