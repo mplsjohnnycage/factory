@@ -6,4 +6,5 @@
 - **Directive:** Author all ten `/specs/*/spec.md` Blueprint+Contract stubs from master §4 (stub authorship only).
 - **Write set:** `specs/**` (+ this mirror). Not `apps/**`, not ADR bodies (PBI-002), not Port/Rivet runtime.
 - **Verification:** Each stub has Blueprint Context/Architecture/Constraints + Contract DoD/Guardrails/≥1 Gherkin scenario.
+- **ADR-005:** auth-port-oauth and developer-os record the intended Factory client and keep create/delete/revoke deferred.
 - **Canonical typed contract:** Linear STL-162 body (C1–C3 + 1–16).

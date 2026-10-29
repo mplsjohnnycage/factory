@@ -23,7 +23,7 @@ External Developer OS for humans — intent, approvals UI, live progress, and co
 
 - UI / deferred AG-UI / CopilotKit are display channels; privileged mutations via Port actions only.
 - Vercel MCP OAuth helpers do not replace Port External Interface person OAuth.
-- OAuth client id is the dedicated Factory External Interface app (ADR-005 live).
+- Sign-in target is the dedicated Factory External Interface app. ADR-005 is deferred: Developer OS does not create or delete that app.
 - Browser does not call Sandbox Agent control APIs.
 - Clerk is absent; Harness Observatory OAuth client is not configured for Developer OS.
 
@@ -33,7 +33,7 @@ External Developer OS for humans — intent, approvals UI, live progress, and co
 
 - Next.js app deploys on Vercel; atlas hero is first viewport.
 - Rivet native stream reconnects from last `sequence`.
-- Port sign-in wiring ready for live Factory client id.
+- Port sign-in Route Handler targets the intended Factory client redirects and does not reuse Observatory or Clerk.
 
 ### Regression Guardrails
 
