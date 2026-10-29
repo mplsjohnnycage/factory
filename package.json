@@ -2,8 +2,15 @@
   "name": "@factory/meta",
   "version": "0.1.0",
   "private": true,
-  "description": "Factory Meta repo root — local gate + LogicSRC validators + OpenPRD (PBI-013/014)",
+  "description": "Factory Meta repo root — local gate + LogicSRC validators + OpenPRD + Turborepo CI",
   "type": "module",
+  "packageManager": "npm@10.9.2",
+  "workspaces": [
+    "apps/factory-gateway",
+    "apps/developer-os",
+    "apps/project-supervisor",
+    "apps/sandbox-harness"
+  ],
   "engines": {
     "node": ">=20"
   },
@@ -11,11 +18,18 @@
     "local-gate": "node scripts/local-gate.mjs",
     "test": "node --test scripts/local-gate-refuse.test.mjs",
     "test:local-gate": "node --test scripts/local-gate-refuse.test.mjs",
+    "test:packages": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
     "validate:well-known": "node scripts/validate-well-known.mjs",
     "validate:openprd": "node scripts/local-gate.mjs"
   },
   "dependencies": {
     "@logicsrc/openprd": "^0.2.0",
     "@logicsrc/validators": "0.6.0"
+  },
+  "devDependencies": {
+    "turbo": "^2.11.7"
   }
 }
