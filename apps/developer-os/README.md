@@ -4,7 +4,7 @@ Factory **Developer OS** shell: Next.js App Router on Vercel, **Factory Cockpit 
 
 Lane: **Meta only** · browser never calls Sandbox Agent · no Port OAuth create/delete · no Product Beads.
 
-**UI design direction (locked):** [`docs/design/ui-design-direction.md`](../../docs/design/ui-design-direction.md) · comps [`docs/design/mockups/`](../../docs/design/mockups/) — Factory Cockpit **v3** · Code Atlas **v5** · provider widgets. Do not invent a parallel visual language.
+**UI design direction (locked):** [`docs/design/ui-design-direction.md`](../../docs/design/ui-design-direction.md) · comps [`docs/design/mockups/`](../../docs/design/mockups/) — Factory Cockpit **v3** · Code Atlas **v5** · Codebase Intelligence graph · provider widgets. Do not invent a parallel visual language.
 
 ## Layout
 
@@ -17,6 +17,9 @@ Lane: **Meta only** · browser never calls Sandbox Agent · no Port OAuth create
 | `src/components/AtlasLake.tsx` | Lake catalog / activity / detail + view pills |
 | `src/components/CommandPalette.tsx` | Search everything (⌘K) over fixtures |
 | `src/components/AtlasHero.tsx` | Map view — graph + overlay toggles (STL-154) |
+| `src/app/intelligence/page.tsx` | Codebase Intelligence — cross-repo symbol graph |
+| `src/components/IntelligenceGraph.tsx` | Symbol lanes · solid in-repo / dashed brown cross-repo |
+| `src/lib/intelligence/` | FE-196 fixture graph (no Port upserts) |
 | `src/lib/atlas/` | STL-154 projection + MCP tools + lake fixtures |
 | `src/app/api/atlas/subgraph` | Viewport-capped subgraph JSON |
 | `src/app/api/atlas/tools` | Bounded `atlas.*` tool list + invoke |

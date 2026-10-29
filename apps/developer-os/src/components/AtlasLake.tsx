@@ -199,7 +199,11 @@ export function AtlasLake() {
           setFilter("all");
           break;
         case "view":
-          if (item.target === "lake" || item.target === "map" || item.target === "knowledge") {
+          if (item.target === "knowledge") {
+            router.push("/intelligence");
+            break;
+          }
+          if (item.target === "lake" || item.target === "map") {
             setView(item.target);
           }
           break;
@@ -610,10 +614,18 @@ export function AtlasLake() {
         <div className={`${styles.knowledge} ${styles.glass}`}>
           <p className={styles.knowledgeBrand}>Knowledge</p>
           <p className={styles.knowledgeLede}>
-            Cross-repo notes and Codebase Intelligence graph land in FE-196. Lake + ⌘K are live
-            on fixtures; no parallel visual language.
+            Cross-repo symbol graph ships as Codebase Intelligence — solid in-repo edges, dashed
+            brown cross-repo. Lake + ⌘K stay here; graph lives on its own light route.
           </p>
-          <span className={styles.knowledgeHint}>Deferred · FE-196 · PNG semantics</span>
+          <button
+            type="button"
+            className={styles.searchTrigger}
+            style={{ alignSelf: "flex-start", marginTop: "0.75rem" }}
+            onClick={() => router.push("/intelligence")}
+          >
+            <span className={styles.searchLabel}>Open Intelligence graph</span>
+          </button>
+          <span className={styles.knowledgeHint}>FE-196 · /intelligence · fixtures</span>
         </div>
       ) : null}
 
