@@ -58,8 +58,10 @@ bd dolt pull    # before claiming on another machine
 ```
 
 Linear remains human visibility. Meta Beads is ready/claim/parallel SoT for
-meta coding admit (PBI-007). ProjectSupervisor CI still uses `MemoryMetaBeads`
-until a live `BdMetaBeads` adapter is wired.
+meta coding admit (PBI-007). ProjectSupervisor CI uses `MemoryMetaBeads`.
+Live / local dry-run uses `BdMetaBeads` (`apps/project-supervisor/src/bd-meta-beads.ts`)
+via `createBdSupervisor({ cwd })` — shells out to `bd`; still needs a Rivet host
+and §4.2.1 catalog writer for production admit→sandbox (no Funnel required for the adapter itself).
 
 ## Verify remote Dolt exists
 
