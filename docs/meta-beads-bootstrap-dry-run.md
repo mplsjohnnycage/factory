@@ -16,7 +16,9 @@
 
 - Synced Dolt DB `factory` into `.beads/embeddeddolt/` (gitignored).
 - `bd status`: 4 issues · 3 ready (`factory-r9f`, `factory-w3n`, `factory-cvl`).
-- No `bd init`. No Dolt blob commit. No `bd dolt push` (not authorized this tick).
+- No bd init. No Dolt blob commit. No bd dolt push (not authorized this tick).
+- Ongoing morning check: [`docs/ops/beads-dolt-health.md`](./ops/beads-dolt-health.md) →
+  `npm run dry-run:beads-dolt-health` (optional `--ls-remote`).
 
 ## Rollback
 

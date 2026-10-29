@@ -11,6 +11,7 @@
 | Kit | Owns |
 |-----|------|
 | **This kit** | `BdMetaBeads` adapter + Meta Beads hybrid config + safe bootstrap dry-run markers; optional injectable-`BdRunner` unit tests |
+| [Meta Beads Dolt health](./beads-dolt-health.md) | `refs/dolt/data` tip + bootstrap-safe docs (not adapter unit tests) |
 | [Supervisor admit dry-run](./supervisor-admit-dry-run.md) | Offline `admitFromPayload` / `POST /admit` / Memory admit-entry (G6) |
 | [Unsigned Funnel admit](./beads-gateway-unsigned-admit.md) | Gateway unsigned/bad-auth gates |
 | [Signed HMAC admit](./signed-admit-smoke.md) | Env-only signed claim (FE-142 **CLOSED**) |

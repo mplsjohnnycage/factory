@@ -129,6 +129,11 @@ Production admit→sandbox still needs Rivet Actor host + §4.2.1 catalog writer
 `npm run dry-run:bdmetabeads` (markers) · `--memory` (injectable `BdRunner` unit tests).
 Does not duplicate gateway unsigned/signed or supervisor-admit kits.
 
+**Ops kit (Dolt health / docs):** [`docs/ops/beads-dolt-health.md`](./ops/beads-dolt-health.md) →
+`npm run dry-run:beads-dolt-health` (markers) · `--ls-remote` (read-only tip check).
+Owns `refs/dolt/data` + bootstrap-safe docs — does **not** duplicate BdMetaBeads (#80)
+or gateway Dockerfile health (#82). Kit default: never bd dolt push.
+
 ## Verify remote Dolt exists
 
 ```bash
@@ -138,4 +143,5 @@ git ls-remote origin 'refs/dolt/*'
 
 Empty or missing `refs/dolt/data` means the clone path cannot bootstrap from
 origin — fix by pushing from an authoritative local DB (`bd dolt push`), not by
-adding a placeholder remote URL.
+adding a placeholder remote URL. Morning check: `npm run dry-run:beads-dolt-health`
+(and `--ls-remote` when network to origin is available).
