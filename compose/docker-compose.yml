@@ -1,6 +1,9 @@
 # Factory Meta — Rivet 2.x desktop pilot (PBI-004 / STL-165)
 # Official shape: https://rivet.dev/actors/self-host/control-plane/docker-compose/
 # Pin 2.x — do not float to rivetdev/engine:next (3.0 Preview; ADR-002 / engineering Spec §3.2).
+#
+# factory-gateway is opt-in via Compose profile `gateway` (FE-114 Funnel/PaaS path).
+# Default `docker compose up -d` still starts Rivet only.
 name: factory-rivet
 
 services:
@@ -24,6 +27,38 @@ services:
       timeout: 5s
       retries: 12
       start_period: 20s
+    restart: unless-stopped
+
+  # Opt-in: docker compose --profile gateway up -d
+  # Public HTTPS for Port remount = Tailscale Funnel (or PaaS) in front of :8787 — see apps/factory-gateway/README.md
+  factory-gateway:
+    profiles: ["gateway"]
+    build:
+      context: ../apps/factory-gateway
+      dockerfile: Dockerfile
+    image: factory-gateway:local
+    container_name: factory-gateway
+    ports:
+      - "${GATEWAY_HOST_PORT:-8787}:8787"
+    environment:
+      GATEWAY_HOST: "0.0.0.0"
+      GATEWAY_PORT: "8787"
+      PORT_CLIENT_SECRET: "${PORT_CLIENT_SECRET:-}"
+      FACTORY_GATEWAY_HANDLER_TOKEN: "${FACTORY_GATEWAY_HANDLER_TOKEN:-}"
+      CONVEX_TEAM_TOKEN: "${CONVEX_TEAM_TOKEN:-}"
+      RIVET_SUPERVISOR_URL: "${RIVET_SUPERVISOR_URL:-http://rivet-engine:6420}"
+      GATEWAY_RATE_LIMIT_RPM: "${GATEWAY_RATE_LIMIT_RPM:-60}"
+      GATEWAY_RATE_LIMIT_WINDOW_MS: "${GATEWAY_RATE_LIMIT_WINDOW_MS:-60000}"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fsS http://127.0.0.1:8787/health >/dev/null 2>&1 || wget -qO- http://127.0.0.1:8787/health >/dev/null 2>&1 || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 15s
     restart: unless-stopped
 
 volumes:
