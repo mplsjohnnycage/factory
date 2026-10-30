@@ -2,6 +2,13 @@
 
 Index for coding agents working the **Factory Meta** repo (building the Factory kernel). Not a design dump.
 
+## Portable project context
+
+- [Factory master specification](docs/factory-master-spec.md): migrated Cursor-store snapshot. See [migration status](docs/factory-docs-migration.md) for known conflicts and unresolved links before relying on it.
+- Derived companions: [workflow](docs/factory-workflow.md), [coding loop](docs/factory-coding-loop.md), [Meta vs Product](docs/factory-meta-vs-product.md), [architecture map](docs/factory-architecture-map.md), and [four layers](docs/factory-four-layers-doctrine.md).
+- [Linear Factory Meta](https://linear.app/johnny-cage/project/factory-meta-1c7e5c372e3d) is the human work-tracking facet; [Notion mirrors](https://app.notion.com/p/407af2184a9e812b9429f79100bbffc8) are a human wiki, not acceptance or claim authority.
+- Linear tickets, PBIs, typed contracts, Beads and GitHub issues are facets of one unit; check actual IDs and links instead of assuming records are synchronized.
+
 ## Mission
 
 Factory is an autonomous software-delivery control plane: Port (SoT) → thin `factory-gateway` → Rivet `ProjectSupervisor` → Sandbox Agent (Docker) → GitHub CI accept on exact SHA. This repository is the **meta-repo** for that kernel — Specs, ADRs, gateway, Developer OS shell.
