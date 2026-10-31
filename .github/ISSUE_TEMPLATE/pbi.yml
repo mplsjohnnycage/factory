@@ -1,0 +1,215 @@
+name: PBI — Typed Contract (§0.1)
+description: Create a unit of work as a 19-field typed contract (factory master spec §0.1). A PBI IS a typed contract — PBI ≡ typed contract ≡ Linear ticket ≡ bead ≡ GitHub issue.
+title: "PBI: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **One unit of work, five names.** This form is the GitHub-issue facet of the typed contract
+        defined in the [factory master spec §0.1](https://github.com/mplsjohnnycage/factory/blob/main/docs/factory-master-spec.md).
+        The same unit exists as a Linear ticket (admit/claim SoT until PBI-007), a bead (ready/claim
+        facet), and a Port `executionContract` (accept facet) — name every facet's id in the title or body.
+
+        **Definition of Ready:** a unit is **not startable** until the *entire* body below is filled —
+        C1–C3 + fields 1–16 (19 fields) plus the three ASDLC pointers. Every field is required for
+        that reason. No vague values: C3 names exactly one Beads instance, field 7 names a §0.7
+        roster agent, field 15 never contains a plaintext secret.
+  - type: textarea
+    id: c1-inputs-types
+    attributes:
+      label: "C1 — Inputs + types"
+      description: "Explicit input names and types: schemas, Spec pointers, entity ids, paths."
+    validations:
+      required: true
+  - type: textarea
+    id: c2-outputs-types
+    attributes:
+      label: "C2 — Outputs + types"
+      description: "Explicit output names and types: artifacts, evidence, entity updates, PR SHA."
+    validations:
+      required: true
+  - type: dropdown
+    id: c3-write-targets-beads
+    attributes:
+      label: "C3 — Write targets: Beads instance (exactly one)"
+      description: "Systems this unit may write — Meta Beads xor Product Beads (exactly one instance by lane; never Both, never vague “Beads”)."
+      options:
+        - Meta Beads
+        - Product Beads
+        - None — this unit writes no Beads instance
+    validations:
+      required: true
+  - type: checkboxes
+    id: c3-write-targets-other
+    attributes:
+      label: "C3 — Write targets: other systems this unit may write"
+      description: "Check every additional system this unit may write. Anything not checked (and not named here) is out of scope."
+      options:
+        - label: Linear
+        - label: git / GitHub
+        - label: Port (via §4.2.1 writer only)
+        - label: Rivet
+        - label: Filesystem
+        - label: Other — named explicitly in field 2 or 3
+  - type: textarea
+    id: f01-acceptance-criteria
+    attributes:
+      label: "1 — Acceptance criteria"
+      description: "Measurable done-when; ties to Spec Contract scenarios / Verification pointer."
+    validations:
+      required: true
+  - type: textarea
+    id: f02-task-description
+    attributes:
+      label: "2 — Exact task description"
+      description: "Imperative directive — what to do, unambiguous."
+    validations:
+      required: true
+  - type: textarea
+    id: f03-directories
+    attributes:
+      label: "3 — Almost-exact directories to work in"
+      description: "Paths / packages / Spec domains in scope."
+    validations:
+      required: true
+  - type: textarea
+    id: f04-not-to-touch
+    attributes:
+      label: "4 — What not to touch"
+      description: "Explicit out-of-scope paths, systems, boards, Beads instances."
+    validations:
+      required: true
+  - type: textarea
+    id: f05-skills
+    attributes:
+      label: "5 — Skills to use"
+      description: "Named skills / practices (e.g. ASDLC patterns) — no silent invention."
+    validations:
+      required: true
+  - type: textarea
+    id: f06-mcps
+    attributes:
+      label: "6 — MCPs needed"
+      description: "Named MCP servers/tools required (prefer Factory Single-MCP / Port-governed surface)."
+    validations:
+      required: true
+  - type: dropdown
+    id: f07-agent-type
+    attributes:
+      label: "7 — Agent type required (§0.7 roster)"
+      description: "Name from the master spec §0.7 agent-type roster (Johnny locked). Do not invent ad-hoc types outside the roster."
+      options:
+        - Muse
+        - ChatGPT regular
+        - ChatGPT Work
+        - Codex
+        - Grok
+        - Claude
+        - Claude Code
+        - Claude Design
+    validations:
+      required: true
+  - type: dropdown
+    id: f07-task-kind
+    attributes:
+      label: "7 — Task kind (personal-agent xor coding-agent)"
+      description: "personal-agent = Port / browser / provisioning / cockpit work (§18 Cockpit class); coding-agent = code for one admitted WorkAttempt inside Rivet Sandbox Agent (§18 Coding class)."
+      options:
+        - personal-agent
+        - coding-agent
+    validations:
+      required: true
+  - type: textarea
+    id: f08-ci-requirements
+    attributes:
+      label: "8 — CI requirements"
+      description: "Checks / gates that must green on the exact SHA for accept."
+    validations:
+      required: true
+  - type: textarea
+    id: f09-dependencies
+    attributes:
+      label: "9 — Dependencies"
+      description: "Which PBIs/units must complete first (same equivalence-chain ids)."
+    validations:
+      required: true
+  - type: input
+    id: f10-branch-naming
+    attributes:
+      label: "10 — Branch / worktree naming convention"
+      description: "Exact pattern for this unit."
+    validations:
+      required: true
+  - type: textarea
+    id: f11-failure-rollback
+    attributes:
+      label: "11 — Failure / rollback behavior"
+      description: "What happens on fail; how to unwind writes."
+    validations:
+      required: true
+  - type: input
+    id: f12-reviewer
+    attributes:
+      label: "12 — Reviewer for the PR"
+      description: "Named human/agent reviewer."
+    validations:
+      required: true
+  - type: textarea
+    id: f13-environment-prerequisites
+    attributes:
+      label: "13 — Environment prerequisites"
+      description: "Services that must be running (e.g. Rivet Compose, Tailscale Serve, gateway)."
+    validations:
+      required: true
+  - type: input
+    id: f14-time-estimate
+    attributes:
+      label: "14 — Time estimate"
+      description: "Expected effort / duration (Linear seed / planning)."
+    validations:
+      required: true
+  - type: textarea
+    id: f15-secrets-handling
+    attributes:
+      label: "15 — Secrets handling"
+      description: "Required secrets, where they live, what must never be logged/committed. No plaintext secrets in the unit body — name locations, never values."
+    validations:
+      required: true
+  - type: textarea
+    id: f16-observability-hook
+    attributes:
+      label: "16 — Observability hook"
+      description: "How progress/evidence is observed (Port audit / deliveryRun·executionAttempt, Rivet traces, CI checks, Linear updates)."
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### ASDLC pointers (same unit, §6)
+  - type: input
+    id: ptr-spec
+    attributes:
+      label: "Spec pointer"
+      description: "specs/{domain}/spec.md or the master spec §4 subsection this unit builds against."
+    validations:
+      required: true
+  - type: textarea
+    id: ptr-verification
+    attributes:
+      label: "Verification pointer"
+      description: "Contract scenarios in that Spec that this unit is judged against."
+    validations:
+      required: true
+  - type: dropdown
+    id: ptr-refinement-rule
+    attributes:
+      label: "Refinement rule"
+      description: "How Spec drift found during this unit is handled."
+      options:
+        - Update Spec in same PR
+        - Flag human
+        - Deviation log
+      default: 0
+    validations:
+      required: true
