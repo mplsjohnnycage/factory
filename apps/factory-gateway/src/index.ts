@@ -17,6 +17,19 @@ export {
 } from "./factory-workflows.js";
 export type { FactoryWorkflowId } from "./factory-workflows.js";
 export { MemoryCatalogStore, writerKey } from "./memory-store.js";
+export {
+  WorkflowCatalogStore,
+  fetchCatalogWorkflowTransport,
+  DEFAULT_WORKFLOW_ROUND_TRIP_TIMEOUT_MS,
+} from "./workflow-store.js";
+export type {
+  CatalogWorkflowEnvelope,
+  CatalogWorkflowReadEnvelope,
+  CatalogWorkflowTransport,
+  CatalogWorkflowUpsertEnvelope,
+} from "./workflow-store.js";
+export { catalogStoreFromEnv } from "./catalog-store.js";
+export type { CatalogStoreKind } from "./catalog-store.js";
 export { ProjectSupervisorQueue } from "./supervisor.js";
 export { createGatewayServer, buildDefaultDeps } from "./server.js";
 export { applySyncWrite, isSyncSource } from "./sync-ingress.js";

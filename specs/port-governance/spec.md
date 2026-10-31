@@ -15,6 +15,7 @@ Port is system of record for Factory catalog, RBAC, workflows-as-MCP-tools, MCP 
 - Workflows: `factory_create_execution_contract`, `factory_start_delivery_run`, `factory_claim_next_job`, `factory_heartbeat`, `factory_submit_evidence`, `factory_record_review_verdict`, `factory_request_release` (Johnny-only INPUT).
 - **Meta self-service handlers:** `ss_convex_create_preview`, `ss_convex_set_env` WEBHOOK → `factory-gateway` `POST /handlers/self-service` (as-code under `port/workflows/`). Prospect / Painter `ss_*` NEEDS HANDLER stubs stay Product lane.
 - **§4.2.1 catalog write fencing:** single-writer per `{blueprint}:{entityIdentifier}` inside the thin Factory gateway (`apps/factory-gateway/`); `catalogVersion` bump; reject stale writes; lease/claim fields mutate only in the same apply.
+- **Catalog store backend (decision 2026-10-30, owner-queue item 9 → spec option (b)):** the gateway writer's store is selectable via `FACTORY_CATALOG_STORE`. Default `memory` = in-process stand-in (tests / dry-runs, no live behavior change). `workflow` = applies land in Port through the `factory_*` workflows' WEBHOOK round-trip (`PORT_CATALOG_WORKFLOW_URL`): the workflow side performs the `UPSERT_ENTITY`; the gateway holds **no Port REST API credential** and never dual-writes Port. Explicit `workflow` without its URL fails closed at boot.
 - **Meta fences vs Ocean mirrors:** Factory-governed blueprints listed above are **Meta-fenced** — Ocean sync and Port MCP entity upserts must enter via `POST /catalog/sync-write` (or `/catalog/write`) and cannot set `bypassFence`. Context Lake mirror blueprints (`github*` / `linear*` / `vercel*` / `convex*`) may continue via Port Ocean native sync; they are not Meta-fenced. Unknown blueprints fail closed as Meta-fenced. See `docs/ocean-mcp-write-fencing.md`.
 - **§4.2.2 stack assembly:** Port validates stack compatibility as machine rules before provision / Coding admit.
 - LogicSRC map: OpenMCP `/.well-known/openmcp.json` (PBI-010 — advertises Port remote MCP `https://mcp.port.io/v1` as Factory’s one MCP entry); OpenOntology/OpenContext post-M1; OpenAccess scopes documented (Port issues tokens).
@@ -26,6 +27,7 @@ Port is system of record for Factory catalog, RBAC, workflows-as-MCP-tools, MCP 
 - Ocean mappings must not target Meta-fenced blueprints unless the apply path POSTs the gateway sync ingress.
 - Rivet `ProjectSupervisor` fences execution admission only — it does not replace §4.2.1 for catalog bytes.
 - Port entity upserts are create-or-update only (no product CAS); Factory supplies version fence.
+- The gateway must not grow a direct Port REST catalog client: catalog persistence routes through Port workflows (ADR-003 chain), so the §4.2.1 writer stays a fence, not a second Port write path.
 - Do not implement Product-lane Prospect / Painter OS self-service backends in Meta gateway.
 
 ## Contract

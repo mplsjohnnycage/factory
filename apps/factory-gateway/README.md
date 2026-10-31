@@ -28,6 +28,19 @@ Thin Meta gateway for **PBI-005 / STL-166** + **PBI-011 / STL-172** + **PBI-012 
 
 Mutating routes (except `/health`) are rate-limited (`GATEWAY_RATE_LIMIT_RPM`, default 60/min). Over limit → HTTP 429 + `Retry-After`.
 
+## Catalog store backend (§4.2.1 writer persistence)
+
+The writer's fence (single-writer per record + `catalogVersion`) is unchanged; what sits behind it is selectable via `FACTORY_CATALOG_STORE`:
+
+| Value | Backend | Use |
+|-------|---------|-----|
+| `memory` (default) | `MemoryCatalogStore` — in-process stand-in | Tests / local dry-runs. No live behavior change. |
+| `workflow` | `WorkflowCatalogStore` — each read/upsert round-trips to the Port workflow path (`PORT_CATALOG_WORKFLOW_URL`); the workflow's `UPSERT_ENTITY` node applies the write in Port | Live cutover (pending Port-side wiring) |
+
+`workflow` is spec option (b) (decision 2026-10-30, master §§4.1/4.2.1 + ADR-003): the gateway holds **no Port REST API credential** and never dual-writes Port. Wire envelopes: `{ kind: "catalog_read", blueprint, entityIdentifier }` → `{ entity | null }`; `{ kind: "catalog_upsert", entity }` → `{ ok: true }`. Round-trip failures throw (fail closed) — a failed apply records nothing gateway-side; callers re-read and re-enqueue per the §4.2.1 retry rule. Selecting `workflow` without `PORT_CATALOG_WORKFLOW_URL` refuses to boot.
+
+**Cutover remaining (not in code):** point the `factory_*` workflows' fencing path at the gateway round-trip (fetch current entity → gateway fence → workflow `UPSERT_ENTITY` of the gateway-approved bytes), set both env vars on the gateway host, restart, smoke one workflow.
+
 ## Ocean / MCP Meta fences
 
 Factory-governed blueprints (`product`, `service`, `executionContract`, …) are **Meta-fenced**: Ocean and MCP must call `/catalog/sync-write` (never raw Port dual-write, never `bypassFence: true`). Context Lake mirrors (`github*` / `linear*` / `vercel*` / `convex*`) stay on Port Ocean native sync.
