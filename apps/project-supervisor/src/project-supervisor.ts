@@ -31,6 +31,14 @@ export class ProjectSupervisorActor {
     this.#projections = new PortProjectionMapper(opts.catalog);
   }
 
+  /** Rehydrate from persisted attempts (e.g. Rivet actor state after wake). */
+  seed(attempts: readonly WorkAttempt[]): void {
+    for (const a of attempts) {
+      this.#attempts.set(a.workAttemptId, a);
+      this.#byWorkKey.set(a.workKey, a.workAttemptId);
+    }
+  }
+
   listAttempts(): readonly WorkAttempt[] {
     return [...this.#attempts.values()];
   }

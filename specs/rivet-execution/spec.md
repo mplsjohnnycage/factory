@@ -17,6 +17,7 @@ Rivet 2.x is the Factory execution kernel (ADR-002): actors, queues, and workflo
 - Port → HMAC gateway (`apps/factory-gateway` `/webhooks/port`) → ProjectSupervisor enqueue (push-only).
 - `ProjectSupervisor` fencing + Meta Beads ready gate live under `apps/project-supervisor/` (PBI-007); duplicate `workKey` → one `WorkAttempt`.
 - Offline / local admit consumer: `apps/project-supervisor` `POST /admit` (or in-process `admitFromPayload`) — point `RIVET_SUPERVISOR_URL` at this listener for dry-run; Compose Rivet engine URL alone is not an admit entry.
+- RivetKit 2.3.x actors live in `apps/project-supervisor/src/rivet-registry.ts` (`projectSupervisor`, `agentSession`); Developer OS serves them at `/api/rivet/[...all]` (same Vercel project, namespace `johnny-cage-4xuq-production-i6cu`). `RIVET_ENDPOINT` is secret (Vercel sensitive env); Rivet 3.0 Preview is not required.
 - Developer OS subscribes to `AgentSession` Actor streams via Rivet-native client (PBI-009) — reconnect from last `sequence`; no CopilotKit; browser never calls Sandbox Agent.
 - LogicSRC map (authorship): OpenInstall for non-Compose boxes; OpenFleet ledger alongside Rivet Inspector. M1 Required rows for this Spec beyond vertical-slice Contracts: none (OpenInstall/OpenFleet production = post-M1).
 
