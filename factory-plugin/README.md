@@ -30,6 +30,7 @@ points at it and never re-implements it.
 ```txt
 factory-plugin/
   plugin.json                  manifest (name: factory, version, MCP pointer)
+  .claude-plugin/plugin.json   the same manifest at the Claude Code loader's location
   README.md                    this file
   skills/
     factory/
@@ -40,33 +41,45 @@ factory-plugin/
         what-factory-builds.md assemble-first product model, M1 cut, LogicSRC
         atlas.md               Code Atlas overlays, contract, live-bind gap
         rails.md               the never-list for agents in Factory
+  pbis/                        the 15 seed PBI bodies + seed data
+  contracts/                   per-domain Spec Contracts + the §0.1 templates
+  units/                       facet snapshots (Linear / GitHub / Beads) + UNITS.md map
 ```
 
 ## Install
 
 The core is loader-agnostic: a `SKILL.md` skill with progressive-disclosure references.
 
+**Keep the layout whole.** `SKILL.md` and its references route to the sibling `pbis/`,
+`contracts/`, and `units/` directories for the unit bodies, the full Spec Contracts, the
+templates, and the facet snapshots. Every install mode below preserves the complete
+`factory-plugin/` tree — copying `skills/factory/` alone strands that material.
+
 **Claude Code**
 
 ```bash
-# as a plugin (reads plugin.json)
+# as a plugin (manifest: .claude-plugin/plugin.json)
 /plugin install ./factory-plugin        # or point at a cloned copy
 
-# or as a plain skill
-cp -r factory-plugin/skills/factory ~/.claude/skills/factory
+# or as a plain skill — register the skill inside the whole tree, e.g.:
+cp -r factory-plugin ~/factory-plugin
+# then point your loader at ~/factory-plugin/skills/factory (SKILL.md + references/,
+# with pbis/, contracts/, units/ preserved as siblings of skills/)
 ```
 
 **Cursor**
 
 ```bash
-cp -r factory-plugin/skills/factory <your-project-or-user-skills-dir>/factory
-# SKILL.md is the entry; keep the references/ folder beside it.
+cp -r factory-plugin <your-project>/factory-plugin
+# Register <your-project>/factory-plugin/skills/factory as the skill; keep the
+# references/ folder beside SKILL.md and the sibling directories in place.
 ```
 
 **Generic skills loaders / other agents**
 
-Copy `skills/factory/` anywhere your loader scans for `SKILL.md`-based skills. The skill is
-self-contained Markdown — no scripts, no network calls, no credentials.
+Copy the whole `factory-plugin/` tree anywhere, and point your loader at
+`skills/factory/` inside it. The skill is Markdown only — no scripts, no network calls,
+no credentials.
 
 ## Connect the MCP half (the control plane)
 

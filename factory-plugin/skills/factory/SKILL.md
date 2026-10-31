@@ -172,9 +172,9 @@ This skill stays lean; detail lives in `references/` (read the one your task nee
 | What does Factory build for a user? Stack assembly, Product lane, M1 cut vs post-M1, LogicSRC emissions | `references/what-factory-builds.md` |
 | Code Atlas — overlays, render contract, live-bind gap | `references/atlas.md` |
 | What must I never do? The rails for any agent working in Factory | `references/rails.md` |
-| The units of work — the 15 seed PBIs, the 19-field contract body, each PBI's facet state | `references/pbis.md`; the unit bodies themselves in `../../../pbis/` |
-| Contracts — a domain's Definition of Done / Guardrails / Scenarios; the typed-contract template; live Port execution contracts; the ADR index | `references/contracts.md`; full Contract text + template in `../../../contracts/` |
-| A unit's identifiers across systems (PBI ↔ STL ↔ GitHub # ↔ bead) and the live facet snapshots | `../../../units/UNITS.md`; exports in `../../../units/` (Linear / GitHub / Beads JSON — snapshots, re-pull before trusting) |
+| The units of work — the 15 seed PBIs, the 19-field contract body, each PBI's facet state | `references/pbis.md`; the unit bodies themselves in `../../pbis/` |
+| Contracts — a domain's Definition of Done / Guardrails / Scenarios; the typed-contract template; live Port execution contracts; the ADR index | `references/contracts.md`; full Contract text + template in `../../contracts/` |
+| A unit's identifiers across systems (PBI ↔ STL ↔ GitHub # ↔ bead) and the live facet snapshots | `../../units/UNITS.md`; exports in `../../units/` (Linear / GitHub / Beads JSON — snapshots, re-pull before trusting) |
 
 ## Evidence discipline
 

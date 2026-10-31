@@ -15,7 +15,7 @@ what answers (see the convex-ocean and svc:rivet entries).
 | Key blueprints (SPEC §4.2 bind list) | `product`, `service`, `executionContract`, `deliveryRun`, `executionAttempt`, `executionRunner`, `bot`, `_mcp_server`, `agentPlugin`, `skill`, `harness_session`; assembly entities `stackTemplate`, `provider`, `convexComponent`, `shadcnComponent`, `shadcnRegistry` (port-factory-data-model §2.1) |
 | Entity reality | `executionRunner` **0 entities** → `factory_claim_next_job` always ends "runner not active". `deliveryRun` / `executionAttempt` **0 entities**. Several service/product relations to GitHub/Linear are unset by Ocean; some scorecard calculations reference nonexistent fields (stale) — LIVE-VERIFIED (fragments A5/B8) |
 | Auth — External Interface app | Name **"Factory"**, app id `iToN9BhXBwPRRb4eX7d6kbG8vZj8Rmug`, client id `tnPUmUX5M0h8CdTZtaEbhhMOX0VFkUc0` (master spec §3, ADR-005 live parameters). **Exactly 3 redirect URIs live**: `http://localhost:3000/api/auth/callback`, `http://127.0.0.1:3000/api/auth/callback`, `https://factory-developer-os.vercel.app/api/auth/callback` — LIVE-VERIFIED (fragment A9). The old "5 URIs, list full" claim is dead; per-deployment redirect derivation was fixed by pinning (repo PR #42) |
-| Spec library (the SoT itself) | `factory-master-spec.md` (1,264 lines, §§0–22) + ~210 docs live **only** on JohnnyBox in the Cursor AgentStore docs library — NOT in the GitHub repo. See "JohnnyBox" below — LIVE-VERIFIED (fragment E3) |
+| Spec library (the SoT itself) | `factory-master-spec.md` (1,264 lines, §§0–22) + the full ~210-doc library are committed in this repo at `docs/` (`docs/factory-master-spec.md`) — imported from JohnnyBox by PR #111 (merge 247842e). The library's origin is the JohnnyBox Cursor AgentStore (see "JohnnyBox" below) — LIVE-VERIFIED (fragment E3 + PR #111) |
 
 ## Ocean integrations — how sources map into Port (5, all Ocean)
 
@@ -75,12 +75,13 @@ them on grok-bot. Drift — flagged, spec wins on design.
 | `svc:factory-gateway` | — | **Blocked**: desktop is untagged → CLI refuses service hosting. Johnny's steps: tag the node + define the service (fragment E4) — GAP |
 | Gateway internals | Memory catalog store hard-wired; `RIVET_SUPERVISOR_URL` unset | See `how-factory-builds.md` step 2 — the §4.2.1 live writer and Rivet forward are GAPs |
 
-### JohnnyBox / johhny-net (100.97.67.9, user `mplsj`, untagged) — where the spec lives
+### JohnnyBox / johhny-net (100.97.67.9, user `mplsj`, untagged) — where the spec originated
 
-- **The entire build spec** is in the Cursor AgentStore docs library:
+- **The entire build spec** originated in the Cursor AgentStore docs library:
   `C:\Users\mplsj\AppData\Local\Cursor\AgentStores\cursor_agent_stores\bc-46618e13-…\files\docs`
   (210 files; a second store, bc-72015999, holds 213 with a byte-identical-size master spec).
-  **None of it is in the GitHub repo** (fragment E3).
+  It has since been imported into this repo's `docs/` by PR #111 — consult
+  `docs/factory-master-spec.md` first; the box copy is the pre-import origin (fragment E3).
 - Depth docs there: `rivet-engineering-spec.md`, `rivet-sandbox-agent.md`,
   `port-factory-data-model.md` (its §4.1 is the source of the §4.2.1 fence).
 - **Four** repo copies exist; the freshest is a Codex copy (Oct 30 14:29). Cursor has **no**
@@ -159,5 +160,6 @@ Mandated (SPEC §2): `AGENTS.md` (index), `specs/` (10 domains), `docs/` (ADRs, 
 `OpenStack.md`, `.well-known/`. Live checkout (LIVE-VERIFIED, repo recon): `specs/` has all 10
 domains; `apps/` holds `developer-os`, `factory-gateway`, `project-supervisor`,
 `sandbox-harness`; `agents/coder.factory.json` exists (the OpenAgent stub). The master spec
-file itself is absent from the repo (JohnnyBox only, above). Working checkout on the
+is committed at `docs/factory-master-spec.md` (imported by PR #111; JohnnyBox origin,
+above). Working checkout on the
 operator's VM: `~/workspace/_scratch/factory-recon`.

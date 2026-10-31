@@ -111,6 +111,9 @@ pointer, not a verified chain to specific Linear/GitHub records in these exports
   here; the raw exports carry their identifiers for an agent to chain on demand — by
   evidence, at runtime, not by pattern-guessing.
 - **Port facet per unit:** `executionContract` entities are minted at admit time by the
-  governed path; the snapshot of what's recorded live is in
-  `../skills/factory/references/contracts.md` (one named entity recorded; live census
-  UNKNOWN-from-fragments).
+  governed path; the live census (Port AI, read-only, 2026-10-30 ~22:54 CDT —
+  LIVE-VERIFIED 2026-10-30 via Port AI) is: `executionContract` **exactly 1**
+  (`factory-meta-bootstrap-contract`, created 2026-10-29, `catalogVersion` 0, `product`
+  relation `factory-meta`, `githubIssue` relation EMPTY), `deliveryRun` **0**,
+  `executionAttempt` **0** — and **no live `executionContract` references any PBI or
+  Linear STL issue**. Detail in `../skills/factory/references/contracts.md`.

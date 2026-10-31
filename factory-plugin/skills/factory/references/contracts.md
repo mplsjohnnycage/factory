@@ -139,20 +139,25 @@ code) is what was copied; §4 is the authorship map it derives from.
 ## Live execution contracts (Port catalog facet)
 
 **SNAPSHOT 2026-10-30** — evidence: atlas-map-swarm fragments A2 (executionContract blueprint
-map) and A5 (entity census), both repo-record-based; **no live Port API query was run in the
-mapping pass** (no live Port credential existed that night — A5), so a live entity count is
-**UNKNOWN-from-fragments** and is not invented here.
+map) and A5 (entity census, repo-record-based), **plus a live Port census run read-only via
+Port AI on 2026-10-30 (~22:54 CDT)** — LIVE-VERIFIED 2026-10-30 via Port AI:
+
+- **`executionContract`: exactly 1 entity** — `factory-meta-bootstrap-contract`, created
+  2026-10-29, `catalogVersion: 0`, `product` relation → `factory-meta`, `githubIssue`
+  relation **EMPTY**.
+- **`deliveryRun`: 0 entities. `executionAttempt`: 0 entities.**
+- **No live `executionContract` references any PBI or Linear STL issue.**
 
 What is established:
 
 - The `executionContract` blueprint exists; an additive patch adds `catalogVersion`
   (number; "Integer starts at 0 on create; Factory catalog writer bumps by 1 on each
   successful apply") — `port/blueprints/executionContract.catalogVersion.yaml` (A2).
-- **One** `executionContract` entity is recorded as live-applied, in the repo's Port mirror
-  records: identifier `factory-meta-bootstrap-contract`, title "Factory Meta bootstrap
+- The one live entity matches the repo's Port mirror record: identifier
+  `factory-meta-bootstrap-contract`, title "Factory Meta bootstrap
   contract", `catalogVersion: 0` — `port/entities/factory-meta-bootstrap-contract.executionContract.yaml`,
-  corroborated by `port/README.md:14` (A2/A5). Apply date is not recorded. This is a floor
-  from named records, **not** a census — other live entities may exist and are UNKNOWN (A5).
+  corroborated by `port/README.md:14` (A2/A5); the live census adds its creation date
+  (2026-10-29) and its relations (above).
 - Identifiers in code/tests (`ec-1`, `ec-ocean-1`, `ec-custom`, runtime `ec-${workKey}`) are
   examples/test data, **not** live entities (A2).
 - The runtime projection path: ProjectSupervisor upserts `executionContract` (plus
