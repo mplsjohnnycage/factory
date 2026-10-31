@@ -107,3 +107,21 @@ Session spawn stub (Memory `AgentSessionActor` via injectable `SessionSpawner` �
 ## Spec
 
 `specs/factory-kernel/spec.md` · `specs/rivet-execution/spec.md` — updated in the same PR.
+
+## Launching real sandboxes (#109)
+
+`SandboxSessionSpawner` (`src/sandbox-runner.ts`) is the supervisor's real spawn step. After `admitAndSpawn` admits a work item, it creates an `AgentSessionActor` session, prompts the coding agent, checkpoints, and projects `running` → `completed` / `failed` to Port through the supervisor. The sandbox is always killed afterwards.
+
+```ts
+import { AgentSessionActor, DockerSandboxLease } from "@factory/sandbox-harness";
+import { createMemorySupervisor, SandboxSessionSpawner, admitAndSpawn } from "@factory/project-supervisor";
+
+const { supervisor } = createMemorySupervisor(); // swap in the live catalog writer
+const spawner = new SandboxSessionSpawner({
+  supervisor,
+  newSession: () => new AgentSessionActor(new DockerSandboxLease()), // MemorySandboxLease in CI
+});
+await admitAndSpawn(supervisor, request, spawner);
+```
+
+The live path needs Docker, `ANTHROPIC_API_KEY`, and a scoped `GITHUB_TOKEN` in the environment (never committed).

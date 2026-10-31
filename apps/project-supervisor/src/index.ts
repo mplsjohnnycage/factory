@@ -63,6 +63,13 @@ export type {
 } from "./session-spawn.js";
 export { admitAndSpawn, SessionSpawnRegistry } from "./session-spawn.js";
 
+export type {
+  RunOutcome,
+  SandboxRunnerOptions,
+  SandboxSession,
+} from "./sandbox-runner.js";
+export { defaultPrompt, SandboxSessionSpawner } from "./sandbox-runner.js";
+
 /** Local dry-run: Memory Meta Beads + Memory catalog (no live Port / bd). */
 export function createMemorySupervisor(): {
   supervisor: ProjectSupervisorActor;
