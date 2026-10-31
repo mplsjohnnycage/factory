@@ -2,7 +2,7 @@
   "name": "@factory/developer-os",
   "version": "0.1.0",
   "private": true,
-  "description": "Factory Developer OS — Next.js App Router shell on Vercel (PBI-008)",
+  "description": "Factory Developer OS \u2014 Next.js App Router shell on Vercel (PBI-008)",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -15,9 +15,11 @@
     "node": ">=20"
   },
   "dependencies": {
+    "@factory/project-supervisor": "*",
     "next": "^15.5.7",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "rivetkit": "^2.3.31"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",

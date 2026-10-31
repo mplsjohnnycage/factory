@@ -24,5 +24,9 @@
     "@hono/node-server": "^2.1.5",
     "hono": "^4.13.14",
     "rivetkit": "^2.3.31"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./rivet": "./src/rivet-registry.ts"
   }
 }
