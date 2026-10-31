@@ -58,8 +58,10 @@ templates, and the facet snapshots. Every install mode below preserves the compl
 **Claude Code**
 
 ```bash
-# as a plugin (manifest: .claude-plugin/plugin.json)
-/plugin install ./factory-plugin        # or point at a cloned copy
+# as a plugin (manifest: .claude-plugin/plugin.json) — load the local tree for a session:
+claude --plugin-dir ./factory-plugin
+# (a persistent install needs the plugin registered through a marketplace first;
+#  /plugin install takes a marketplace plugin name, not a local path.)
 
 # or as a plain skill — register the skill inside the whole tree, e.g.:
 cp -r factory-plugin ~/factory-plugin
