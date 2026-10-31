@@ -5,7 +5,7 @@ export {
   SANDBOX_AGENT_SDK_VERSION,
 } from "./image-pin.js";
 export { AgentSessionActor } from "./agent-session.js";
-export { DockerSandboxLease } from "./docker-lease.js";
+export { containerReachableUrl, DockerSandboxLease } from "./docker-lease.js";
 export type { DockerLeaseOptions } from "./docker-lease.js";
 export { MemorySandboxLease } from "./memory-lease.js";
 export type { SandboxLease } from "./sandbox-lease.js";

@@ -7,6 +7,7 @@ import {
   SANDBOX_AGENT_IMAGE_PIN,
   SANDBOX_AGENT_SDK_VERSION,
 } from "../src/image-pin.js";
+import { containerReachableUrl } from "../src/docker-lease.js";
 import { MemorySandboxLease } from "../src/memory-lease.js";
 
 describe("image pin", () => {
@@ -84,5 +85,13 @@ describe("kill preserves session identity", () => {
     await assert.rejects(() => actor.prompt("nope"), /sandbox is dead/);
     assert.equal(actor.identity().sessionId, "sess-dead");
     assert.equal(actor.identity().sandboxAlive, false);
+  });
+});
+
+describe("gateway URL for container", () => {
+  it("rewrites host loopback so the sandbox can reach OmniRoute", () => {
+    assert.equal(containerReachableUrl("http://127.0.0.1:20128"), "http://host.docker.internal:20128");
+    assert.equal(containerReachableUrl("http://localhost:20128/v1"), "http://host.docker.internal:20128/v1");
+    assert.equal(containerReachableUrl("https://omni.example.com"), "https://omni.example.com");
   });
 });
