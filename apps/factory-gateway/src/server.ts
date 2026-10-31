@@ -30,6 +30,7 @@ import {
   type SelfServiceRequest,
 } from "./self-service-handlers.js";
 import type { ConvexManagementClient } from "./convex-management.js";
+import { runnerDispatchFromEnv } from "./runner-dispatch.js";
 import { ProjectSupervisorQueue } from "./supervisor.js";
 import { applySyncWrite, isSyncSource } from "./sync-ingress.js";
 import type { CatalogWriteRequest, PortWebhookBody } from "./types.js";
@@ -568,6 +569,7 @@ export function buildDefaultDeps(env: NodeJS.ProcessEnv = process.env): GatewayD
     writer: new CatalogWriter(store),
     supervisor: new ProjectSupervisorQueue({
       rivetSupervisorUrl: env.RIVET_SUPERVISOR_URL || undefined,
+      runnerDispatch: runnerDispatchFromEnv(env),
     }),
     acceptLedger: new AcceptLedger(),
     openFleetLedger: buildOpenFleetLedger(env),

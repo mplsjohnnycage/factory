@@ -1,0 +1,56 @@
+# Factory runner: picks up Port-originated jobs pushed by factory-gateway
+# (repository_dispatch `factory_job`) or run by hand. Deterministic, no LLM spend.
+name: factory-runner
+
+on:
+  repository_dispatch:
+    types: [factory_job]
+  workflow_dispatch:
+    inputs:
+      work_key:
+        description: "workKey (duplicate workKey -> one attempt)"
+        required: true
+      check:
+        description: "typecheck | test | gate"
+        default: typecheck
+      issue:
+        description: "Issue number to receive evidence (optional)"
+        required: false
+
+permissions:
+  contents: read
+  issues: write
+
+# One attempt per workKey: a duplicate dispatch queues behind, never runs in parallel.
+concurrency:
+  group: factory-runner-${{ github.event.client_payload.workKey || inputs.work_key }}
+  cancel-in-progress: false
+
+jobs:
+  run:
+    name: factory-runner
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Build job
+        env:
+          PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+          IN_WORK_KEY: ${{ inputs.work_key }}
+          IN_CHECK: ${{ inputs.check }}
+          IN_ISSUE: ${{ inputs.issue }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = repository_dispatch ]; then
+            echo "FACTORY_JOB=$(jq -c . <<<"$PAYLOAD")" >> "$GITHUB_ENV"
+          else
+            echo "FACTORY_JOB=$(jq -nc --arg w "$IN_WORK_KEY" --arg c "$IN_CHECK" --arg i "$IN_ISSUE" '{workKey:$w,check:$c,issue:$i}')" >> "$GITHUB_ENV"
+          fi
+      - name: Run job
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/factory-runner.mjs

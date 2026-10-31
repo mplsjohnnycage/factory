@@ -18,6 +18,11 @@ export {
 export type { FactoryWorkflowId } from "./factory-workflows.js";
 export { MemoryCatalogStore, writerKey } from "./memory-store.js";
 export { ProjectSupervisorQueue } from "./supervisor.js";
+export {
+  RUNNER_DISPATCH_EVENT,
+  RunnerDispatcher,
+  runnerDispatchFromEnv,
+} from "./runner-dispatch.js";
 export { createGatewayServer, buildDefaultDeps } from "./server.js";
 export { applySyncWrite, isSyncSource } from "./sync-ingress.js";
 export {
