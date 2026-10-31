@@ -6,7 +6,7 @@ import {
   isJsonContentType,
   normalizeAtlasToolName,
 } from "@/lib/atlas/tool-names";
-import type { AtlasAccessRole } from "@/lib/atlas/types";
+import { resolveAtlasRole } from "@/lib/atlas/session";
 
 export const runtime = "nodejs";
 
@@ -42,7 +42,7 @@ export async function GET(): Promise<Response> {
 
 /**
  * POST /api/atlas/tools — invoke one atlas.* tool.
- * Body: { tool, args?, role? }
+ * Body: { tool, args? } — role is derived from the Port session cookie.
  * Accepts OpenMCP dotted names or Port underscore workflow IDs.
  */
 export async function POST(request: Request): Promise<Response> {
@@ -122,8 +122,7 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
-  const role: AtlasAccessRole =
-    record.role === "operator" ? "operator" : "anonymous";
+  const role = await resolveAtlasRole(request);
   const args =
     record.args && typeof record.args === "object" && !Array.isArray(record.args)
       ? (record.args as Record<string, unknown>)
