@@ -6,13 +6,13 @@ import {
   type CheckRunSummary,
 } from "./accept-sha.js";
 import { CatalogWriter, claimNextJob } from "./catalog-writer.js";
+import { catalogStoreFromEnv } from "./catalog-store.js";
 import {
   isFactoryWorkflowId,
   resolveFactoryActionIdentifier,
 } from "./factory-workflows.js";
 import { gateFleetSpawn } from "./fleet-spawn.js";
 import { verifyPortWebhookHmac } from "./hmac.js";
-import { MemoryCatalogStore } from "./memory-store.js";
 import type { ApprovalsMode, OpenFleetCeiling } from "./openfleet-ceilings.js";
 import {
   buildOpenFleetLedger,
@@ -562,7 +562,9 @@ export function createGatewayServer(deps: GatewayDeps) {
 
 export function buildDefaultDeps(env: NodeJS.ProcessEnv = process.env): GatewayDeps {
   const secret = env.PORT_CLIENT_SECRET ?? "";
-  const store = new MemoryCatalogStore();
+  // §4.2.1 writer backend: memory (default) or Port workflow round-trip —
+  // see catalog-store.ts. Throws on explicit misconfiguration (fail closed).
+  const store = catalogStoreFromEnv(env);
   return {
     secret,
     writer: new CatalogWriter(store),

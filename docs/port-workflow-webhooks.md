@@ -77,6 +77,10 @@ Additive remount is complete. Remaining:
 
 Do **not** replace Port self-API GET fencing nodes with gateway URLs. Do **not** apply new Port blueprint schema for this hop.
 
+## Catalog writer backend — workflow store (code landed, cutover pending)
+
+Decision 2026-10-30 (owner-queue item 9): gateway catalog persistence follows the spec — option (b). `apps/factory-gateway` now ships `WorkflowCatalogStore` behind `FACTORY_CATALOG_STORE=workflow`: the §4.2.1 writer stays the single-writer fence, and the Port upsert is performed by the workflow path's `UPSERT_ENTITY` node via the round-trip envelopes (`catalog_read` / `catalog_upsert` → `PORT_CATALOG_WORKFLOW_URL`). The gateway holds no Port REST credential. **Live state above is unchanged until cutover:** the workflows' own `UPSERT_ENTITY` nodes still write directly; cutover = repoint the fencing path through the gateway round-trip + set the env pair on the gateway host + restart + one approved smoke run.
+
 ## Explicit non-goals (this unit)
 
 - No Port External Interface OAuth create/delete/revoke.
