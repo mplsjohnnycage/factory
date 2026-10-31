@@ -21,6 +21,7 @@ export {
   WorkflowCatalogStore,
   fetchCatalogWorkflowTransport,
   DEFAULT_WORKFLOW_ROUND_TRIP_TIMEOUT_MS,
+  DEFAULT_AMBIGUOUS_UPSERT_HOLD_MS,
 } from "./workflow-store.js";
 export type {
   CatalogWorkflowEnvelope,

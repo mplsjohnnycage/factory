@@ -121,7 +121,18 @@ export function fetchCatalogWorkflowTransport(opts: {
         blueprint,
         entityIdentifier,
       });
-      const entity = (body as { entity?: unknown } | null)?.entity ?? null;
+      // Absence is only ever an explicit `entity: null`; any other shape
+      // (`{}`, `{ error }`) is a malformed envelope and must fail closed.
+      if (
+        typeof body !== "object" ||
+        body === null ||
+        !("entity" in body)
+      ) {
+        throw new Error(
+          "catalog workflow round-trip failed (catalog_read): response missing entity field",
+        );
+      }
+      const entity = (body as { entity: unknown }).entity;
       if (entity === null) return null;
       if (!isCatalogEntity(entity)) {
         throw new Error(
@@ -143,24 +154,79 @@ export function fetchCatalogWorkflowTransport(opts: {
 }
 
 /**
+ * After an upsert fails with an unknown outcome (timeout, network error, 5xx,
+ * missing ack) the workflow may still apply it late. Aborting the HTTP request
+ * does not cancel the workflow's Port write, so the record stays quarantined
+ * for this long before the gateway will fence another write against it.
+ */
+export const DEFAULT_AMBIGUOUS_UPSERT_HOLD_MS = 60_000;
+
+/**
  * CatalogStore whose persistence is the Port workflow round-trip.
  * Holds no entity bytes of its own — Port remains the system of record.
+ *
+ * The only gateway-side state is a quarantine of records whose last upsert
+ * had an ambiguous outcome: reads and writes for that record fail closed
+ * until the upsert is reconciled (a read shows it applied) or the hold
+ * expires, so a late workflow write cannot land under a newer version.
  */
 export class WorkflowCatalogStore implements CatalogStore {
   readonly #transport: CatalogWorkflowTransport;
+  readonly #holdMs: number;
+  readonly #now: () => number;
+  readonly #pending = new Map<
+    string,
+    { catalogVersion: number; until: number }
+  >();
 
-  constructor(transport: CatalogWorkflowTransport) {
+  constructor(
+    transport: CatalogWorkflowTransport,
+    opts: { ambiguousHoldMs?: number; now?: () => number } = {},
+  ) {
     this.#transport = transport;
+    this.#holdMs = opts.ambiguousHoldMs ?? DEFAULT_AMBIGUOUS_UPSERT_HOLD_MS;
+    this.#now = opts.now ?? Date.now;
+  }
+
+  #assertNotQuarantined(key: string): void {
+    const hold = this.#pending.get(key);
+    if (!hold) return;
+    if (this.#now() >= hold.until) return;
+    throw new Error(
+      `catalog record ${key} quarantined: previous upsert outcome unknown; retry after reconciliation`,
+    );
   }
 
   async get(
     blueprint: string,
     entityIdentifier: string,
   ): Promise<CatalogEntity | null> {
-    return this.#transport.read({ blueprint, entityIdentifier });
+    const key = `${blueprint}:${entityIdentifier}`;
+    const hold = this.#pending.get(key);
+    const found = await this.#transport.read({ blueprint, entityIdentifier });
+    if (hold) {
+      if (found && found.catalogVersion >= hold.catalogVersion) {
+        // The ambiguous upsert is definitively visible: reconciled.
+        this.#pending.delete(key);
+      } else {
+        this.#assertNotQuarantined(key);
+        this.#pending.delete(key);
+      }
+    }
+    return found;
   }
 
   async put(entity: CatalogEntity): Promise<void> {
-    await this.#transport.upsert(cloneEntity(entity));
+    const key = `${entity.blueprint}:${entity.entityIdentifier}`;
+    this.#assertNotQuarantined(key);
+    try {
+      await this.#transport.upsert(cloneEntity(entity));
+    } catch (err) {
+      this.#pending.set(key, {
+        catalogVersion: entity.catalogVersion,
+        until: this.#now() + this.#holdMs,
+      });
+      throw err;
+    }
   }
 }

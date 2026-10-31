@@ -364,3 +364,86 @@ describe("CatalogWriter §4.2.1 over the workflow store", () => {
     assert.equal(stored?.properties.status, "claimed");
   });
 });
+
+describe("WorkflowCatalogStore fail-closed hardening", () => {
+  const entity: CatalogEntity = {
+    blueprint: "executionContract",
+    entityIdentifier: "c-9",
+    catalogVersion: 1,
+    properties: { catalogVersion: 1, owner: "a" },
+  };
+
+  it("rejects read responses that omit the entity field", async () => {
+    for (const body of [{}, { error: "lookup failed" }]) {
+      const store = new WorkflowCatalogStore(
+        fetchCatalogWorkflowTransport({
+          url: ROUND_TRIP_URL,
+          fetchImpl: (async () => jsonResponse(body)) as typeof fetch,
+        }),
+      );
+      await assert.rejects(
+        () => store.get("executionContract", "c-9"),
+        /missing entity/,
+      );
+    }
+  });
+
+  it("quarantines a record after an ambiguous upsert until the hold expires", async () => {
+    let clock = 1_000;
+    let failUpsert = true;
+    const fake = new FakePortWorkflow();
+    const store = new WorkflowCatalogStore(
+      fetchCatalogWorkflowTransport({
+        url: ROUND_TRIP_URL,
+        fetchImpl: (async (url: string, init?: RequestInit) => {
+          const env = JSON.parse(String(init?.body)) as CatalogWorkflowEnvelope;
+          if (env.kind === "catalog_upsert" && failUpsert) {
+            throw new Error("timeout");
+          }
+          return fake.fetch(url, init);
+        }) as typeof fetch,
+      }),
+      { ambiguousHoldMs: 500, now: () => clock },
+    );
+
+    await assert.rejects(() => store.put(entity), /timeout/);
+
+    // Within the hold: a second writer cannot read or write the record.
+    await assert.rejects(
+      () => store.put({ ...entity, properties: { owner: "b" } }),
+      /quarantined/,
+    );
+
+    // Hold expires: record usable again.
+    clock += 501;
+    failUpsert = false;
+    await store.put(entity);
+    assert.equal((await store.get("executionContract", "c-9"))?.catalogVersion, 1);
+  });
+
+  it("reads inside the hold fail closed unless the upsert is visibly applied", async () => {
+    const clock = 1_000;
+    const fake = new FakePortWorkflow();
+    let failUpsert = true;
+    const store = new WorkflowCatalogStore(
+      fetchCatalogWorkflowTransport({
+        url: ROUND_TRIP_URL,
+        fetchImpl: (async (url: string, init?: RequestInit) => {
+          const env = JSON.parse(String(init?.body)) as CatalogWorkflowEnvelope;
+          if (env.kind === "catalog_upsert" && failUpsert) {
+            // Late-applying workflow: write lands but ack never arrives.
+            await fake.fetch(url, init);
+            throw new Error("timeout");
+          }
+          return fake.fetch(url, init);
+        }) as typeof fetch,
+      }),
+      { ambiguousHoldMs: 500, now: () => clock },
+    );
+    await assert.rejects(() => store.put(entity), /timeout/);
+    failUpsert = false;
+    // Applied version visible → reconciled immediately, no waiting.
+    assert.equal((await store.get("executionContract", "c-9"))?.catalogVersion, 1);
+    await store.put({ ...entity, catalogVersion: 2, properties: { catalogVersion: 2 } });
+  });
+});
