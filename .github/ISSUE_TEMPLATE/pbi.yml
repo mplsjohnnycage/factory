@@ -32,10 +32,9 @@ body:
     id: c3-write-targets-beads
     attributes:
       label: "C3 — Write targets: Beads instance (exactly one)"
-      description: "Systems this unit may write — Meta Beads xor Product Beads (exactly one instance by lane; never Both, never vague “Beads”)."
+      description: "Systems this unit may write — name exactly one Beads instance, never vague “Beads”. §0.2 Meta XOR Product: this repo is the Meta repo, so the only Beads instance a unit filed here may target is Meta Beads. Product-lane units (Product Beads) live on product boards/repos — never in this repo."
       options:
         - Meta Beads
-        - Product Beads
         - None — this unit writes no Beads instance
     validations:
       required: true
