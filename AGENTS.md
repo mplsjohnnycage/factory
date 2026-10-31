@@ -95,3 +95,7 @@ See `README.md` and `docs/factory-master-spec.md` §2. Apps: `apps/factory-gatew
 | OpenPRD 0001–0005 | `prd/` (PBI-014; post-M1; Meta product-intent) |
 
 This file indexes; it does not dump Spec Blueprint/Contract design.
+
+## RivetKit reference
+
+For any RivetKit work (actors, state, events, actions, connections, clients, deploy), read <https://rivet.dev/llms.txt> first. Rivet Cloud namespace for deploys: `johnny-cage-4xuq-production-i6cu` only (never the default `production` namespace). `RIVET_ENDPOINT` is a secret: Vercel secret store or a gitignored `.env` only; never commit, echo, or pass on a command line.
