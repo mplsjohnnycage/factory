@@ -41,3 +41,7 @@ idea issue (+label approved) ─→ idea-to-issue.yml ─→ linked "PBI:" draft
 - **Steps:** create `idea`, `approved`, `pbi-draft`, `needs-contract` in GitHub → Issues → Labels.
 - **Acceptance:** all four listed.
 - **Return:** confirmation.
+
+## Model API routing (OmniRoute)
+
+The runner and idea-to-issue paths make no model calls. Any future LLM-backed lease must send model API traffic to the OmniRoute endpoint (local desktop default `http://localhost:20128`, see `docs/` OmniRoute runbook), never straight to Anthropic. In Muse contracts: set the SDK base URL env (e.g. `ANTHROPIC_BASE_URL`) to the OmniRoute URL and keep the key in env only.
