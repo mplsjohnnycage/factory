@@ -1,4 +1,5 @@
 import { actor, setup } from "rivetkit";
+import { agentSession } from "./rivet-agent-session.js";
 import { MemoryCatalogWriter } from "./memory-catalog.js";
 import { MemoryMetaBeads } from "./meta-beads.js";
 import { ProjectSupervisorActor } from "./project-supervisor.js";
@@ -54,4 +55,4 @@ export const projectSupervisor = actor({
   },
 });
 
-export const registry = setup({ use: { projectSupervisor } });
+export const registry = setup({ use: { projectSupervisor, agentSession } });
