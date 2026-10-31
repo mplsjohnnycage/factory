@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Factory visual verifier — remastered SoT</title>
+<style>
+:root {
+  --bg: #0f1419;
+  --surface: #1a222c;
+  --surface2: #232d3a;
+  --border: #2e3a4a;
+  --text: #e8eef4;
+  --muted: #8b9aab;
+  --accent: #3d9a6a;
+  --accent-dim: #2a6b4a;
+  --warn: #c9a227;
+  --open: #d97706;
+  --closed: #3d9a6a;
+  --danger: #c45c5c;
+  --meta: #4a9ebd;
+  --product: #b87a4a;
+  --link: #7eb8d9;
+  --mono: "IBM Plex Mono", "SF Mono", "Cascadia Code", Consolas, monospace;
+  --sans: "IBM Plex Sans", "Segoe UI", "Helvetica Neue", sans-serif;
+  --display: "IBM Plex Sans", "Segoe UI", sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.55 var(--sans);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 10% -10%, #1a3a2a55, transparent),
+    radial-gradient(ellipse 60% 40% at 90% 0%, #1a2a3a55, transparent);
+  min-height: 100vh;
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+@media (max-width: 900px) {
+  .wrap { grid-template-columns: 1fr; }
+  nav.side { position: sticky; top: 0; z-index: 20; max-height: none; border-right: none; border-bottom: 1px solid var(--border); }
+  nav.side .nav-links { display: flex; flex-wrap: wrap; gap: 4px; max-height: none; overflow: visible; }
+  nav.side a { font-size: 12px; padding: 4px 8px; }
+}
+nav.side {
+  position: sticky; top: 0; align-self: start;
+  height: 100vh; overflow-y: auto;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 1.25rem 1rem 2rem;
+}
+nav.side .brand {
+  font: 700 13px/1.3 var(--display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+nav.side .sub {
+  font-size: 11px; color: var(--muted); margin-bottom: 1.25rem;
+}
+nav.side a {
+  display: block;
+  color: var(--muted);
+  padding: 0.35rem 0.5rem;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+nav.side a:hover, nav.side a.active {
+  background: var(--surface2); color: var(--text); text-decoration: none;
+}
+nav.side .progress {
+  margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border);
+  font-size: 12px; color: var(--muted);
+}
+nav.side .progress strong { color: var(--accent); font-size: 18px; display: block; }
+main { padding: 1.5rem 2rem 4rem; max-width: 980px; }
+header.hero {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+header.hero h1 {
+  font: 700 1.75rem/1.2 var(--display);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+header.hero p { margin: 0; color: var(--muted); max-width: 62ch; }
+.badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.badge {
+  font: 600 11px/1 var(--mono);
+  padding: 0.35rem 0.6rem;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.badge.ok { border-color: var(--accent-dim); color: var(--accent); }
+.badge.open { border-color: #8a5a1a; color: var(--open); }
+.badge.meta { border-color: #2a5a6a; color: var(--meta); }
+section {
+  margin-bottom: 2.5rem;
+  scroll-margin-top: 1rem;
+}
+section > h2 {
+  font: 700 1.25rem/1.3 var(--display);
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent-dim);
+  display: flex; align-items: baseline; gap: 0.75rem;
+}
+section > h2 .num {
+  font: 600 12px/1 var(--mono);
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+section > .lead { color: var(--muted); margin: 0 0 1rem; max-width: 70ch; }
+.callout {
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  padding: 0.85rem 1rem;
+  margin: 0 0 1.25rem;
+  border-radius: 0 4px 4px 0;
+  font-size: 14px;
+}
+.callout.warn { border-left-color: var(--warn); }
+.callout.danger { border-left-color: var(--danger); }
+.callout strong { color: var(--text); }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 0 0 1.25rem;
+  background: var(--surface);
+  border-radius: 6px;
+  overflow: hidden;
+}
+th, td {
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+th {
+  background: var(--surface2);
+  font: 600 11px/1.3 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #1e2834; }
+.tag {
+  display: inline-block;
+  font: 600 10px/1 var(--mono);
+  padding: 0.2rem 0.4rem;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.tag.met { background: #1a3a2a; color: var(--accent); }
+.tag.open { background: #3a2a12; color: var(--open); }
+.tag.closed { background: #1a3a2a; color: var(--closed); }
+.tag.meta { background: #1a2e38; color: var(--meta); }
+.tag.product { background: #3a2818; color: var(--product); }
+.tag.deferred { background: #2a2a32; color: var(--muted); }
+.checks { list-style: none; padding: 0; margin: 0 0 1.25rem; }
+.checks li {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr;
+  gap: 0.5rem;
+  align-items: start;
+  padding: 0.55rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-bottom: 0.4rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.checks li:hover { border-color: var(--accent-dim); }
+.checks li.done { border-color: var(--accent-dim); background: #14241c; }
+.checks li.done .label { color: var(--muted); text-decoration: line-through; }
+.checks input { margin-top: 0.2rem; accent-color: var(--accent); cursor: pointer; }
+.checks .label { font-size: 13.5px; }
+.checks .hint { display: block; font-size: 12px; color: var(--muted); margin-top: 0.2rem; text-decoration: none !important; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
+@media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+}
+.card h3 {
+  margin: 0 0 0.5rem;
+  font: 700 14px/1.3 var(--display);
+}
+.card.meta-lane { border-top: 3px solid var(--meta); }
+.card.product-lane { border-top: 3px solid var(--product); }
+.card p { margin: 0; font-size: 13px; color: var(--muted); }
+.pipeline {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem;
+  margin: 0 0 1.25rem;
+}
+.pipeline .step {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font: 600 12px/1 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.pipeline .step.ban {
+  border-color: var(--danger);
+  color: var(--danger);
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+.pipeline .arrow { color: var(--accent); font-weight: 700; }
+.planes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+@media (max-width: 700px) { .planes { grid-template-columns: 1fr 1fr; } }
+.plane {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem;
+  text-align: center;
+}
+.plane .name { font: 700 13px/1.2 var(--display); margin-bottom: 0.25rem; }
+.plane .role { font-size: 11px; color: var(--muted); }
+.arch {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  align-items: stretch;
+}
+@media (max-width: 700px) {
+  .arch { grid-template-columns: 1fr; }
+  .arch .hard { writing-mode: horizontal-tb; min-height: auto; }
+}
+.arch .lane {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+}
+.arch .lane.meta { border-color: #2a5a6a; }
+.arch .lane.product { border-color: #6a4a2a; }
+.arch .lane h3 { margin: 0 0 0.75rem; font-size: 14px; }
+.arch .lane ul { margin: 0; padding-left: 1.1rem; font-size: 13px; color: var(--muted); }
+.arch .lane li { margin-bottom: 0.35rem; }
+.arch .hard {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface2);
+  border: 2px dashed var(--danger);
+  border-radius: 6px;
+  padding: 0.75rem;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font: 700 11px/1.2 var(--mono);
+  letter-spacing: 0.08em;
+  color: var(--danger);
+  text-transform: uppercase;
+  min-width: 2.5rem;
+}
+.equiv {
+  display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;
+  margin: 0 0 1.25rem;
+  font: 600 13px/1 var(--mono);
+}
+.equiv span {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.65rem;
+  border-radius: 4px;
+}
+.equiv .eq { border: none; background: none; color: var(--accent); padding: 0 0.15rem; }
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.field {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.6rem 0.75rem;
+  font-size: 13px;
+}
+.field .id {
+  font: 700 11px/1 var(--mono);
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+.field.core { border-color: #3a5a4a; }
+footer.page {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted);
+}
+.btn-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0 1.25rem; }
+button.util {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.4rem 0.75rem;
+  font: 600 12px/1 var(--sans);
+  cursor: pointer;
+}
+button.util:hover { border-color: var(--accent); color: var(--accent); }
+code { font-family: var(--mono); font-size: 0.9em; background: var(--surface2); padding: 0.1em 0.35em; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="side" aria-label="Sections">
+  <div class="brand">Factory Verify</div>
+  <div class="sub">Remastered SoT · FE-55 · no external deps</div>
+  <div class="nav-links">
+    <a href="#sot">1 · Master SoT</a>
+    <a href="#workflow">2 · Workflow</a>
+    <a href="#meta-product">3 · Meta / Product</a>
+    <a href="#coding-loop">4 · Coding loop</a>
+    <a href="#contract">5 · 19-field contract</a>
+    <a href="#sync">6 · Sync</a>
+    <a href="#pbis">7 · PBIs</a>
+    <a href="#scorecard">8 · 300QA scorecard</a>
+    <a href="#arch">9 · Architecture map</a>
+    <a href="#oqs">10 · OQs</a>
+    <a href="#inflight">11 · In-flight</a>
+  </div>
+  <div class="progress">
+    <strong id="pct">0%</strong>
+    <span id="pct-label">checks verified</span>
+  </div>
+  <div class="btn-row" style="margin-top:0.75rem">
+    <button type="button" class="util" id="btn-all">Mark all</button>
+    <button type="button" class="util" id="btn-clear">Clear</button>
+  </div>
+</nav>
+
+<main>
+<header class="hero">
+  <h1>Factory visual verifier</h1>
+  <p>Self-contained checklist derived from remastered docs. Canonical SoT is <code>factory-master-spec.md</code>. Tick items as you re-read locks. No CDN, no fonts, no network.</p>
+  <div class="badges">
+    <span class="badge ok">SoT · master first</span>
+    <span class="badge meta">Lane · Meta</span>
+    <span class="badge ok">Loop · 5 steps</span>
+    <span class="badge ok">Fields · 19</span>
+    <span class="badge open">OQ-1 open</span>
+    <span class="badge ok">OQ-2 closed</span>
+  </div>
+</header>
+
+<!-- 1 Master SoT -->
+<section id="sot">
+  <h2><span class="num">01</span> Master SoT</h2>
+  <p class="lead">Hard rule (Johnny): every Factory doc derives from and matches the master. Future edits: master first, then propagate. Flag unreconcileable sources — never invent a parallel SoT.</p>
+  <div class="callout">
+    <strong>Canonical file:</strong> <code>docs/factory-master-spec.md</code> · Post-remaster SHA-256 prefix <code>12b70b7ab5a463c1…</code> · Remaster report equalized workflow / meta / coding-loop / architecture-map / Linear Factory Meta.
+  </div>
+  <table>
+    <thead><tr><th>Surface</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td><code>factory-master-spec.md</code></td><td>Canonical SoT — architecture, ADRs, Specs/PBIs, gates, Meta XOR Product, 19 fields, sync, loop, OQs</td></tr>
+      <tr><td><code>factory-workflow.md</code></td><td>Derived — Phase A/B + collision/manual inventory</td></tr>
+      <tr><td><code>factory-meta-vs-product.md</code></td><td>Derived — Meta XOR Product elaboration (§0.2)</td></tr>
+      <tr><td><code>factory-coding-loop.md</code></td><td>Derived — five-step detail (§0.4)</td></tr>
+      <tr><td><code>factory-architecture-map.md</code></td><td>Derived — visual map</td></tr>
+      <tr><td><code>AGENTS.md</code></td><td>Derived index only — points at master</td></tr>
+      <tr><td>Linear Factory Meta</td><td>Derived human tracker facet of §6 seed PBIs</td></tr>
+      <tr><td>Notion</td><td>Mirror only — never Spec/accept/claim SoT</td></tr>
+      <tr><td><code>notes.md</code></td><td>Coordination scratch — never Spec, accept, or work-queue SoT</td></tr>
+    </tbody>
+  </table>
+  <ul class="checks" data-section="sot">
+    <li><input type="checkbox"><span class="label">Master is the only SoT; companions say Derived<span class="hint">§0 Document authority</span></span></li>
+    <li><input type="checkbox"><span class="label">Edit order: master first, then propagate<span class="hint">Remaster hard rule</span></span></li>
+    <li><input type="checkbox"><span class="label">Notion / notes.md never treated as Spec or accept SoT<span class="hint">OQ-2 + coordination fence</span></span></li>
+    <li><input type="checkbox"><span class="label">No invented Johnny decisions beyond researched/locked content<span class="hint">Remaining: OQ-1, ADR-005 ops</span></span></li>
+  </ul>
+</section>
+
+<!-- 2 Workflow -->
+<section id="workflow">
+  <h2><span class="num">02</span> Workflow</h2>
+  <p class="lead">Executable Phase A (upfront) then Phase B (coding loop). Agent-agnostic. Native-first Port. Synced state, not agent memory.</p>
+  <div class="grid2">
+    <div class="card">
+      <h3>Phase A — upfront</h3>
+      <p>A1 Specs → A2 Meta Port natives → A3 meta-repo layout → A4 Linear + PBI DoR → A5 Meta Beads (OQ-1) → A8 Rivet/gateway/SA/Dev OS. Port native setup is a hard prerequisite before Feature Assembly.</p>
+    </div>
+    <div class="card">
+      <h3>Phase B — coding</h3>
+      <p>task → standardize → PR → build → loop. Same shape on Product instances when Product lane runs. Admit path: Port → HMAC → gateway → ProjectSupervisor → SA → git → CI SHA → Port accept.</p>
+    </div>
+  </div>
+  <table>
+    <thead><tr><th>Hard rule</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>Equivalence chain</td><td>PBI ≡ typed contract ≡ Linear ≡ bead ≡ GitHub issue</td></tr>
+      <tr><td>Typed contracts everywhere</td><td>DoR: unit not startable until 19-field body filled</td></tr>
+      <tr><td>Agent-agnostic loop</td><td>Cursor is not the only agent; roster + task kind</td></tr>
+      <tr><td>Native first (Port)</td><td>No second catalog; prefer Port built-ins</td></tr>
+      <tr><td>Meta ≠ Product</td><td>Never share boards, docs trees, or Beads instances</td></tr>
+      <tr><td>Accept path</td><td>Port accept + CI on exact SHA; agent done ≠ accept</td></tr>
+    </tbody>
+  </table>
+  <h3 style="font-size:14px;margin:0 0 0.5rem">Collision avoidance</h3>
+  <table>
+    <thead><tr><th>Layer</th><th>Rule</th></tr></thead>
+    <tbody>
+      <tr><td>Claim</td><td>One holder; post–PBI-007 atomic <code>bd</code> claim; before: Linear assignee</td></tr>
+      <tr><td>Worktree</td><td>One write set per worktree; share one <code>.beads</code> — never <code>bd init</code> per worktree</td></tr>
+      <tr><td>File-scope</td><td>Disjoint write sets; serialize shared files via deps / merge-slot</td></tr>
+      <tr><td>Hard ban</td><td>Two in-progress units editing the same path without serial dep</td></tr>
+    </tbody>
+  </table>
+  <ul class="checks" data-section="workflow">
+    <li><input type="checkbox"><span class="label">Phase A precedes Feature Assembly coding<span class="hint">workflow Phase A</span></span></li>
+    <li><input type="checkbox"><span class="label">Collision table understood (claim · worktree · file-scope)<span class="hint">workflow collision section</span></span></li>
+    <li><input type="checkbox"><span class="label">notes.md never used as collision or queue authority<span class="hint">hard ban</span></span></li>
+  </ul>
+</section>
+
+<!-- 3 Meta / Product -->
+<section id="meta-product">
+  <h2><span class="num">03</span> Meta / Product</h2>
+  <p class="lead">Every artifact, board, Beads instance, repo, and Port catalog ownership is Meta <em>xor</em> Product — never Both / shared / either.</p>
+  <div class="grid2">
+    <div class="card meta-lane">
+      <h3><span class="tag meta">Meta</span> Building Factory</h3>
+      <p>This Project’s Linear (Factory Meta), Project store <code>docs/</code>, meta-repo, <strong>Meta Beads</strong>, Meta Port catalog/fencing, seed PBIs 001…015.</p>
+    </div>
+    <div class="card product-lane">
+      <h3><span class="tag product">Product</span> Factory builds user software</h3>
+      <p>Product Linear boards, product repos, <strong>Product Beads</strong> (per product, when shipped), Product Port delivery projections.</p>
+    </div>
+  </div>
+  <div class="callout warn">
+    <strong>PBI-007 = Meta only</strong> — wires Meta Beads into Factory-kernel admit. Does <em>not</em> ship Product Beads. Product Beads needs a future Product-lane PBI (gap R2 — never fold into PBI-007).
+  </div>
+  <ul class="checks" data-section="meta">
+    <li><input type="checkbox"><span class="label">Lane labels are Meta or Product only — never Both/shared/either<span class="hint">§0.2</span></span></li>
+    <li><input type="checkbox"><span class="label">Write targets name Meta Beads or Product Beads explicitly<span class="hint">no vague “Beads”</span></span></li>
+    <li><input type="checkbox"><span class="label">PBI-007 scoped Meta; Product Beads gap acknowledged<span class="hint">remaster R2</span></span></li>
+  </ul>
+</section>
+
+<!-- 4 Coding loop -->
+<section id="coding-loop">
+  <h2><span class="num">04</span> Coding loop</h2>
+  <p class="lead">Locked five steps. Tool-agnostic. No independent-review / “Merge!” step — review attaches to PR/build gates.</p>
+  <div class="pipeline" aria-label="Coding loop">
+    <span class="step">1 Task</span><span class="arrow">→</span>
+    <span class="step">2 Standardize</span><span class="arrow">→</span>
+    <span class="step">3 PR</span><span class="arrow">→</span>
+    <span class="step">4 Build</span><span class="arrow">→</span>
+    <span class="step">5 Loop</span>
+    <span class="arrow">·</span>
+    <span class="step ban">independent review</span>
+  </div>
+  <table>
+    <thead><tr><th>#</th><th>Step</th><th>Must happen</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Task starts</td><td>Pick active unit; refuse if 19-field DoR incomplete; coding-agent only for this loop</td></tr>
+      <tr><td>2</td><td>Standardize</td><td>Spec+Contract · assemble-first · ADRs · gates before Feature Assembly</td></tr>
+      <tr><td>3</td><td>Open PR</td><td>Branch + PR early; cite Linear/PBI/Bead · Spec · scenarios</td></tr>
+      <tr><td>4</td><td>Run build</td><td>Local gate → CI on SHA → adversarial optional → Port accept</td></tr>
+      <tr><td>5</td><td>Loop back</td><td>Close facets; Compound HITL when in scope; next ready → step 1</td></tr>
+    </tbody>
+  </table>
+  <ul class="checks" data-section="loop">
+    <li><input type="checkbox"><span class="label">Order is exactly task → standardize → PR → build → loop<span class="hint">§0.4</span></span></li>
+    <li><input type="checkbox"><span class="label">No independent-review / Merge! step added<span class="hint">Johnny lock</span></span></li>
+    <li><input type="checkbox"><span class="label">Personal-agent units use Cockpit paths — not this admit loop<span class="hint">§0.7</span></span></li>
+  </ul>
+</section>
+
+<!-- 5 19-field contract -->
+<section id="contract">
+  <h2><span class="num">05</span> 19-field contract</h2>
+  <p class="lead">PBI <strong>is</strong> the typed contract. DoR: C1–C3 + fields 1–16 (= 19) plus ASDLC Spec · Verification · Refinement pointers.</p>
+  <div class="equiv">
+    <span>PBI</span><span class="eq">≡</span>
+    <span>typed contract</span><span class="eq">≡</span>
+    <span>Linear</span><span class="eq">≡</span>
+    <span>bead</span><span class="eq">≡</span>
+    <span>GitHub issue</span>
+  </div>
+  <h3 style="font-size:13px;color:var(--muted);margin:0 0 0.5rem;text-transform:uppercase;letter-spacing:0.05em;font-family:var(--mono)">Contract core</h3>
+  <div class="field-grid">
+    <div class="field core"><div class="id">C1</div>Inputs + types</div>
+    <div class="field core"><div class="id">C2</div>Outputs + types</div>
+    <div class="field core"><div class="id">C3</div>Write targets (Meta Beads <em>xor</em> Product Beads)</div>
+  </div>
+  <h3 style="font-size:13px;color:var(--muted);margin:0 0 0.5rem;text-transform:uppercase;letter-spacing:0.05em;font-family:var(--mono)">Operational body 1–16</h3>
+  <div class="field-grid">
+    <div class="field"><div class="id">1</div>Acceptance criteria</div>
+    <div class="field"><div class="id">2</div>Exact task description</div>
+    <div class="field"><div class="id">3</div>Directories in scope</div>
+    <div class="field"><div class="id">4</div>What not to touch</div>
+    <div class="field"><div class="id">5</div>Skills to use</div>
+    <div class="field"><div class="id">6</div>MCPs needed</div>
+    <div class="field"><div class="id">7</div>Agent type + personal/coding</div>
+    <div class="field"><div class="id">8</div>CI requirements</div>
+    <div class="field"><div class="id">9</div>Dependencies</div>
+    <div class="field"><div class="id">10</div>Branch / worktree naming</div>
+    <div class="field"><div class="id">11</div>Failure / rollback</div>
+    <div class="field"><div class="id">12</div>Reviewer for the PR</div>
+    <div class="field"><div class="id">13</div>Environment prerequisites</div>
+    <div class="field"><div class="id">14</div>Time estimate</div>
+    <div class="field"><div class="id">15</div>Secrets handling</div>
+    <div class="field"><div class="id">16</div>Observability hook</div>
+  </div>
+  <div class="callout">
+    <strong>Field 7 roster (Johnny locked, extensible):</strong> Muse · ChatGPT regular · ChatGPT Work · Codex · Grok · Claude · Claude Code · Claude Design — plus task kind <code>personal-agent</code> xor <code>coding-agent</code>.
+  </div>
+  <ul class="checks" data-section="contract">
+    <li><input type="checkbox"><span class="label">Treat five names as one unit — never parallel queues<span class="hint">§0.1</span></span></li>
+    <li><input type="checkbox"><span class="label">Refuse start when any of C1–C3 or 1–16 missing<span class="hint">DoR</span></span></li>
+    <li><input type="checkbox"><span class="label">Field 7 names roster type AND personal/coding kind<span class="hint">§0.7</span></span></li>
+  </ul>
+</section>
+
+<!-- 6 Sync -->
+<section id="sync">
+  <h2><span class="num">06</span> Four-plane sync</h2>
+  <p class="lead">Facets of the same unit stay in sync. Planes are lane-bound — Meta planes never host Product units.</p>
+  <div class="planes">
+    <div class="plane"><div class="name">Beads</div><div class="role">Ready / claim / parallel<br>(Meta or Product instance)</div></div>
+    <div class="plane"><div class="name">Linear</div><div class="role">Human tracker / visibility</div></div>
+    <div class="plane"><div class="name">git / GitHub</div><div class="role">Source · PR · CI on exact SHA</div></div>
+    <div class="plane"><div class="name">Port</div><div class="role">Accept · catalog · projections</div></div>
+  </div>
+  <div class="callout warn">
+    Until Meta Beads is live (PBI-007; OQ-1 for earlier scaffolding): Linear + PBI/typed-contract still represent the same unit. <strong>Linear remains admit/claim SoT until PBI-007.</strong>
+  </div>
+  <ul class="checks" data-section="sync">
+    <li><input type="checkbox"><span class="label">Creating/updating one facet maps within the same lane<span class="hint">§0.3</span></span></li>
+    <li><input type="checkbox"><span class="label">Pre–PBI-007: Linear is admit/claim SoT<span class="hint">hybrid lean</span></span></li>
+    <li><input type="checkbox"><span class="label">Pickup reads shared synced state — not private memory<span class="hint">workflow pickup rule</span></span></li>
+  </ul>
+</section>
+
+<!-- 7 PBIs -->
+<section id="pbis">
+  <h2><span class="num">07</span> Seed PBIs</h2>
+  <p class="lead">Lane: Meta. Each seed PBI is the 19-field body plus ASDLC pointers. Linear Factory Meta issues are the tracker facet (STL-162…176).</p>
+  <table>
+    <thead><tr><th>PBI</th><th>Directive (short)</th><th>Depends</th><th>Seed</th></tr></thead>
+    <tbody>
+      <tr><td>001</td><td>Author ten Spec stubs</td><td>—</td><td>live</td></tr>
+      <tr><td>002</td><td>Full Nygard ADRs 001…011</td><td>001</td><td>live</td></tr>
+      <tr><td>003</td><td>OpenStack + OpenProfile + AGENTS index</td><td>001</td><td>live</td></tr>
+      <tr><td>004</td><td>Rivet Compose + Tailscale Serve</td><td>002</td><td>live</td></tr>
+      <tr><td>005</td><td>Gateway HMAC → supervisor + §4.2.1 writer</td><td>004</td><td>live</td></tr>
+      <tr><td>006</td><td>Sandbox Agent Docker + Claude Code</td><td>004</td><td>live</td></tr>
+      <tr><td>007</td><td>Supervisor + <strong>Meta Beads</strong> ready gate</td><td>005,006</td><td>live</td></tr>
+      <tr><td>008</td><td>Developer OS shell on Vercel</td><td>003</td><td>live</td></tr>
+      <tr><td>009</td><td>Rivet native realtime in Dev OS</td><td>006,008</td><td>live</td></tr>
+      <tr><td>010</td><td>OpenAccess + OpenMCP well-knowns</td><td>003</td><td>live</td></tr>
+      <tr><td>011</td><td>CI → accept on exact SHA</td><td>007</td><td>live</td></tr>
+      <tr><td>012</td><td>OpenFleet ceilings <span class="tag deferred">deferred</span></td><td>007,011+M1</td><td>deferred</td></tr>
+      <tr><td>013</td><td>Local gate + validators <span class="tag deferred">deferred</span></td><td>003</td><td>deferred</td></tr>
+      <tr><td>014</td><td>OpenPRD batch <span class="tag deferred">deferred</span></td><td>001</td><td>deferred</td></tr>
+      <tr><td>015</td><td>Compound writeback HITL <span class="tag deferred">deferred</span></td><td>007</td><td>deferred</td></tr>
+    </tbody>
+  </table>
+  <ul class="checks" data-section="pbis">
+    <li><input type="checkbox"><span class="label">Seed PBIs require full 19-field bodies before start<span class="hint">§6 + §0.1</span></span></li>
+    <li><input type="checkbox"><span class="label">Concurrent PBIs do not share write sets<span class="hint">Atomicity / §0.5</span></span></li>
+    <li><input type="checkbox"><span class="label">PBI-007 wording is Meta Beads (not Product)<span class="hint">remaster</span></span></li>
+  </ul>
+</section>
+
+<!-- 8 Scorecard -->
+<section id="scorecard">
+  <h2><span class="num">08</span> 300QA scorecard</h2>
+  <p class="lead">FE-47 Johnny acceptance DoD — all five criteria MET. Pack: 300 gap Q&amp;As in <code>factory-research-300-qa.md</code>.</p>
+  <table>
+    <thead><tr><th>#</th><th>Criterion</th><th>Score</th><th>Evidence</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>No unanswered questions</td><td><span class="tag met">MET</span></td><td>300 Q&amp;As; OQ-2 closed; OQ-1 Johnny + hybrid lean; vendor UNVERIFIED named</td></tr>
+      <tr><td>2</td><td>Workflow clear to Johnny + fresh agent</td><td><span class="tag met">MET</span></td><td>Phase A→B, hard rules, sync, DoR, collision, manuals</td></tr>
+      <tr><td>3</td><td>State tracked (four-way sync)</td><td><span class="tag met">MET</span></td><td>Beads · Linear · git · Port + equivalence chain</td></tr>
+      <tr><td>4</td><td>No collisions</td><td><span class="tag met">MET</span></td><td>Claim · worktree · file-scope · hash IDs</td></tr>
+      <tr><td>5</td><td>Perfect smooth loop</td><td><span class="tag met">MET</span></td><td>Five steps; remaining manuals inventoried; OQ-2 closed</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th>Theme</th><th>~N</th><th>Focus</th></tr></thead>
+    <tbody>
+      <tr><td>architecture</td><td>41</td><td>Master plan, M1 path, Non-Goals, gates</td></tr>
+      <tr><td>port</td><td>38</td><td>Blueprints, fencing, HMAC, MCP, OAuth</td></tr>
+      <tr><td>beads</td><td>38</td><td>Meta/Product, claim, worktrees, OQ-1</td></tr>
+      <tr><td>rivet</td><td>22</td><td>Supervisor, SA, Docker</td></tr>
+      <tr><td>coding-loop / sync / collisions</td><td>32</td><td>Executable loop, four planes, manuals</td></tr>
+      <tr><td>pbi / specs / adr / rest</td><td>~129</td><td>Seed PBIs, ten Specs, ADR-001…011, Linear, UI…</td></tr>
+    </tbody>
+  </table>
+  <ul class="checks" data-section="scorecard">
+    <li><input type="checkbox"><span class="label">Accept all five scorecard rows as MET for FE-47 DoD<span class="hint">reconciliation</span></span></li>
+    <li><input type="checkbox"><span class="label">Vendor UNVERIFIED items are evidence limits — not Johnny asks<span class="hint">Rivet redelivery · Port blast-radius · Polygraph eval</span></span></li>
+  </ul>
+</section>
+
+<!-- 9 Architecture -->
+<section id="arch">
+  <h2><span class="num">09</span> Architecture map</h2>
+  <p class="lead">Derived visual: Meta left | hard line | Product right. Same unit type; separate instances.</p>
+  <div class="arch">
+    <div class="lane meta">
+      <h3><span class="tag meta">Meta</span> Construct Factory</h3>
+      <ul>
+        <li>Meta Port catalog · fencing</li>
+        <li>Meta Linear · seed PBIs</li>
+        <li>Meta Beads · ready/claim</li>
+        <li>Meta-repo git · Specs/ADRs/gateway</li>
+        <li>Meta coding loop</li>
+        <li>Eligible agents on Meta units</li>
+      </ul>
+    </div>
+    <div class="hard">Hard line · never mix</div>
+    <div class="lane product">
+      <h3><span class="tag product">Product</span> Construct user software</h3>
+      <ul>
+        <li>Product Port projections</li>
+        <li>Product Linear boards</li>
+        <li>Product Beads per product</li>
+        <li>Product-repo git · CI</li>
+        <li>Product coding loop (same shape)</li>
+        <li>Eligible agents on Product units</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout">
+    <strong>M1 admit path:</strong> Meta Port → webhook HMAC → factory-gateway → Rivet <code>ProjectSupervisor</code> → Sandbox Agent → Meta git → CI green on SHA → Meta Port accept.
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Coding agent</h3>
+      <p>Writes code in Rivet Sandbox Agent (Docker). Cannot self-accept. M1 first harness: Claude Code. Field 7 task kind = coding-agent.</p>
+    </div>
+    <div class="card">
+      <h3>Cockpit agent</h3>
+      <p>Catalog · provision · assemble · govern. Spawns Coding. No product code itself. Surfaces → Factory MCP gateway. Task kind = personal-agent.</p>
+    </div>
+  </div>
+  <ul class="checks" data-section="arch">
+    <li><input type="checkbox"><span class="label">Hard line: never share Linear / docs tree / Beads instance across lanes<span class="hint">architecture map</span></span></li>
+    <li><input type="checkbox"><span class="label">M1 path Port→HMAC→gateway→supervisor→SA→CI SHA→accept<span class="hint">§13.0</span></span></li>
+    <li><input type="checkbox"><span class="label">Coding vs Cockpit classes match §18 + §0.7 roster<span class="hint">agent model</span></span></li>
+  </ul>
+</section>
+
+<!-- 10 OQs -->
+<section id="oqs">
+  <h2><span class="num">10</span> Open questions &amp; reserved manuals</h2>
+  <p class="lead">Johnny decisions and intentionally manual steps. Research leans recorded; inventing locks is forbidden.</p>
+  <table>
+    <thead><tr><th>ID</th><th>Status</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>OQ-1 Meta Beads</td><td><span class="tag open">Open</span></td><td>Scaffold now vs wait for PBI-007. Research: hybrid OK; Linear admit/claim until PBI-007.</td></tr>
+      <tr><td>OQ-2 Notion</td><td><span class="tag closed">Resolved</span></td><td>Notion allowed as meta mirror; SoT = Project store + git; ≠ Spec/accept/claim.</td></tr>
+      <tr><td>ADR-005</td><td><span class="tag open">Ops</span></td><td>Dedicated Factory External Interface OAuth — docs only until Johnny authorizes. Never Observatory reuse.</td></tr>
+      <tr><td>Observatory</td><td><span class="tag deferred">Leave</span></td><td>Untouched unless Johnny explicitly authorizes revoke.</td></tr>
+      <tr><td><code>factory_request_release</code></td><td><span class="tag deferred">Johnny</span></td><td>Johnny-only INPUT (live catalog).</td></tr>
+    </tbody>
+  </table>
+  <h3 style="font-size:14px;margin:1rem 0 0.5rem">Remaining manual / HITL inventory</h3>
+  <table>
+    <thead><tr><th>Manual</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>OQ-1</td><td>Johnny decision</td></tr>
+      <tr><td>ADR-005 OAuth create</td><td>Johnny ops</td></tr>
+      <tr><td>Spec review + EGM Goldfish</td><td>Gate before Feature Assembly</td></tr>
+      <tr><td>Port accept</td><td>Governance ≠ agent done</td></tr>
+      <tr><td>Compound writeback</td><td>HITL PBI-015</td></tr>
+      <tr><td>Release INPUT / FREEMIUM path</td><td>Johnny / ops</td></tr>
+    </tbody>
+  </table>
+  <ul class="checks" data-section="oqs">
+    <li><input type="checkbox"><span class="label">OQ-1 still open — hybrid lean only, not a lock<span class="hint">§0.6</span></span></li>
+    <li><input type="checkbox"><span class="label">OQ-2 treated as closed mirror-allowed<span class="hint">Notion ≠ SoT</span></span></li>
+    <li><input type="checkbox"><span class="label">No Port OAuth create/delete without Johnny ops auth<span class="hint">ADR-005</span></span></li>
+  </ul>
+</section>
+
+<!-- 11 In-flight -->
+<section id="inflight">
+  <h2><span class="num">11</span> In-flight (Project coordination)</h2>
+  <p class="lead">From Project <code>notes.md</code> — coordination only, not SoT. Snapshot for verifier context.</p>
+  <table>
+    <thead><tr><th>Bucket</th><th>IDs</th><th>Title</th></tr></thead>
+    <tbody>
+      <tr><td>For review</td><td>FE-57 · FE-49</td><td>GitHub login push · Meta Linear seed / repo scaffold</td></tr>
+      <tr><td>In progress</td><td>FE-58</td><td>Scaffold Meta Beads hybrid OQ-1</td></tr>
+      <tr><td>In progress</td><td>FE-59</td><td>Delete Observatory create Factory OAuth</td></tr>
+      <tr><td>In progress</td><td>FE-55</td><td>HTML Factory visual verifier (this file)</td></tr>
+      <tr><td>In progress</td><td>FE-51</td><td>Factory builder plugin</td></tr>
+      <tr><td>Queued</td><td>FE-24</td><td>Lead master spec with assemble-first model</td></tr>
+      <tr><td>Done (remaster set)</td><td>FE-54 · FE-47 · FE-48 · FE-46 · FE-45 · FE-50</td><td>Remaster · 300QA · meta/product · workflow · coding loop · arch map</td></tr>
+    </tbody>
+  </table>
+  <div class="callout danger">
+    <strong>Do not</strong> treat FE-* rows as claim authority, Spec SoT, or accept. They track Project agents only.
+  </div>
+  <ul class="checks" data-section="inflight">
+    <li><input type="checkbox"><span class="label">Verifier opened and sections 01–10 walked<span class="hint">FE-55 deliverable</span></span></li>
+    <li><input type="checkbox"><span class="label">Understood FE-* is coordination scratch only<span class="hint">§0 surfaces table</span></span></li>
+  </ul>
+</section>
+
+<footer class="page">
+  <p><strong>Sources:</strong> factory-master-spec.md (§0–§0.7, §6) · factory-workflow.md · factory-meta-vs-product.md · factory-coding-loop.md · factory-architecture-map.md · factory-research-reconciliation.md · factory-spec-remaster-report.md · notes.md</p>
+  <p>FE-55 · self-contained HTML · no external dependencies · copies: <code>artifacts/factory/docs/factory-verify.html</code> · <code>docs/factory-verify.html</code></p>
+  <p id="saved-note"></p>
+</footer>
+</main>
+</div>
+
+<script>
+(function () {
+  var KEY = "factory-verify-checks-v1";
+  var boxes = Array.prototype.slice.call(document.querySelectorAll(".checks input[type=checkbox]"));
+  var pctEl = document.getElementById("pct");
+  var saved = document.getElementById("saved-note");
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return;
+      var map = JSON.parse(raw);
+      boxes.forEach(function (box, i) {
+        if (map[i]) {
+          box.checked = true;
+          box.closest("li").classList.add("done");
+        }
+      });
+    } catch (e) { /* ignore */ }
+  }
+
+  function save() {
+    var map = boxes.map(function (b) { return !!b.checked; });
+    try {
+      localStorage.setItem(KEY, JSON.stringify(map));
+      if (saved) saved.textContent = "Checklist progress saved in this browser (localStorage).";
+    } catch (e) {
+      if (saved) saved.textContent = "localStorage unavailable — checks are session-only.";
+    }
+  }
+
+  function update() {
+    var n = boxes.filter(function (b) { return b.checked; }).length;
+    var t = boxes.length || 1;
+    pctEl.textContent = Math.round((n / t) * 100) + "%";
+    document.getElementById("pct-label").textContent = n + " / " + t + " checks verified";
+  }
+
+  boxes.forEach(function (box) {
+    box.addEventListener("change", function () {
+      box.closest("li").classList.toggle("done", box.checked);
+      save();
+      update();
+    });
+    box.closest("li").addEventListener("click", function (e) {
+      if (e.target === box) return;
+      box.checked = !box.checked;
+      box.dispatchEvent(new Event("change"));
+    });
+  });
+
+  document.getElementById("btn-all").addEventListener("click", function () {
+    boxes.forEach(function (b) {
+      b.checked = true;
+      b.closest("li").classList.add("done");
+    });
+    save(); update();
+  });
+  document.getElementById("btn-clear").addEventListener("click", function () {
+    boxes.forEach(function (b) {
+      b.checked = false;
+      b.closest("li").classList.remove("done");
+    });
+    save(); update();
+  });
+
+  // Active nav highlight
+  var links = Array.prototype.slice.call(document.querySelectorAll("nav.side .nav-links a"));
+  var sections = links.map(function (a) {
+    return document.querySelector(a.getAttribute("href"));
+  });
+  function hilite() {
+    var y = window.scrollY + 80;
+    var cur = 0;
+    sections.forEach(function (s, i) {
+      if (s && s.offsetTop <= y) cur = i;
+    });
+    links.forEach(function (a, i) {
+      a.classList.toggle("active", i === cur);
+    });
+  }
+  window.addEventListener("scroll", hilite, { passive: true });
+
+  load();
+  update();
+  hilite();
+})();
+</script>
+</body>
+</html>
