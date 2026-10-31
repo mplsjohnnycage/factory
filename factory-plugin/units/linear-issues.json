@@ -1,0 +1,3011 @@
+{
+ "snapshot": "2026-10-30 ~22:26 CDT",
+ "source": "Linear MCP list_issues team=ASDLC limit=250 (single page, hasNextPage=false)",
+ "count": 224,
+ "byStatus": {
+  "Done": 157,
+  "Backlog": 62,
+  "Todo": 2,
+  "In Progress": 2,
+  "Duplicate": 1
+ },
+ "byProject": {
+  "Factory Meta": 53,
+  "None": 79,
+  "Developer OS \u2014 ASDLC / Port / Rivet": 13,
+  "Painter OS": 58,
+  "Prospect pipeline": 14,
+  "Sky's the Limit Painting": 1,
+  "DJ YS": 2,
+  "Website Sales Pipeline": 2,
+  "Factory Control Plane": 2
+ },
+ "issues": [
+  {
+   "id": "STL-182",
+   "identifier": "STL-182",
+   "title": "Retarget ASDLC Issues Sync off painter-os (FE-57)",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "High",
+   "updatedAt": "2026-10-30T19:22:49.472Z",
+   "createdAt": "2026-10-29T02:43:26.045Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-182/retarget-asdlc-issues-sync-off-painter-os-fe-57"
+  },
+  {
+   "id": "STL-225",
+   "identifier": "STL-225",
+   "title": "[FE-201] Product M1 \u2014 one independent repo built end-to-end",
+   "status": "Backlog",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T21:55:39.325Z",
+   "createdAt": "2026-10-29T21:55:36.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-225/fe-201-product-m1-one-independent-repo-built-end-to-end"
+  },
+  {
+   "id": "STL-224",
+   "identifier": "STL-224",
+   "title": "Wire Ask Factory drawer to Rivet via Dev OS BFF",
+   "status": "Done",
+   "labels": [
+    "Feature"
+   ],
+   "project": "Developer OS \u2014 ASDLC / Port / Rivet",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T21:50:22.180Z",
+   "createdAt": "2026-10-29T21:50:21.675Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-224/wire-ask-factory-drawer-to-rivet-via-dev-os-bff"
+  },
+  {
+   "id": "STL-223",
+   "identifier": "STL-223",
+   "title": "[FE-198] Live Ask Factory \u2192 Rivet wiring (Dev OS BFF)",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T21:50:10.937Z",
+   "createdAt": "2026-10-29T21:20:33.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-223/fe-198-live-ask-factory-rivet-wiring-dev-os-bff"
+  },
+  {
+   "id": "STL-222",
+   "identifier": "STL-222",
+   "title": "Add Provider widgets dashboard with Providers route",
+   "status": "Done",
+   "labels": [
+    "launch",
+    "Feature"
+   ],
+   "project": "Developer OS \u2014 ASDLC / Port / Rivet",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T20:03:38.973Z",
+   "createdAt": "2026-10-29T20:03:38.183Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-222/add-provider-widgets-dashboard-with-providers-route"
+  },
+  {
+   "id": "STL-221",
+   "identifier": "STL-221",
+   "title": "Add Codebase Intelligence symbol graph on /intelligence",
+   "status": "Done",
+   "labels": [
+    "launch",
+    "Feature",
+    "needs-review"
+   ],
+   "project": "Developer OS \u2014 ASDLC / Port / Rivet",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T19:55:40.306Z",
+   "createdAt": "2026-10-29T19:55:39.553Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-221/add-codebase-intelligence-symbol-graph-on-intelligence"
+  },
+  {
+   "id": "STL-220",
+   "identifier": "STL-220",
+   "title": "Add Atlas v5 lake UI slice with Cmd K command palette",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "launch"
+   ],
+   "project": "Developer OS \u2014 ASDLC / Port / Rivet",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T19:47:53.464Z",
+   "createdAt": "2026-10-29T19:47:52.891Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-220/add-atlas-v5-lake-ui-slice-with-cmd-k-command-palette"
+  },
+  {
+   "id": "STL-219",
+   "identifier": "STL-219",
+   "title": "Implement Dev OS UI against Cockpit v3 / Atlas v5 comps",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "High",
+   "updatedAt": "2026-10-29T19:37:19.279Z",
+   "createdAt": "2026-10-29T19:26:21.183Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-219/implement-dev-os-ui-against-cockpit-v3-atlas-v5-comps"
+  },
+  {
+   "id": "STL-218",
+   "identifier": "STL-218",
+   "title": "Lock Factory UI design direction (Cockpit v3 / Atlas v5)",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "High",
+   "updatedAt": "2026-10-29T19:28:56.622Z",
+   "createdAt": "2026-10-29T19:26:09.139Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-218/lock-factory-ui-design-direction-cockpit-v3-atlas-v5"
+  },
+  {
+   "id": "STL-217",
+   "identifier": "STL-217",
+   "title": "Add dry-run kit to verify CI branch-protection on main",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "agent-ready"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T18:18:55.670Z",
+   "createdAt": "2026-10-29T18:18:55.128Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-217/add-dry-run-kit-to-verify-ci-branch-protection-on-main"
+  },
+  {
+   "id": "STL-216",
+   "identifier": "STL-216",
+   "title": "Add assemble-first apply dry-run kit to verify ops safety",
+   "status": "Done",
+   "labels": [
+    "Improvement"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T18:12:18.068Z",
+   "createdAt": "2026-10-29T18:12:17.551Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-216/add-assemble-first-apply-dry-run-kit-to-verify-ops-safety"
+  },
+  {
+   "id": "STL-215",
+   "identifier": "STL-215",
+   "title": "Add funnel remount checklist dry-run kit for ops",
+   "status": "Done",
+   "labels": [
+    "Improvement"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T18:05:40.581Z",
+   "createdAt": "2026-10-29T18:05:39.881Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-215/add-funnel-remount-checklist-dry-run-kit-for-ops"
+  },
+  {
+   "id": "STL-214",
+   "identifier": "STL-214",
+   "title": "Add factory-done queue mirror dry-run kit",
+   "status": "Done",
+   "labels": [
+    "Feature"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T18:03:01.836Z",
+   "createdAt": "2026-10-29T18:03:01.136Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-214/add-factory-done-queue-mirror-dry-run-kit"
+  },
+  {
+   "id": "STL-213",
+   "identifier": "STL-213",
+   "title": "Add OpenAccess/OpenMCP well-known linkage dry-run smoke kit",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "launch"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T17:57:52.390Z",
+   "createdAt": "2026-10-29T17:57:51.924Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-213/add-openaccessopenmcp-well-known-linkage-dry-run-smoke-kit"
+  },
+  {
+   "id": "STL-212",
+   "identifier": "STL-212",
+   "title": "Add Meta Beads Dolt health offline dry-run kit",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T17:55:35.776Z",
+   "createdAt": "2026-10-29T17:55:35.222Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-212/add-meta-beads-dolt-health-offline-dry-run-kit"
+  },
+  {
+   "id": "STL-211",
+   "identifier": "STL-211",
+   "title": "Add factory-gateway Dockerfile + /health ops dry-run kit",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "launch"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T17:50:46.826Z",
+   "createdAt": "2026-10-29T17:50:46.127Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-211/add-factory-gateway-dockerfile-health-ops-dry-run-kit"
+  },
+  {
+   "id": "STL-210",
+   "identifier": "STL-210",
+   "title": "Add BdMetaBeads offline readiness dry-run kit",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "launch"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T17:45:36.436Z",
+   "createdAt": "2026-10-29T17:45:35.734Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-210/add-bdmetabeads-offline-readiness-dry-run-kit"
+  },
+  {
+   "id": "STL-209",
+   "identifier": "STL-209",
+   "title": "Add sandbox-harness readiness dry-run kit for mornings",
+   "status": "Done",
+   "labels": [
+    "agent-ready",
+    "Improvement"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T17:40:16.116Z",
+   "createdAt": "2026-10-29T17:40:15.001Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-209/add-sandbox-harness-readiness-dry-run-kit-for-mornings"
+  },
+  {
+   "id": "STL-208",
+   "identifier": "STL-208",
+   "title": "Add Rivet Compose + Tailscale Serve offline smoke kit",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "launch"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T17:35:51.630Z",
+   "createdAt": "2026-10-29T17:35:50.456Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-208/add-rivet-compose-tailscale-serve-offline-smoke-kit"
+  },
+  {
+   "id": "STL-207",
+   "identifier": "STL-207",
+   "title": "Add signed HMAC admit smoke ops kit using env vars only",
+   "status": "Done",
+   "labels": [
+    "Improvement"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T17:23:15.024Z",
+   "createdAt": "2026-10-29T17:23:14.252Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-207/add-signed-hmac-admit-smoke-ops-kit-using-env-vars-only"
+  },
+  {
+   "id": "STL-206",
+   "identifier": "STL-206",
+   "title": "Add Projects Manager Windows logon PM checklist runbook",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "needs-review"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T17:19:30.516Z",
+   "createdAt": "2026-10-29T17:19:29.921Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-206/add-projects-manager-windows-logon-pm-checklist-runbook"
+  },
+  {
+   "id": "STL-205",
+   "identifier": "STL-205",
+   "title": "Add ops checklist to verify Port human sign-in on stable",
+   "status": "Done",
+   "labels": [
+    "launch",
+    "Improvement"
+   ],
+   "project": "Developer OS \u2014 ASDLC / Port / Rivet",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T17:15:08.892Z",
+   "createdAt": "2026-10-29T17:15:08.203Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-205/add-ops-checklist-to-verify-port-human-sign-in-on-stable"
+  },
+  {
+   "id": "STL-204",
+   "identifier": "STL-204",
+   "title": "Add ProjectSupervisor admit dry-run kit for Projects Manager",
+   "status": "Done",
+   "labels": [
+    "launch",
+    "Improvement"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T17:12:28.721Z",
+   "createdAt": "2026-10-29T17:12:27.533Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-204/add-projectsupervisor-admit-dry-run-kit-for-projects-manager"
+  },
+  {
+   "id": "STL-203",
+   "identifier": "STL-203",
+   "title": "Harden Beads\u2192gateway unsigned admit dry-run kit",
+   "status": "Done",
+   "labels": [
+    "Improvement"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T17:06:17.393Z",
+   "createdAt": "2026-10-29T17:06:16.599Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-203/harden-beadsgateway-unsigned-admit-dry-run-kit"
+  },
+  {
+   "id": "STL-202",
+   "identifier": "STL-202",
+   "title": "Add OmniRoute desktop install runbook and dry-run kit",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T16:50:44.931Z",
+   "createdAt": "2026-10-29T16:50:44.364Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-202/add-omniroute-desktop-install-runbook-and-dry-run-kit"
+  },
+  {
+   "id": "STL-201",
+   "identifier": "STL-201",
+   "title": "Add Atlas BFF prod smoke operator guide",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "deploy"
+   ],
+   "project": "Developer OS \u2014 ASDLC / Port / Rivet",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T16:35:30.181Z",
+   "createdAt": "2026-10-29T16:35:29.562Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-201/add-atlas-bff-prod-smoke-operator-guide"
+  },
+  {
+   "id": "STL-200",
+   "identifier": "STL-200",
+   "title": "Autostart factory-gateway on Windows logon via Task Scheduler",
+   "status": "Done",
+   "labels": [
+    "launch",
+    "Feature"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T16:30:01.401Z",
+   "createdAt": "2026-10-29T16:30:00.820Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-200/autostart-factory-gateway-on-windows-logon-via-task-scheduler"
+  },
+  {
+   "id": "STL-199",
+   "identifier": "STL-199",
+   "title": "Add gateway HMAC smoke script and beads admit path docs",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "launch"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T16:23:33.783Z",
+   "createdAt": "2026-10-29T16:23:33.210Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-199/add-gateway-hmac-smoke-script-and-beads-admit-path-docs"
+  },
+  {
+   "id": "STL-154",
+   "identifier": "STL-154",
+   "title": "Developer OS M4 \u2014 build four-overlay Code Atlas and Port MCP read projection",
+   "status": "Done",
+   "labels": [],
+   "project": "Developer OS \u2014 ASDLC / Port / Rivet",
+   "priority": "Medium",
+   "updatedAt": "2026-10-29T16:21:55.268Z",
+   "createdAt": "2026-10-28T01:10:05.767Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-154/developer-os-m4-build-four-overlay-code-atlas-and-port-mcp-read"
+  },
+  {
+   "id": "STL-176",
+   "identifier": "STL-176",
+   "title": "PBI-015: CE compound writeback after first coding PBI (DEFERRED)",
+   "status": "Done",
+   "labels": [
+    "Deferred",
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "Low",
+   "updatedAt": "2026-10-29T15:41:13.057Z",
+   "createdAt": "2026-10-28T22:29:32.045Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-176/pbi-015-ce-compound-writeback-after-first-coding-pbi-deferred"
+  },
+  {
+   "id": "STL-198",
+   "identifier": "STL-198",
+   "title": "Document Meta Beads bootstrap dry-run and reversible execute",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "needs-review"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T15:39:19.452Z",
+   "createdAt": "2026-10-29T15:39:17.476Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-198/document-meta-beads-bootstrap-dry-run-and-reversible-execute"
+  },
+  {
+   "id": "STL-197",
+   "identifier": "STL-197",
+   "title": "Add safe Meta Beads bootstrap with dry-run gate",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "launch"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T15:35:19.133Z",
+   "createdAt": "2026-10-29T15:35:18.684Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-197/add-safe-meta-beads-bootstrap-with-dry-run-gate"
+  },
+  {
+   "id": "STL-196",
+   "identifier": "STL-196",
+   "title": "Add offline admit entry and memory session spawn stub",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "agent-ready"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T14:06:54.654Z",
+   "createdAt": "2026-10-29T14:06:54.099Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-196/add-offline-admit-entry-and-memory-session-spawn-stub"
+  },
+  {
+   "id": "STL-195",
+   "identifier": "STL-195",
+   "title": "Add BdMetaBeads live adapter for Meta Beads gate",
+   "status": "Done",
+   "labels": [
+    "Factory Meta",
+    "Feature",
+    "launch"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T13:55:32.557Z",
+   "createdAt": "2026-10-29T13:55:31.924Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-195/add-bdmetabeads-live-adapter-for-meta-beads-gate"
+  },
+  {
+   "id": "STL-194",
+   "identifier": "STL-194",
+   "title": "Pin Port OAuth redirect_uri to stable Developer OS origin",
+   "status": "Done",
+   "labels": [
+    "Bug"
+   ],
+   "project": "Developer OS \u2014 ASDLC / Port / Rivet",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T08:40:22.658Z",
+   "createdAt": "2026-10-29T08:40:22.085Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-194/pin-port-oauth-redirect-uri-to-stable-developer-os-origin"
+  },
+  {
+   "id": "STL-193",
+   "identifier": "STL-193",
+   "title": "Add factory-gateway Dockerfile and opt-in gateway compose profile",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "deploy"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T08:35:57.811Z",
+   "createdAt": "2026-10-29T08:35:57.284Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-193/add-factory-gateway-dockerfile-and-opt-in-gateway-compose-profile"
+  },
+  {
+   "id": "STL-192",
+   "identifier": "STL-192",
+   "title": "Add gateway remount dry-run kit for Port remounts",
+   "status": "Done",
+   "labels": [
+    "Feature"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T08:31:49.667Z",
+   "createdAt": "2026-10-29T08:31:49.016Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-192/add-gateway-remount-dry-run-kit-for-port-remounts"
+  },
+  {
+   "id": "STL-191",
+   "identifier": "STL-191",
+   "title": "Document Vercel CI Hive checks blocker for public repos",
+   "status": "Done",
+   "labels": [
+    "blocked-external",
+    "Improvement",
+    "launch"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T07:06:04.108Z",
+   "createdAt": "2026-10-29T07:06:03.608Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-191/document-vercel-ci-hive-checks-blocker-for-public-repos"
+  },
+  {
+   "id": "STL-190",
+   "identifier": "STL-190",
+   "title": "Disallow Ocean/MCP Meta-fenced blueprint bypass in gateway",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T07:03:20.189Z",
+   "createdAt": "2026-10-29T07:03:19.415Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-190/disallow-oceanmcp-meta-fenced-blueprint-bypass-in-gateway"
+  },
+  {
+   "id": "STL-189",
+   "identifier": "STL-189",
+   "title": "Wire Meta self-service handlers through factory-gateway",
+   "status": "Done",
+   "labels": [
+    "Factory Meta",
+    "Feature"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T07:01:09.252Z",
+   "createdAt": "2026-10-29T07:01:08.314Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-189/wire-meta-self-service-handlers-through-factory-gateway"
+  },
+  {
+   "id": "STL-186",
+   "identifier": "STL-186",
+   "title": "Dev OS Port OAuth e2e: callback path + PKCE exchange + Vercel env",
+   "status": "Done",
+   "labels": [
+    "Factory Meta",
+    "needs-review"
+   ],
+   "project": "Factory Meta",
+   "priority": "Medium",
+   "updatedAt": "2026-10-29T06:57:30.688Z",
+   "createdAt": "2026-10-29T06:48:46.673Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-186/dev-os-port-oauth-e2e-callback-path-pkce-exchange-vercel-env"
+  },
+  {
+   "id": "STL-179",
+   "identifier": "STL-179",
+   "title": "ASDLC PR status automations \u2192 In Review / Done",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "High",
+   "updatedAt": "2026-10-29T06:54:20.745Z",
+   "createdAt": "2026-10-29T02:43:22.908Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-179/asdlc-pr-status-automations-in-review-done"
+  },
+  {
+   "id": "STL-178",
+   "identifier": "STL-178",
+   "title": "Confirm Linear + Linear Code App access to mplsjohnnycage/factory",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "High",
+   "updatedAt": "2026-10-29T06:54:19.158Z",
+   "createdAt": "2026-10-29T02:43:21.561Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-178/confirm-linear-linear-code-app-access-to-mplsjohnnycagefactory"
+  },
+  {
+   "id": "STL-188",
+   "identifier": "STL-188",
+   "title": "Prove factory_* Port WEBHOOK enqueues via factory-gateway",
+   "status": "Done",
+   "labels": [
+    "Factory Meta",
+    "launch",
+    "Improvement"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T06:53:33.575Z",
+   "createdAt": "2026-10-29T06:53:33.163Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-188/prove-factory-port-webhook-enqueues-via-factory-gateway"
+  },
+  {
+   "id": "STL-187",
+   "identifier": "STL-187",
+   "title": "Add catalogVersion to product and executionContract",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T06:51:04.499Z",
+   "createdAt": "2026-10-29T06:51:04.105Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-187/add-catalogversion-to-product-and-executioncontract"
+  },
+  {
+   "id": "STL-169",
+   "identifier": "STL-169",
+   "title": "PBI-008: Scaffold Developer OS shell on Vercel",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "Medium",
+   "updatedAt": "2026-10-29T06:48:47.121Z",
+   "createdAt": "2026-10-28T22:28:45.574Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-169/pbi-008-scaffold-developer-os-shell-on-vercel"
+  },
+  {
+   "id": "STL-171",
+   "identifier": "STL-171",
+   "title": "PBI-010: OpenAccess + OpenMCP well-knowns (no Port OAuth create)",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "Medium",
+   "updatedAt": "2026-10-29T06:48:47.117Z",
+   "createdAt": "2026-10-28T22:28:47.348Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-171/pbi-010-openaccess-openmcp-well-knowns-no-port-oauth-create"
+  },
+  {
+   "id": "STL-184",
+   "identifier": "STL-184",
+   "title": "Bootstrap Meta Beads from Dolt history in fresh clones",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "No priority",
+   "updatedAt": "2026-10-29T06:38:37.328Z",
+   "createdAt": "2026-10-29T06:38:36.785Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-184/bootstrap-meta-beads-from-dolt-history-in-fresh-clones"
+  },
+  {
+   "id": "STL-175",
+   "identifier": "STL-175",
+   "title": "PBI-014: OpenPRD 0001\u20130005 (DEFERRED / not M1 exit)",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "Low",
+   "updatedAt": "2026-10-29T06:35:28.566Z",
+   "createdAt": "2026-10-28T22:29:31.200Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-175/pbi-014-openprd-0001-0005-deferred-not-m1-exit"
+  },
+  {
+   "id": "STL-174",
+   "identifier": "STL-174",
+   "title": "PBI-013: Local gate + CI refuse + validators (DEFERRED for seed wave)",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "Low",
+   "updatedAt": "2026-10-29T06:23:07.476Z",
+   "createdAt": "2026-10-28T22:29:30.523Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-174/pbi-013-local-gate-ci-refuse-validators-deferred-for-seed-wave"
+  },
+  {
+   "id": "STL-173",
+   "identifier": "STL-173",
+   "title": "PBI-012: OpenFleet ceilings + gateway rate limit",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "Low",
+   "updatedAt": "2026-10-29T06:10:45.547Z",
+   "createdAt": "2026-10-28T22:29:29.813Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-173/pbi-012-openfleet-ceilings-gateway-rate-limit"
+  },
+  {
+   "id": "STL-172",
+   "identifier": "STL-172",
+   "title": "PBI-011: GitHub checks \u2192 accept on exact SHA",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "Medium",
+   "updatedAt": "2026-10-29T05:16:16.846Z",
+   "createdAt": "2026-10-28T22:28:48.214Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-172/pbi-011-github-checks-accept-on-exact-sha"
+  },
+  {
+   "id": "STL-170",
+   "identifier": "STL-170",
+   "title": "PBI-009: Rivet native realtime in Developer OS",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "Medium",
+   "updatedAt": "2026-10-29T04:54:27.925Z",
+   "createdAt": "2026-10-28T22:28:46.544Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-170/pbi-009-rivet-native-realtime-in-developer-os"
+  },
+  {
+   "id": "STL-168",
+   "identifier": "STL-168",
+   "title": "PBI-007: ProjectSupervisor + Meta Beads ready gate",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "High",
+   "updatedAt": "2026-10-29T04:36:10.737Z",
+   "createdAt": "2026-10-28T22:28:44.750Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-168/pbi-007-projectsupervisor-meta-beads-ready-gate"
+  },
+  {
+   "id": "STL-162",
+   "identifier": "STL-162",
+   "title": "PBI-001: Author ten domain Spec stubs",
+   "status": "Done",
+   "labels": [
+    "Factory Meta",
+    "needs-review"
+   ],
+   "project": "Factory Meta",
+   "priority": "High",
+   "updatedAt": "2026-10-29T04:32:18.848Z",
+   "createdAt": "2026-10-28T22:27:26.234Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-162/pbi-001-author-ten-domain-spec-stubs"
+  },
+  {
+   "id": "STL-167",
+   "identifier": "STL-167",
+   "title": "PBI-006: Sandbox Agent + Claude Code harness",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "High",
+   "updatedAt": "2026-10-29T04:28:34.237Z",
+   "createdAt": "2026-10-28T22:28:43.867Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-167/pbi-006-sandbox-agent-claude-code-harness"
+  },
+  {
+   "id": "STL-163",
+   "identifier": "STL-163",
+   "title": "PBI-002: Write full Nygard ADRs 001\u2013011",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "High",
+   "updatedAt": "2026-10-29T04:25:38.294Z",
+   "createdAt": "2026-10-28T22:28:07.208Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-163/pbi-002-write-full-nygard-adrs-001-011"
+  },
+  {
+   "id": "STL-164",
+   "identifier": "STL-164",
+   "title": "PBI-003: Emit OpenStack + OpenProfile + AGENTS.md",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "High",
+   "updatedAt": "2026-10-29T04:25:38.294Z",
+   "createdAt": "2026-10-28T22:28:08.074Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-164/pbi-003-emit-openstack-openprofile-agentsmd"
+  },
+  {
+   "id": "STL-166",
+   "identifier": "STL-166",
+   "title": "PBI-005: Thin factory-gateway HMAC + catalog writer",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "High",
+   "updatedAt": "2026-10-29T04:23:20.013Z",
+   "createdAt": "2026-10-28T22:28:09.685Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-166/pbi-005-thin-factory-gateway-hmac-catalog-writer"
+  },
+  {
+   "id": "STL-165",
+   "identifier": "STL-165",
+   "title": "PBI-004: Compose Rivet 2.x + Tailscale Serve health",
+   "status": "Done",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "High",
+   "updatedAt": "2026-10-29T04:11:24.542Z",
+   "createdAt": "2026-10-28T22:28:08.882Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-165/pbi-004-compose-rivet-2x-tailscale-serve-health"
+  },
+  {
+   "id": "STL-129",
+   "identifier": "STL-129",
+   "title": "Decision: white-label-first vs self-serve SaaS entitlements sequencing",
+   "status": "Done",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Urgent",
+   "updatedAt": "2026-10-29T03:05:26.406Z",
+   "createdAt": "2026-10-13T07:29:23.063Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-129/decision-white-label-first-vs-self-serve-saas-entitlements-sequencing"
+  },
+  {
+   "id": "STL-116",
+   "identifier": "STL-116",
+   "title": "Launch: Stripe subscription billing",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Urgent",
+   "updatedAt": "2026-10-29T03:05:18.415Z",
+   "createdAt": "2026-10-13T07:22:45.067Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-116/launch-stripe-subscription-billing"
+  },
+  {
+   "id": "STL-28",
+   "identifier": "STL-28",
+   "title": "Gate PainterOS AI behind paid company entitlement and metered usage",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "High",
+   "updatedAt": "2026-10-29T03:05:18.415Z",
+   "createdAt": "2026-10-09T11:56:33.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-28/gate-painteros-ai-behind-paid-company-entitlement-and-metered-usage"
+  },
+  {
+   "id": "STL-183",
+   "identifier": "STL-183",
+   "title": "Connect Claude / OpenCode / Grok apps into Linear review pool",
+   "status": "Todo",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "Medium",
+   "updatedAt": "2026-10-29T03:04:10.133Z",
+   "createdAt": "2026-10-29T03:03:44.705Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-183/connect-claude-opencode-grok-apps-into-linear-review-pool"
+  },
+  {
+   "id": "STL-177",
+   "identifier": "STL-177",
+   "title": "FE-61: Setup Linear auto-review for Factory Meta",
+   "status": "In Progress",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "High",
+   "updatedAt": "2026-10-29T03:03:44.705Z",
+   "createdAt": "2026-10-29T02:43:05.934Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-177/fe-61-setup-linear-auto-review-for-factory-meta"
+  },
+  {
+   "id": "STL-180",
+   "identifier": "STL-180",
+   "title": "Optional Loop: AI first-pass on factory PR open",
+   "status": "In Progress",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "High",
+   "updatedAt": "2026-10-29T02:54:19.280Z",
+   "createdAt": "2026-10-29T02:43:23.958Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-180/optional-loop-ai-first-pass-on-factory-pr-open"
+  },
+  {
+   "id": "STL-181",
+   "identifier": "STL-181",
+   "title": "Enable personal Code & reviews + Autolink STL-",
+   "status": "Todo",
+   "labels": [
+    "Factory Meta"
+   ],
+   "project": "Factory Meta",
+   "priority": "Medium",
+   "updatedAt": "2026-10-29T02:43:24.892Z",
+   "createdAt": "2026-10-29T02:43:24.892Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-181/enable-personal-code-and-reviews-autolink-stl"
+  },
+  {
+   "id": "STL-71",
+   "identifier": "STL-71",
+   "title": "M1 - Foundations",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Prospect pipeline",
+   "priority": "High",
+   "updatedAt": "2026-10-28T23:23:04.208Z",
+   "createdAt": "2026-10-09T16:46:51.580Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-71/m1-foundations"
+  },
+  {
+   "id": "STL-47",
+   "identifier": "STL-47",
+   "title": "Build editable company website templates at Painter OS marketing quality",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "Medium",
+   "updatedAt": "2026-10-28T23:23:04.164Z",
+   "createdAt": "2026-10-09T13:55:57.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-47/build-editable-company-website-templates-at-painter-os-marketing"
+  },
+  {
+   "id": "STL-34",
+   "identifier": "STL-34",
+   "title": "Prepare evidence-backed bid aggregation with Browser Run and Clef classification",
+   "status": "Backlog",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T23:23:04.121Z",
+   "createdAt": "2026-10-09T12:11:32.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-34/prepare-evidence-backed-bid-aggregation-with-browser-run-and-clef"
+  },
+  {
+   "id": "STL-150",
+   "identifier": "STL-150",
+   "title": "Developer OS M0 \u2014 verify Port identities, provider access, versions and compatibility",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Developer OS \u2014 ASDLC / Port / Rivet",
+   "priority": "High",
+   "updatedAt": "2026-10-28T23:23:04.075Z",
+   "createdAt": "2026-10-28T01:09:48.803Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-150/developer-os-m0-verify-port-identities-provider-access-versions-and"
+  },
+  {
+   "id": "STL-159",
+   "identifier": "STL-159",
+   "title": "Sky's \u2014 diagnose recurring leads API polling and timeout events",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Sky's the Limit Painting",
+   "priority": "High",
+   "updatedAt": "2026-10-28T23:23:04.032Z",
+   "createdAt": "2026-10-28T01:11:58.257Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-159/skys-diagnose-recurring-leads-api-polling-and-timeout-events"
+  },
+  {
+   "id": "STL-156",
+   "identifier": "STL-156",
+   "title": "DJ YS \u2014 audit existing frontend/data and stage fresh Convex + Clerk migration",
+   "status": "Backlog",
+   "labels": [],
+   "project": "DJ YS",
+   "priority": "High",
+   "updatedAt": "2026-10-28T23:23:03.970Z",
+   "createdAt": "2026-10-28T01:10:56.113Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-156/dj-ys-audit-existing-frontenddata-and-stage-fresh-convex-clerk"
+  },
+  {
+   "id": "STL-158",
+   "identifier": "STL-158",
+   "title": "Prospect Pipeline \u2014 resolve IR v4 Artifacts/D1 writer contract against existing Convex state",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Prospect pipeline",
+   "priority": "High",
+   "updatedAt": "2026-10-28T23:23:03.928Z",
+   "createdAt": "2026-10-28T01:11:06.353Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-158/prospect-pipeline-resolve-ir-v4-artifactsd1-writer-contract-against"
+  },
+  {
+   "id": "STL-32",
+   "identifier": "STL-32",
+   "title": "Evaluate Cloudflare Artifacts Git-compatible task repositories for agent drafts",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T23:23:03.874Z",
+   "createdAt": "2026-10-09T12:08:51.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-32/evaluate-cloudflare-artifacts-git-compatible-task-repositories-for"
+  },
+  {
+   "id": "STL-78",
+   "identifier": "STL-78",
+   "title": "M8 - Outreach and the browser agents",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Prospect pipeline",
+   "priority": "High",
+   "updatedAt": "2026-10-28T23:23:03.834Z",
+   "createdAt": "2026-10-09T16:47:09.854Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-78/m8-outreach-and-the-browser-agents"
+  },
+  {
+   "id": "STL-161",
+   "identifier": "STL-161",
+   "title": "Linear \u2014 confirm October 27 personal API key notice and access intent",
+   "status": "Backlog",
+   "labels": [],
+   "project": null,
+   "priority": "High",
+   "updatedAt": "2026-10-28T23:23:03.793Z",
+   "createdAt": "2026-10-28T01:12:06.373Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-161/linear-confirm-october-27-personal-api-key-notice-and-access-intent"
+  },
+  {
+   "id": "STL-1",
+   "identifier": "STL-1",
+   "title": "Wire Painter OS Linear, GitHub, Slack and agents \u2014 gated integration",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "High",
+   "updatedAt": "2026-10-28T23:23:03.751Z",
+   "createdAt": "2026-10-08T11:56:11.642Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-1/wire-painter-os-linear-github-slack-and-agents-gated-integration"
+  },
+  {
+   "id": "STL-11",
+   "identifier": "STL-11",
+   "title": "Prepare full-deposit gate with audited owner and office-admin override",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "Medium",
+   "updatedAt": "2026-10-28T23:23:03.707Z",
+   "createdAt": "2026-10-09T06:09:47.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-11/prepare-full-deposit-gate-with-audited-owner-and-office-admin-override"
+  },
+  {
+   "id": "STL-77",
+   "identifier": "STL-77",
+   "title": "M7 - Dashboard and live stream",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Prospect pipeline",
+   "priority": "High",
+   "updatedAt": "2026-10-28T23:23:03.656Z",
+   "createdAt": "2026-10-09T16:47:07.614Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-77/m7-dashboard-and-live-stream"
+  },
+  {
+   "id": "STL-66",
+   "identifier": "STL-66",
+   "title": "Make painter-os private again without breaking CI",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "Urgent",
+   "updatedAt": "2026-10-28T23:23:03.604Z",
+   "createdAt": "2026-10-09T16:34:20.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-66/make-painter-os-private-again-without-breaking-ci"
+  },
+  {
+   "id": "STL-74",
+   "identifier": "STL-74",
+   "title": "M4 - The prospect Workflow and approvals",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Prospect pipeline",
+   "priority": "High",
+   "updatedAt": "2026-10-28T23:23:03.561Z",
+   "createdAt": "2026-10-09T16:46:59.425Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-74/m4-the-prospect-workflow-and-approvals"
+  },
+  {
+   "id": "STL-19",
+   "identifier": "STL-19",
+   "title": "Research Convex components and Pi Durable before selecting the agent harness",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T23:23:03.509Z",
+   "createdAt": "2026-10-09T11:38:02.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-19/research-convex-components-and-pi-durable-before-selecting-the-agent"
+  },
+  {
+   "id": "STL-106",
+   "identifier": "STL-106",
+   "title": "Bound Painter snapshot/command reads to native history",
+   "status": "Done",
+   "labels": [
+    "Improvement"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T01:15:26.379Z",
+   "createdAt": "2026-10-11T06:33:33.715Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-106/bound-painter-snapshotcommand-reads-to-native-history"
+  },
+  {
+   "id": "STL-67",
+   "identifier": "STL-67",
+   "title": "Bound generic painter snapshots and command reads as native history grows",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T01:15:26.200Z",
+   "createdAt": "2026-10-09T16:36:06.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-67/bound-generic-painter-snapshots-and-command-reads-as-native-history"
+  },
+  {
+   "id": "STL-108",
+   "identifier": "STL-108",
+   "title": "Scope Zapier Platform SDK integration without duplicate writers",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "codex"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T01:15:21.965Z",
+   "createdAt": "2026-10-11T06:36:06.498Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-108/scope-zapier-platform-sdk-integration-without-duplicate-writers"
+  },
+  {
+   "id": "STL-22",
+   "identifier": "STL-22",
+   "title": "Implement Painter OS Zapier Platform integration only after scoped approval",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T01:15:21.788Z",
+   "createdAt": "2026-10-09T11:42:23.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-22/implement-painter-os-zapier-platform-integration-only-after-scoped"
+  },
+  {
+   "id": "STL-25",
+   "identifier": "STL-25",
+   "title": "Support eligible ChatGPT subscription usage through official commercial integration",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T01:14:44.068Z",
+   "createdAt": "2026-10-09T11:52:25.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-25/support-eligible-chatgpt-subscription-usage-through-official"
+  },
+  {
+   "id": "STL-96",
+   "identifier": "STL-96",
+   "title": "Harden event payload contract tests: stale-drop assertion, timestamp wrap, runtime schema drift",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T01:14:41.373Z",
+   "createdAt": "2026-10-11T06:13:01.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-96/harden-event-payload-contract-tests-stale-drop-assertion-timestamp"
+  },
+  {
+   "id": "STL-105",
+   "identifier": "STL-105",
+   "title": "Guard bounded command readsets against engine drift; wire paged activity history in web",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T01:14:39.489Z",
+   "createdAt": "2026-10-11T06:33:23.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-105/guard-bounded-command-readsets-against-engine-drift-wire-paged"
+  },
+  {
+   "id": "STL-102",
+   "identifier": "STL-102",
+   "title": "READ_LIMITS follow-ups: portal limit tests, boundary tests, disabled-membership counting, error surfacing",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T01:14:37.502Z",
+   "createdAt": "2026-10-11T06:25:14.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-102/read-limits-follow-ups-portal-limit-tests-boundary-tests-disabled"
+  },
+  {
+   "id": "STL-23",
+   "identifier": "STL-23",
+   "title": "Prepare post-job review requests and a bounded follow-up lifecycle",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T01:14:34.439Z",
+   "createdAt": "2026-10-09T11:45:39.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-23/prepare-post-job-review-requests-and-a-bounded-follow-up-lifecycle"
+  },
+  {
+   "id": "STL-79",
+   "identifier": "STL-79",
+   "title": "Deploy imported platform admin and company site previews after Vercel daily quota resets",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "High",
+   "updatedAt": "2026-10-28T01:14:31.888Z",
+   "createdAt": "2026-10-09T17:03:10.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-79/deploy-imported-platform-admin-and-company-site-previews-after-vercel"
+  },
+  {
+   "id": "STL-92",
+   "identifier": "STL-92",
+   "title": "Combined lead-to-review lifecycle acceptance test on a fixed SHA",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "Medium",
+   "updatedAt": "2026-10-28T01:14:29.901Z",
+   "createdAt": "2026-10-11T06:04:36.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-92/combined-lead-to-review-lifecycle-acceptance-test-on-a-fixed-sha"
+  },
+  {
+   "id": "STL-104",
+   "identifier": "STL-104",
+   "title": "agent:verify: allowlist PLAYWRIGHT_BROWSERS_PATH and fail clearly when run as root",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "High",
+   "updatedAt": "2026-10-28T01:14:27.300Z",
+   "createdAt": "2026-10-11T06:33:14.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-104/agentverify-allowlist-playwright-browsers-path-and-fail-clearly-when"
+  },
+  {
+   "id": "STL-98",
+   "identifier": "STL-98",
+   "title": "Invite hygiene: reject disabled-member replay and split INVITE_INVALID error codes",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "Medium",
+   "updatedAt": "2026-10-28T01:14:23.104Z",
+   "createdAt": "2026-10-11T06:13:24.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-98/invite-hygiene-reject-disabled-member-replay-and-split-invite-invalid"
+  },
+  {
+   "id": "STL-24",
+   "identifier": "STL-24",
+   "title": "Qualify company-site leads through chat and book verified estimate appointments",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "Low",
+   "updatedAt": "2026-10-28T01:14:15.205Z",
+   "createdAt": "2026-10-09T11:46:37.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-24/qualify-company-site-leads-through-chat-and-book-verified-estimate"
+  },
+  {
+   "id": "STL-21",
+   "identifier": "STL-21",
+   "title": "Define tenant-bound Zapier MCP tools for the Pi agent harness",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T01:14:05.680Z",
+   "createdAt": "2026-10-09T11:42:22.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-21/define-tenant-bound-zapier-mcp-tools-for-the-pi-agent-harness"
+  },
+  {
+   "id": "STL-69",
+   "identifier": "STL-69",
+   "title": "Design durable CRM source linkage and resumable canonical contact migration",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T01:13:58.604Z",
+   "createdAt": "2026-10-09T16:38:37.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-69/design-durable-crm-source-linkage-and-resumable-canonical-contact"
+  },
+  {
+   "id": "STL-59",
+   "identifier": "STL-59",
+   "title": "Plan provider-specific CRM coexistence and complete migration mapping",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T01:13:56.647Z",
+   "createdAt": "2026-10-09T15:37:35.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-59/plan-provider-specific-crm-coexistence-and-complete-migration-mapping"
+  },
+  {
+   "id": "STL-157",
+   "identifier": "STL-157",
+   "title": "DJ YS \u2014 verify R2 private assets, Resend and externally hosted payment flow",
+   "status": "Backlog",
+   "labels": [],
+   "project": "DJ YS",
+   "priority": "High",
+   "updatedAt": "2026-10-28T01:12:34.108Z",
+   "createdAt": "2026-10-28T01:10:58.321Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-157/dj-ys-verify-r2-private-assets-resend-and-externally-hosted-payment"
+  },
+  {
+   "id": "STL-155",
+   "identifier": "STL-155",
+   "title": "Developer OS M5 \u2014 verify restart, no-duplicate execution, budget and approval gates",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Developer OS \u2014 ASDLC / Port / Rivet",
+   "priority": "Medium",
+   "updatedAt": "2026-10-28T01:12:31.151Z",
+   "createdAt": "2026-10-28T01:10:08.703Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-155/developer-os-m5-verify-restart-no-duplicate-execution-budget-and"
+  },
+  {
+   "id": "STL-153",
+   "identifier": "STL-153",
+   "title": "Developer OS M3 \u2014 validate one bounded Rivet/Sandbox Agent repair and recovery",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Developer OS \u2014 ASDLC / Port / Rivet",
+   "priority": "Medium",
+   "updatedAt": "2026-10-28T01:12:26.260Z",
+   "createdAt": "2026-10-28T01:10:03.184Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-153/developer-os-m3-validate-one-bounded-rivetsandbox-agent-repair-and"
+  },
+  {
+   "id": "STL-152",
+   "identifier": "STL-152",
+   "title": "Developer OS M2 \u2014 assemble one pinned application with GitHub Actions and exact-SHA CI",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Developer OS \u2014 ASDLC / Port / Rivet",
+   "priority": "High",
+   "updatedAt": "2026-10-28T01:12:23.998Z",
+   "createdAt": "2026-10-28T01:10:01.144Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-152/developer-os-m2-assemble-one-pinned-application-with-github-actions"
+  },
+  {
+   "id": "STL-151",
+   "identifier": "STL-151",
+   "title": "Developer OS M1 \u2014 implement Git Spec/ADR + Port blueprint + Beads claim contract",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Developer OS \u2014 ASDLC / Port / Rivet",
+   "priority": "High",
+   "updatedAt": "2026-10-28T01:12:20.943Z",
+   "createdAt": "2026-10-28T01:09:57.907Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-151/developer-os-m1-implement-git-specadr-port-blueprint-beads-claim"
+  },
+  {
+   "id": "STL-160",
+   "identifier": "STL-160",
+   "title": "Private Live Copilot \u2014 assess v1 ingestion and preparation contract before build",
+   "status": "Backlog",
+   "labels": [],
+   "project": null,
+   "priority": "Medium",
+   "updatedAt": "2026-10-28T01:12:02.214Z",
+   "createdAt": "2026-10-28T01:12:02.214Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-160/private-live-copilot-assess-v1-ingestion-and-preparation-contract"
+  },
+  {
+   "id": "STL-140",
+   "identifier": "STL-140",
+   "title": "Add authoritative pipeline-state tool for prospects records",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "launch"
+   ],
+   "project": "Prospect pipeline",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T01:11:06.710Z",
+   "createdAt": "2026-10-15T00:10:22.427Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-140/add-authoritative-pipeline-state-tool-for-prospects-records"
+  },
+  {
+   "id": "STL-145",
+   "identifier": "STL-145",
+   "title": "Document and route runtime-agnostic prospect pipeline in Convex",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "agent-ready"
+   ],
+   "project": "Prospect pipeline",
+   "priority": "No priority",
+   "updatedAt": "2026-10-28T01:11:06.710Z",
+   "createdAt": "2026-10-15T00:35:13.913Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-145/document-and-route-runtime-agnostic-prospect-pipeline-in-convex"
+  },
+  {
+   "id": "STL-149",
+   "identifier": "STL-149",
+   "title": "Migrate active demos to template runtime and per-site structure",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "deploy"
+   ],
+   "project": "Website Sales Pipeline",
+   "priority": "No priority",
+   "updatedAt": "2026-10-15T00:54:09.859Z",
+   "createdAt": "2026-10-15T00:54:09.340Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-149/migrate-active-demos-to-template-runtime-and-per-site-structure"
+  },
+  {
+   "id": "STL-148",
+   "identifier": "STL-148",
+   "title": "Fix site checks first-screen Call counting and cal.com popup booking severity",
+   "status": "Done",
+   "labels": [
+    "Bug"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-15T00:50:13.401Z",
+   "createdAt": "2026-10-15T00:50:12.653Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-148/fix-site-checks-first-screen-call-counting-and-calcom-popup-booking"
+  },
+  {
+   "id": "STL-147",
+   "identifier": "STL-147",
+   "title": "Move Stoltz demo decision popup logic to sitegen base JS",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-15T00:37:07.682Z",
+   "createdAt": "2026-10-15T00:37:06.902Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-147/move-stoltz-demo-decision-popup-logic-to-sitegen-base-js"
+  },
+  {
+   "id": "STL-146",
+   "identifier": "STL-146",
+   "title": "Consolidate r4-greenworks into demo/greenworks build",
+   "status": "Done",
+   "labels": [
+    "launch",
+    "Feature"
+   ],
+   "project": "Website Sales Pipeline",
+   "priority": "No priority",
+   "updatedAt": "2026-10-15T00:37:06.180Z",
+   "createdAt": "2026-10-15T00:37:05.517Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-146/consolidate-r4-greenworks-into-demogreenworks-build"
+  },
+  {
+   "id": "STL-144",
+   "identifier": "STL-144",
+   "title": "Generate and deploy demo status dashboard from prospect records",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "deploy"
+   ],
+   "project": "Prospect pipeline",
+   "priority": "No priority",
+   "updatedAt": "2026-10-15T00:20:58.824Z",
+   "createdAt": "2026-10-15T00:20:57.664Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-144/generate-and-deploy-demo-status-dashboard-from-prospect-records"
+  },
+  {
+   "id": "STL-143",
+   "identifier": "STL-143",
+   "title": "Rewrite prospect pipeline FLOW.md with governance and SLOs",
+   "status": "Done",
+   "labels": [
+    "launch"
+   ],
+   "project": "Prospect pipeline",
+   "priority": "No priority",
+   "updatedAt": "2026-10-15T00:18:30.119Z",
+   "createdAt": "2026-10-15T00:18:29.567Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-143/rewrite-prospect-pipeline-flowmd-with-governance-and-slos"
+  },
+  {
+   "id": "STL-142",
+   "identifier": "STL-142",
+   "title": "Add shared Lighthouse/Chrome queue and reaper wrappers",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "deploy"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-15T00:18:28.932Z",
+   "createdAt": "2026-10-15T00:18:28.334Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-142/add-shared-lighthousechrome-queue-and-reaper-wrappers"
+  },
+  {
+   "id": "STL-141",
+   "identifier": "STL-141",
+   "title": "Enforce prospect pipeline contracts via CI checks",
+   "status": "Done",
+   "labels": [
+    "Feature"
+   ],
+   "project": "Prospect pipeline",
+   "priority": "No priority",
+   "updatedAt": "2026-10-15T00:17:21.416Z",
+   "createdAt": "2026-10-15T00:17:20.695Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-141/enforce-prospect-pipeline-contracts-via-ci-checks"
+  },
+  {
+   "id": "STL-139",
+   "identifier": "STL-139",
+   "title": "Align Port blueprint enums and fail upserts in ship-app",
+   "status": "Done",
+   "labels": [
+    "deploy",
+    "Bug"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T21:50:03.068Z",
+   "createdAt": "2026-10-13T21:50:02.421Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-139/align-port-blueprint-enums-and-fail-upserts-in-ship-app"
+  },
+  {
+   "id": "STL-138",
+   "identifier": "STL-138",
+   "title": "Use npx to install shadcn components via add-components.sh",
+   "status": "Done",
+   "labels": [
+    "Improvement"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T21:04:03.395Z",
+   "createdAt": "2026-10-13T21:04:02.538Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-138/use-npx-to-install-shadcn-components-via-add-componentssh"
+  },
+  {
+   "id": "STL-137",
+   "identifier": "STL-137",
+   "title": "Create per-app Vercel project and set Convex envs in CI",
+   "status": "Done",
+   "labels": [
+    "deploy",
+    "Improvement"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T21:03:37.779Z",
+   "createdAt": "2026-10-13T21:03:37.031Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-137/create-per-app-vercel-project-and-set-convex-envs-in-ci"
+  },
+  {
+   "id": "STL-136",
+   "identifier": "STL-136",
+   "title": "Add ship-app handler to deploy Port ss_ship_app via secrets",
+   "status": "Done",
+   "labels": [
+    "deploy",
+    "Feature"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T21:02:02.833Z",
+   "createdAt": "2026-10-13T21:02:02.139Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-136/add-ship-app-handler-to-deploy-port-ss-ship-app-via-secrets"
+  },
+  {
+   "id": "STL-131",
+   "identifier": "STL-131",
+   "title": "Launch: add AI positioning to Painter OS marketing",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Medium",
+   "updatedAt": "2026-10-13T07:43:34.030Z",
+   "createdAt": "2026-10-13T07:29:32.131Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-131/launch-add-ai-positioning-to-painter-os-marketing"
+  },
+  {
+   "id": "STL-135",
+   "identifier": "STL-135",
+   "title": "Record approvals for Phase 0/1 factory launch contracts",
+   "status": "Done",
+   "labels": [
+    "launch",
+    "needs-review"
+   ],
+   "project": "Factory Control Plane",
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T07:43:16.881Z",
+   "createdAt": "2026-10-13T07:43:16.408Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-135/record-approvals-for-phase-01-factory-launch-contracts"
+  },
+  {
+   "id": "STL-134",
+   "identifier": "STL-134",
+   "title": "Publish launch roadmap and per-issue factory contract proposals",
+   "status": "Done",
+   "labels": [
+    "launch",
+    "needs-review"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T07:40:10.743Z",
+   "createdAt": "2026-10-13T07:40:09.680Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-134/publish-launch-roadmap-and-per-issue-factory-contract-proposals"
+  },
+  {
+   "id": "STL-128",
+   "identifier": "STL-128",
+   "title": "Launch: marketing technical SEO (sitemap, structured data, OG)",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Low",
+   "updatedAt": "2026-10-13T07:34:42.974Z",
+   "createdAt": "2026-10-13T07:23:18.340Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-128/launch-marketing-technical-seo-sitemap-structured-data-og"
+  },
+  {
+   "id": "STL-127",
+   "identifier": "STL-127",
+   "title": "Launch: mobile crew view / installable PWA",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Low",
+   "updatedAt": "2026-10-13T07:34:40.250Z",
+   "createdAt": "2026-10-13T07:23:16.159Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-127/launch-mobile-crew-view-installable-pwa"
+  },
+  {
+   "id": "STL-124",
+   "identifier": "STL-124",
+   "title": "Launch: status page and customer support channel",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Medium",
+   "updatedAt": "2026-10-13T07:34:38.714Z",
+   "createdAt": "2026-10-13T07:23:09.618Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-124/launch-status-page-and-customer-support-channel"
+  },
+  {
+   "id": "STL-117",
+   "identifier": "STL-117",
+   "title": "Launch: Sentry error tracking and Checkly uptime monitoring",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Urgent",
+   "updatedAt": "2026-10-13T07:34:38.462Z",
+   "createdAt": "2026-10-13T07:22:47.290Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-117/launch-sentry-error-tracking-and-checkly-uptime-monitoring"
+  },
+  {
+   "id": "STL-122",
+   "identifier": "STL-122",
+   "title": "Launch: product analytics and onboarding funnel",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Medium",
+   "updatedAt": "2026-10-13T07:34:36.940Z",
+   "createdAt": "2026-10-13T07:23:05.205Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-122/launch-product-analytics-and-onboarding-funnel"
+  },
+  {
+   "id": "STL-132",
+   "identifier": "STL-132",
+   "title": "Launch: build or hide platform-admin stub sections (billing, sites, health)",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Medium",
+   "updatedAt": "2026-10-13T07:34:26.162Z",
+   "createdAt": "2026-10-13T07:29:34.681Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-132/launch-build-or-hide-platform-admin-stub-sections-billing-sites-health"
+  },
+  {
+   "id": "STL-130",
+   "identifier": "STL-130",
+   "title": "Launch: unify Artisan Core design tokens across app, marketing and company templates",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "High",
+   "updatedAt": "2026-10-13T07:34:22.010Z",
+   "createdAt": "2026-10-13T07:29:26.963Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-130/launch-unify-artisan-core-design-tokens-across-app-marketing-and"
+  },
+  {
+   "id": "STL-126",
+   "identifier": "STL-126",
+   "title": "Launch: Lighthouse performance budgets in CI",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Low",
+   "updatedAt": "2026-10-13T07:34:18.994Z",
+   "createdAt": "2026-10-13T07:23:13.877Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-126/launch-lighthouse-performance-budgets-in-ci"
+  },
+  {
+   "id": "STL-121",
+   "identifier": "STL-121",
+   "title": "Launch: Playwright E2E on previews as required checks",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "High",
+   "updatedAt": "2026-10-13T07:34:16.695Z",
+   "createdAt": "2026-10-13T07:22:57.763Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-121/launch-playwright-e2e-on-previews-as-required-checks"
+  },
+  {
+   "id": "STL-125",
+   "identifier": "STL-125",
+   "title": "Launch: staging environment mirroring production",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Medium",
+   "updatedAt": "2026-10-13T07:34:16.620Z",
+   "createdAt": "2026-10-13T07:23:11.847Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-125/launch-staging-environment-mirroring-production"
+  },
+  {
+   "id": "STL-123",
+   "identifier": "STL-123",
+   "title": "Launch: remove ruleset admin bypass and require review on backend changes",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Medium",
+   "updatedAt": "2026-10-13T07:34:08.749Z",
+   "createdAt": "2026-10-13T07:23:07.299Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-123/launch-remove-ruleset-admin-bypass-and-require-review-on-backend"
+  },
+  {
+   "id": "STL-120",
+   "identifier": "STL-120",
+   "title": "Launch: terms, privacy policy and customer data deletion",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "High",
+   "updatedAt": "2026-10-13T07:34:06.418Z",
+   "createdAt": "2026-10-13T07:22:54.334Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-120/launch-terms-privacy-policy-and-customer-data-deletion"
+  },
+  {
+   "id": "STL-118",
+   "identifier": "STL-118",
+   "title": "Launch: Better Auth database rate limiting and two-factor",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "High",
+   "updatedAt": "2026-10-13T07:34:03.280Z",
+   "createdAt": "2026-10-13T07:22:50.273Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-118/launch-better-auth-database-rate-limiting-and-two-factor"
+  },
+  {
+   "id": "STL-115",
+   "identifier": "STL-115",
+   "title": "Launch: transactional email, email verification and password reset",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Urgent",
+   "updatedAt": "2026-10-13T07:34:00.489Z",
+   "createdAt": "2026-10-13T07:22:42.062Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-115/launch-transactional-email-email-verification-and-password-reset"
+  },
+  {
+   "id": "STL-119",
+   "identifier": "STL-119",
+   "title": "Launch: Convex backups and rollback runbook",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "High",
+   "updatedAt": "2026-10-13T07:33:56.851Z",
+   "createdAt": "2026-10-13T07:22:51.785Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-119/launch-convex-backups-and-rollback-runbook"
+  },
+  {
+   "id": "STL-114",
+   "identifier": "STL-114",
+   "title": "Launch: custom domain for app, marketing and admin",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Urgent",
+   "updatedAt": "2026-10-13T07:33:52.736Z",
+   "createdAt": "2026-10-13T07:22:39.089Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-114/launch-custom-domain-for-app-marketing-and-admin"
+  },
+  {
+   "id": "STL-133",
+   "identifier": "STL-133",
+   "title": "Launch: update stale README release and hosting status",
+   "status": "Backlog",
+   "labels": [
+    "launch"
+   ],
+   "project": "Painter OS",
+   "priority": "Low",
+   "updatedAt": "2026-10-13T07:33:44.295Z",
+   "createdAt": "2026-10-13T07:29:36.950Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-133/launch-update-stale-readme-release-and-hosting-status"
+  },
+  {
+   "id": "STL-48",
+   "identifier": "STL-48",
+   "title": "Expand Painter OS marketing into useful product, workflow and resource pages",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T07:23:18.559Z",
+   "createdAt": "2026-10-09T14:20:15.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-48/expand-painter-os-marketing-into-useful-product-workflow-and-resource"
+  },
+  {
+   "id": "STL-58",
+   "identifier": "STL-58",
+   "title": "Guide painter onboarding through fresh, CSV migration and CRM connection paths",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T07:23:05.485Z",
+   "createdAt": "2026-10-09T15:27:59.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-58/guide-painter-onboarding-through-fresh-csv-migration-and-crm"
+  },
+  {
+   "id": "STL-38",
+   "identifier": "STL-38",
+   "title": "Prepare transactional Convex rate limits for public intake admission",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T07:22:50.506Z",
+   "createdAt": "2026-10-09T12:41:17.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-38/prepare-transactional-convex-rate-limits-for-public-intake-admission"
+  },
+  {
+   "id": "STL-54",
+   "identifier": "STL-54",
+   "title": "Map trusted billing snapshots to existing paid AI evidence",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T07:22:45.292Z",
+   "createdAt": "2026-10-09T14:57:34.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-54/map-trusted-billing-snapshots-to-existing-paid-ai-evidence"
+  },
+  {
+   "id": "STL-30",
+   "identifier": "STL-30",
+   "title": "Define paid and internal AI entitlement policy with bounded usage contracts",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T07:22:45.292Z",
+   "createdAt": "2026-10-09T11:59:11.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-30/define-paid-and-internal-ai-entitlement-policy-with-bounded-usage"
+  },
+  {
+   "id": "STL-62",
+   "identifier": "STL-62",
+   "title": "Install disabled delivery callbacks in actual BetterAuth configuration",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T07:22:42.871Z",
+   "createdAt": "2026-10-09T15:49:20.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-62/install-disabled-delivery-callbacks-in-actual-betterauth-configuration"
+  },
+  {
+   "id": "STL-113",
+   "identifier": "STL-113",
+   "title": "Gate production deploys and isolate Convex preview deploys",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "deploy"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T07:22:21.374Z",
+   "createdAt": "2026-10-13T07:01:28.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-113/gate-production-deploys-and-isolate-convex-preview-deploys"
+  },
+  {
+   "id": "STL-112",
+   "identifier": "STL-112",
+   "title": "Gate production deploys and isolate Convex preview deploys",
+   "status": "Done",
+   "labels": [
+    "deploy",
+    "Improvement"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T07:01:21.658Z",
+   "createdAt": "2026-10-13T07:01:20.661Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-112/gate-production-deploys-and-isolate-convex-preview-deploys"
+  },
+  {
+   "id": "STL-111",
+   "identifier": "STL-111",
+   "title": "Allow project-scoped Vercel preview origin patterns in Better Auth",
+   "status": "Done",
+   "labels": [
+    "Feature",
+    "deploy"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-13T06:06:48.032Z",
+   "createdAt": "2026-10-13T06:06:47.483Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-111/allow-project-scoped-vercel-preview-origin-patterns-in-better-auth"
+  },
+  {
+   "id": "STL-110",
+   "identifier": "STL-110",
+   "title": "Stop automatic Vercel production deploys from main",
+   "status": "Done",
+   "labels": [
+    "deploy",
+    "Improvement"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T14:10:59.843Z",
+   "createdAt": "2026-10-11T14:10:59.368Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-110/stop-automatic-vercel-production-deploys-from-main"
+  },
+  {
+   "id": "STL-109",
+   "identifier": "STL-109",
+   "title": "Define durable CRM source linkage and resumable migration contracts",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "needs-review"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:41:35.452Z",
+   "createdAt": "2026-10-11T06:41:34.305Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-109/define-durable-crm-source-linkage-and-resumable-migration-contracts"
+  },
+  {
+   "id": "STL-107",
+   "identifier": "STL-107",
+   "title": "Record exact-head agent readiness browser receipt and fix verifier gate NODE_ENV",
+   "status": "Done",
+   "labels": [
+    "agent-ready",
+    "Bug"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:35:34.382Z",
+   "createdAt": "2026-10-11T06:35:33.857Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-107/record-exact-head-agent-readiness-browser-receipt-and-fix-verifier"
+  },
+  {
+   "id": "STL-4",
+   "identifier": "STL-4",
+   "title": "Add isolated agent readiness setup, verification, and browser checks",
+   "status": "Done",
+   "labels": [
+    "agent-ready",
+    "Improvement"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:33:17.570Z",
+   "createdAt": "2026-10-09T04:30:24.366Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-4/add-isolated-agent-readiness-setup-verification-and-browser-checks"
+  },
+  {
+   "id": "STL-103",
+   "identifier": "STL-103",
+   "title": "Show saved public contact intake preview in settings",
+   "status": "Done",
+   "labels": [
+    "Feature"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:25:58.316Z",
+   "createdAt": "2026-10-11T06:25:57.886Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-103/show-saved-public-contact-intake-preview-in-settings"
+  },
+  {
+   "id": "STL-68",
+   "identifier": "STL-68",
+   "title": "Add authenticated contact-intake enable and disable settings",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:25:56.483Z",
+   "createdAt": "2026-10-09T16:37:37.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-68/add-authenticated-contact-intake-enable-and-disable-settings"
+  },
+  {
+   "id": "STL-82",
+   "identifier": "STL-82",
+   "title": "Contact-intake settings: public form preview and browser fixture proof",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:25:47.761Z",
+   "createdAt": "2026-10-11T05:55:11.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-82/contact-intake-settings-public-form-preview-and-browser-fixture-proof"
+  },
+  {
+   "id": "STL-90",
+   "identifier": "STL-90",
+   "title": "Bound unbounded tenant reads in painter member/entity/portal paths",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:25:17.815Z",
+   "createdAt": "2026-10-11T06:04:30.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-90/bound-unbounded-tenant-reads-in-painter-memberentityportal-paths"
+  },
+  {
+   "id": "STL-101",
+   "identifier": "STL-101",
+   "title": "Deny over-limit tenant reads in painter member/entity/portal paths",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "needs-review"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:25:01.887Z",
+   "createdAt": "2026-10-11T06:25:01.381Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-101/deny-over-limit-tenant-reads-in-painter-memberentityportal-paths"
+  },
+  {
+   "id": "STL-61",
+   "identifier": "STL-61",
+   "title": "Add office UI for native estimate appointment proposals and internal reservations",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:24:49.061Z",
+   "createdAt": "2026-10-09T15:46:32.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-61/add-office-ui-for-native-estimate-appointment-proposals-and-internal"
+  },
+  {
+   "id": "STL-100",
+   "identifier": "STL-100",
+   "title": "Evaluate Cloudflare Artifacts for git-compatible agent drafts",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:13:59.652Z",
+   "createdAt": "2026-10-11T06:13:59.222Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-100/evaluate-cloudflare-artifacts-for-git-compatible-agent-drafts"
+  },
+  {
+   "id": "STL-99",
+   "identifier": "STL-99",
+   "title": "Add invitation lifecycle rejection tests and no-write checks",
+   "status": "Done",
+   "labels": [
+    "Improvement"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:13:29.953Z",
+   "createdAt": "2026-10-11T06:13:29.372Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-99/add-invitation-lifecycle-rejection-tests-and-no-write-checks"
+  },
+  {
+   "id": "STL-88",
+   "identifier": "STL-88",
+   "title": "Invitation lifecycle rejection tests: expiry, reuse, wrong email, disabled membership, role escalation",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:13:27.682Z",
+   "createdAt": "2026-10-11T06:04:24.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-88/invitation-lifecycle-rejection-tests-expiry-reuse-wrong-email-disabled"
+  },
+  {
+   "id": "STL-97",
+   "identifier": "STL-97",
+   "title": "Add contract tests for PainterTransitionPayload v1 event payloads",
+   "status": "Done",
+   "labels": [],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:13:06.582Z",
+   "createdAt": "2026-10-11T06:13:06.105Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-97/add-contract-tests-for-paintertransitionpayload-v1-event-payloads"
+  },
+  {
+   "id": "STL-89",
+   "identifier": "STL-89",
+   "title": "Contract tests for approval/schedule/payment event payloads and duplicate delivery",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:13:04.605Z",
+   "createdAt": "2026-10-11T06:04:27.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-89/contract-tests-for-approvalschedulepayment-event-payloads-and"
+  },
+  {
+   "id": "STL-95",
+   "identifier": "STL-95",
+   "title": "Return 401 for unauthenticated /api/command requests",
+   "status": "Done",
+   "labels": [
+    "Bug",
+    "needs-review"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:12:24.857Z",
+   "createdAt": "2026-10-11T06:12:24.358Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-95/return-401-for-unauthenticated-apicommand-requests"
+  },
+  {
+   "id": "STL-87",
+   "identifier": "STL-87",
+   "title": "Return 401 (not 400) for unauthenticated /api/command in the web Convex bridge",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:12:13.078Z",
+   "createdAt": "2026-10-11T06:04:20.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-87/return-401-not-400-for-unauthenticated-apicommand-in-the-web-convex"
+  },
+  {
+   "id": "STL-94",
+   "identifier": "STL-94",
+   "title": "Publish IR-to-component inventory with implemented/missing status",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "needs-review"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:10:36.954Z",
+   "createdAt": "2026-10-11T06:10:36.439Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-94/publish-ir-to-component-inventory-with-implementedmissing-status"
+  },
+  {
+   "id": "STL-91",
+   "identifier": "STL-91",
+   "title": "Publish IR-to-component inventory with implemented/missing status",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:10:28.419Z",
+   "createdAt": "2026-10-11T06:04:33.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-91/publish-ir-to-component-inventory-with-implementedmissing-status"
+  },
+  {
+   "id": "STL-60",
+   "identifier": "STL-60",
+   "title": "Build a local shared Pi run viewer comparing direct SSE and AG-UI",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:08:22.005Z",
+   "createdAt": "2026-10-09T15:38:45.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-60/build-a-local-shared-pi-run-viewer-comparing-direct-sse-and-ag-ui"
+  },
+  {
+   "id": "STL-63",
+   "identifier": "STL-63",
+   "title": "Add opt-in consented public company inquiry form",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:08:19.269Z",
+   "createdAt": "2026-10-09T16:01:13.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-63/add-opt-in-consented-public-company-inquiry-form"
+  },
+  {
+   "id": "STL-64",
+   "identifier": "STL-64",
+   "title": "Remove native appointment lifetime capacity cliff without losing idempotency",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:08:16.530Z",
+   "createdAt": "2026-10-09T16:01:38.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-64/remove-native-appointment-lifetime-capacity-cliff-without-losing"
+  },
+  {
+   "id": "STL-93",
+   "identifier": "STL-93",
+   "title": "Plan provider-specific CRM coexistence and migration mapping",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:07:54.555Z",
+   "createdAt": "2026-10-11T06:07:54.143Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-93/plan-provider-specific-crm-coexistence-and-migration-mapping"
+  },
+  {
+   "id": "STL-86",
+   "identifier": "STL-86",
+   "title": "Add authenticated settings to enable/disable contact intake",
+   "status": "Done",
+   "labels": [
+    "Feature"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:01:05.641Z",
+   "createdAt": "2026-10-11T06:01:04.865Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-86/add-authenticated-settings-to-enabledisable-contact-intake"
+  },
+  {
+   "id": "STL-85",
+   "identifier": "STL-85",
+   "title": "Record Stagehand/Clef browser research limits in docs",
+   "status": "Done",
+   "labels": [
+    "needs-review"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T06:01:03.682Z",
+   "createdAt": "2026-10-11T06:01:02.298Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-85/record-stagehandclef-browser-research-limits-in-docs"
+  },
+  {
+   "id": "STL-84",
+   "identifier": "STL-84",
+   "title": "Harden worktree cleanup with upstream and default-branch refusals",
+   "status": "Done",
+   "labels": [
+    "Bug"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T05:57:58.512Z",
+   "createdAt": "2026-10-11T05:57:58.087Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-84/harden-worktree-cleanup-with-upstream-and-default-branch-refusals"
+  },
+  {
+   "id": "STL-81",
+   "identifier": "STL-81",
+   "title": "Harden worktree:cleanup with unpushed-commit and default-branch refusals",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T05:57:47.531Z",
+   "createdAt": "2026-10-11T05:53:51.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-81/harden-worktreecleanup-with-unpushed-commit-and-default-branch"
+  },
+  {
+   "id": "STL-83",
+   "identifier": "STL-83",
+   "title": "Link archived Pi and ChatGPT subscription research in docs",
+   "status": "Done",
+   "labels": [
+    "Improvement"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T05:56:54.341Z",
+   "createdAt": "2026-10-11T05:56:53.810Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-83/link-archived-pi-and-chatgpt-subscription-research-in-docs"
+  },
+  {
+   "id": "STL-13",
+   "identifier": "STL-13",
+   "title": "Add safe worktree setup and cleanup scripts",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "agent-ready"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T05:53:53.497Z",
+   "createdAt": "2026-10-09T06:51:04.018Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-13/add-safe-worktree-setup-and-cleanup-scripts"
+  },
+  {
+   "id": "STL-80",
+   "identifier": "STL-80",
+   "title": "Preserve native appointment refusal codes through Convex transport",
+   "status": "Done",
+   "labels": [
+    "Feature"
+   ],
+   "project": "Painter OS",
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T05:47:35.906Z",
+   "createdAt": "2026-10-11T05:47:34.978Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-80/preserve-native-appointment-refusal-codes-through-convex-transport"
+  },
+  {
+   "id": "STL-65",
+   "identifier": "STL-65",
+   "title": "Preserve closed native appointment refusal codes through Convex transport",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-11T05:47:25.067Z",
+   "createdAt": "2026-10-09T16:20:40.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-65/preserve-closed-native-appointment-refusal-codes-through-convex"
+  },
+  {
+   "id": "STL-76",
+   "identifier": "STL-76",
+   "title": "M6 - QA and deploy",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Prospect pipeline",
+   "priority": "High",
+   "updatedAt": "2026-10-09T16:47:34.497Z",
+   "createdAt": "2026-10-09T16:47:05.465Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-76/m6-qa-and-deploy"
+  },
+  {
+   "id": "STL-73",
+   "identifier": "STL-73",
+   "title": "M3 - Qualify, enrich, verify, rank",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Prospect pipeline",
+   "priority": "High",
+   "updatedAt": "2026-10-09T16:47:33.172Z",
+   "createdAt": "2026-10-09T16:46:57.077Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-73/m3-qualify-enrich-verify-rank"
+  },
+  {
+   "id": "STL-72",
+   "identifier": "STL-72",
+   "title": "M2 - Intake and the MCP server",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Prospect pipeline",
+   "priority": "High",
+   "updatedAt": "2026-10-09T16:47:31.584Z",
+   "createdAt": "2026-10-09T16:46:54.330Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-72/m2-intake-and-the-mcp-server"
+  },
+  {
+   "id": "STL-75",
+   "identifier": "STL-75",
+   "title": "M5 - The demo agent",
+   "status": "Backlog",
+   "labels": [],
+   "project": "Prospect pipeline",
+   "priority": "High",
+   "updatedAt": "2026-10-09T16:47:02.780Z",
+   "createdAt": "2026-10-09T16:47:02.780Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-75/m5-the-demo-agent"
+  },
+  {
+   "id": "STL-70",
+   "identifier": "STL-70",
+   "title": "Import platform admin and company marketing as distinct Vercel projects",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T16:47:00.125Z",
+   "createdAt": "2026-10-09T16:43:58.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-70/import-platform-admin-and-company-marketing-as-distinct-vercel"
+  },
+  {
+   "id": "STL-42",
+   "identifier": "STL-42",
+   "title": "Prepare consented public lead ingress through one writer with retention and deletion",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T16:37:41.492Z",
+   "createdAt": "2026-10-09T13:14:40.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-42/prepare-consented-public-lead-ingress-through-one-writer-with"
+  },
+  {
+   "id": "STL-36",
+   "identifier": "STL-36",
+   "title": "Expose authenticated company intake settings with honest public qualification guidance",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T16:37:41.492Z",
+   "createdAt": "2026-10-09T12:38:09.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-36/expose-authenticated-company-intake-settings-with-honest-public"
+  },
+  {
+   "id": "STL-57",
+   "identifier": "STL-57",
+   "title": "Implement authenticated native estimate appointment host",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T16:32:12.836Z",
+   "createdAt": "2026-10-09T15:27:56.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-57/implement-authenticated-native-estimate-appointment-host"
+  },
+  {
+   "id": "STL-55",
+   "identifier": "STL-55",
+   "title": "Compare local Pi event projections through AG-UI core and direct SSE",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T15:41:10.695Z",
+   "createdAt": "2026-10-09T15:14:27.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-55/compare-local-pi-event-projections-through-ag-ui-core-and-direct-sse"
+  },
+  {
+   "id": "STL-56",
+   "identifier": "STL-56",
+   "title": "Refresh release holds against reviewed source and observed deployment admission",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T15:34:03.933Z",
+   "createdAt": "2026-10-09T15:18:52.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-56/refresh-release-holds-against-reviewed-source-and-observed-deployment"
+  },
+  {
+   "id": "STL-49",
+   "identifier": "STL-49",
+   "title": "Build authenticated company website editor with shared templates and revision-safe publication",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T15:34:01.186Z",
+   "createdAt": "2026-10-09T14:28:14.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-49/build-authenticated-company-website-editor-with-shared-templates-and"
+  },
+  {
+   "id": "STL-52",
+   "identifier": "STL-52",
+   "title": "Share Studio, Editorial and Direct company templates with publish-safe public rendering",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T15:28:41.285Z",
+   "createdAt": "2026-10-09T14:49:28.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-52/share-studio-editorial-and-direct-company-templates-with-publish-safe"
+  },
+  {
+   "id": "STL-51",
+   "identifier": "STL-51",
+   "title": "Define native estimate appointment proposal and office reservation contract",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T15:28:00.323Z",
+   "createdAt": "2026-10-09T14:35:34.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-51/define-native-estimate-appointment-proposal-and-office-reservation"
+  },
+  {
+   "id": "STL-50",
+   "identifier": "STL-50",
+   "title": "Prepare canonical company website publishing and owned media backend",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T15:12:17.507Z",
+   "createdAt": "2026-10-09T14:29:12.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-50/prepare-canonical-company-website-publishing-and-owned-media-backend"
+  },
+  {
+   "id": "STL-53",
+   "identifier": "STL-53",
+   "title": "Recognize the approved company renderer DTO type import without weakening UI boundaries",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T15:00:14.573Z",
+   "createdAt": "2026-10-09T14:52:45.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-53/recognize-the-approved-company-renderer-dto-type-import-without"
+  },
+  {
+   "id": "STL-46",
+   "identifier": "STL-46",
+   "title": "Verify pinned Pi subscription Responses transport with local streaming fixtures",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T14:31:36.147Z",
+   "createdAt": "2026-10-09T13:54:36.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-46/verify-pinned-pi-subscription-responses-transport-with-local-streaming"
+  },
+  {
+   "id": "STL-45",
+   "identifier": "STL-45",
+   "title": "Prepare explicit Better Auth origins for separate approved Vercel apps",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T14:04:50.649Z",
+   "createdAt": "2026-10-09T13:43:50.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-45/prepare-explicit-better-auth-origins-for-separate-approved-vercel-apps"
+  },
+  {
+   "id": "STL-43",
+   "identifier": "STL-43",
+   "title": "Prepare owner-controlled post-job review follow-up tasks",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T13:52:40.421Z",
+   "createdAt": "2026-10-09T13:41:31.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-43/prepare-owner-controlled-post-job-review-follow-up-tasks"
+  },
+  {
+   "id": "STL-40",
+   "identifier": "STL-40",
+   "title": "Verify official Firecrawl component with tenant-bound local bid-source fixtures",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T13:51:47.553Z",
+   "createdAt": "2026-10-09T12:48:47.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-40/verify-official-firecrawl-component-with-tenant-bound-local-bid-source"
+  },
+  {
+   "id": "STL-44",
+   "identifier": "STL-44",
+   "title": "Document current production cutover holds and chosen deposit policy",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T13:49:30.728Z",
+   "createdAt": "2026-10-09T13:41:52.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-44/document-current-production-cutover-holds-and-chosen-deposit-policy"
+  },
+  {
+   "id": "STL-41",
+   "identifier": "STL-41",
+   "title": "Bound public journal reads and validate published article projections",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T13:38:58.960Z",
+   "createdAt": "2026-10-09T12:52:30.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-41/bound-public-journal-reads-and-validate-published-article-projections"
+  },
+  {
+   "id": "STL-37",
+   "identifier": "STL-37",
+   "title": "Define typed bid opportunity evidence, deduplication and deadline review contracts",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T13:05:10.236Z",
+   "createdAt": "2026-10-09T12:39:22.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-37/define-typed-bid-opportunity-evidence-deduplication-and-deadline"
+  },
+  {
+   "id": "STL-33",
+   "identifier": "STL-33",
+   "title": "Persist audited internal AI access and atomic shared company usage budgets",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T12:45:59.664Z",
+   "createdAt": "2026-10-09T12:10:46.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-33/persist-audited-internal-ai-access-and-atomic-shared-company-usage"
+  },
+  {
+   "id": "STL-39",
+   "identifier": "STL-39",
+   "title": "Record Jev Stagehand and Clef browser research limits",
+   "status": "Done",
+   "labels": [
+    "needs-review",
+    "Improvement"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T12:42:27.396Z",
+   "createdAt": "2026-10-09T12:42:26.784Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-39/record-jev-stagehand-and-clef-browser-research-limits"
+  },
+  {
+   "id": "STL-35",
+   "identifier": "STL-35",
+   "title": "Verify fourth app and Pi Worker in regular release gates",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T12:38:09.012Z",
+   "createdAt": "2026-10-09T12:18:20.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-35/verify-fourth-app-and-pi-worker-in-regular-release-gates"
+  },
+  {
+   "id": "STL-20",
+   "identifier": "STL-20",
+   "title": "Verify Pi Durable recovery in an isolated local Cloudflare agent worker",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T12:24:18.882Z",
+   "createdAt": "2026-10-09T11:42:22.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-20/verify-pi-durable-recovery-in-an-isolated-local-cloudflare-agent"
+  },
+  {
+   "id": "STL-27",
+   "identifier": "STL-27",
+   "title": "Extract independent platform-admin app with shared platform UI and session bridge",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T12:17:15.908Z",
+   "createdAt": "2026-10-09T11:56:02.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-27/extract-independent-platform-admin-app-with-shared-platform-ui-and"
+  },
+  {
+   "id": "STL-29",
+   "identifier": "STL-29",
+   "title": "Add company-owned intake configuration and safe public qualification contract",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T12:10:03.947Z",
+   "createdAt": "2026-10-09T11:57:51.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-29/add-company-owned-intake-configuration-and-safe-public-qualification"
+  },
+  {
+   "id": "STL-26",
+   "identifier": "STL-26",
+   "title": "Require company-site production build and HTTP acceptance in regular verification",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T12:04:15.902Z",
+   "createdAt": "2026-10-09T11:55:29.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-26/require-company-site-production-build-and-http-acceptance-in-regular"
+  },
+  {
+   "id": "STL-31",
+   "identifier": "STL-31",
+   "title": "Archive verified Pi/ChatGPT subscription research records",
+   "status": "Done",
+   "labels": [
+    "Improvement",
+    "needs-review"
+   ],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T11:59:58.700Z",
+   "createdAt": "2026-10-09T11:59:57.974Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-31/archive-verified-pichatgpt-subscription-research-records"
+  },
+  {
+   "id": "STL-18",
+   "identifier": "STL-18",
+   "title": "Prepare a tenant-scoped next-action queue from real lead and estimate state",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T11:58:40.476Z",
+   "createdAt": "2026-10-09T11:32:00.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-18/prepare-a-tenant-scoped-next-action-queue-from-real-lead-and-estimate"
+  },
+  {
+   "id": "STL-17",
+   "identifier": "STL-17",
+   "title": "Expose a bounded redacted platform-owner audit feed",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T11:54:14.413Z",
+   "createdAt": "2026-10-09T11:29:50.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-17/expose-a-bounded-redacted-platform-owner-audit-feed"
+  },
+  {
+   "id": "STL-16",
+   "identifier": "STL-16",
+   "title": "Extract independently buildable company-site public journal app",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T11:54:13.476Z",
+   "createdAt": "2026-10-09T11:29:29.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-16/extract-independently-buildable-company-site-public-journal-app"
+  },
+  {
+   "id": "STL-14",
+   "identifier": "STL-14",
+   "title": "Persist submitted company name through authenticated initial workspace onboarding",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T11:44:39.548Z",
+   "createdAt": "2026-10-09T11:28:55.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-14/persist-submitted-company-name-through-authenticated-initial-workspace"
+  },
+  {
+   "id": "STL-9",
+   "identifier": "STL-9",
+   "title": "Read portal projections without unrelated workspace entities or audit history",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T11:35:30.693Z",
+   "createdAt": "2026-10-09T04:46:24.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-9/read-portal-projections-without-unrelated-workspace-entities-or-audit"
+  },
+  {
+   "id": "STL-12",
+   "identifier": "STL-12",
+   "title": "Record four-app architecture and staged tenant scaling",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T11:30:17.247Z",
+   "createdAt": "2026-10-09T06:12:00.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-12/record-four-app-architecture-and-staged-tenant-scaling"
+  },
+  {
+   "id": "STL-15",
+   "identifier": "STL-15",
+   "title": "Persist company name during initial cloud workspace onboarding",
+   "status": "Duplicate",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T11:29:48.232Z",
+   "createdAt": "2026-10-09T11:29:21.126Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-15/persist-company-name-during-initial-cloud-workspace-onboarding"
+  },
+  {
+   "id": "STL-7",
+   "identifier": "STL-7",
+   "title": "Include form and factory suites in combined agent verification",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T05:02:34.671Z",
+   "createdAt": "2026-10-09T04:41:25.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-7/include-form-and-factory-suites-in-combined-agent-verification"
+  },
+  {
+   "id": "STL-10",
+   "identifier": "STL-10",
+   "title": "Preserve withdrawn status in commercial bid edits",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T05:02:01.148Z",
+   "createdAt": "2026-10-09T04:56:28.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-10/preserve-withdrawn-status-in-commercial-bid-edits"
+  },
+  {
+   "id": "STL-6",
+   "identifier": "STL-6",
+   "title": "Run legacy browser acceptance in an isolated sandboxed local app",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T05:00:05.043Z",
+   "createdAt": "2026-10-09T04:41:24.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-6/run-legacy-browser-acceptance-in-an-isolated-sandboxed-local-app"
+  },
+  {
+   "id": "STL-8",
+   "identifier": "STL-8",
+   "title": "Preserve stored bid amount when editing an existing bid",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T04:59:19.904Z",
+   "createdAt": "2026-10-09T04:41:26.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-8/preserve-stored-bid-amount-when-editing-an-existing-bid"
+  },
+  {
+   "id": "STL-5",
+   "identifier": "STL-5",
+   "title": "Enforce runner-neutral factory contract and path guard on factory PRs",
+   "status": "Done",
+   "labels": [
+    "blocked-external",
+    "needs-review"
+   ],
+   "project": "Factory Control Plane",
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T04:38:11.202Z",
+   "createdAt": "2026-10-09T04:38:10.809Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-5/enforce-runner-neutral-factory-contract-and-path-guard-on-factory-prs"
+  },
+  {
+   "id": "STL-3",
+   "identifier": "STL-3",
+   "title": "Preserve bid deadline calendar dates across estimate edits",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T04:34:57.112Z",
+   "createdAt": "2026-10-09T04:27:54.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-3/preserve-bid-deadline-calendar-dates-across-estimate-edits"
+  },
+  {
+   "id": "STL-2",
+   "identifier": "STL-2",
+   "title": "Preserve zero waste when editing an estimate",
+   "status": "Done",
+   "labels": [],
+   "project": null,
+   "priority": "No priority",
+   "updatedAt": "2026-10-09T04:33:50.511Z",
+   "createdAt": "2026-10-09T04:24:18.000Z",
+   "url": "https://linear.app/johnny-cage/issue/STL-2/preserve-zero-waste-when-editing-an-estimate"
+  }
+ ]
+}

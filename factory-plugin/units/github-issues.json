@@ -1,0 +1,471 @@
+{
+ "snapshot": "2026-10-30 ~22:25 CDT",
+ "source": "gh issue list --repo mplsjohnnycage/factory --state all --limit 200 (as mplsjohnnycage)",
+ "count": 48,
+ "byState": {
+  "OPEN": 40,
+  "CLOSED": 8
+ },
+ "issues": [
+  {
+   "number": 109,
+   "title": "[FE-201] Product M1 \u2014 one independent repo built end-to-end",
+   "state": "OPEN",
+   "labels": [],
+   "updatedAt": "2026-10-29T21:55:41Z"
+  },
+  {
+   "number": 108,
+   "title": "Wire Ask Factory drawer to Rivet via Dev OS BFF",
+   "state": "OPEN",
+   "labels": [
+    "Feature"
+   ],
+   "updatedAt": "2026-10-29T21:50:24Z"
+  },
+  {
+   "number": 106,
+   "title": "[FE-198] Live Ask Factory \u2192 Rivet wiring (Dev OS BFF)",
+   "state": "CLOSED",
+   "labels": [],
+   "updatedAt": "2026-10-29T21:50:09Z"
+  },
+  {
+   "number": 105,
+   "title": "Add Provider widgets dashboard with Providers route",
+   "state": "OPEN",
+   "labels": [
+    "Feature",
+    "launch"
+   ],
+   "updatedAt": "2026-10-29T20:03:41Z"
+  },
+  {
+   "number": 103,
+   "title": "Add Codebase Intelligence symbol graph on /intelligence",
+   "state": "OPEN",
+   "labels": [
+    "Feature",
+    "needs-review",
+    "launch"
+   ],
+   "updatedAt": "2026-10-29T19:55:42Z"
+  },
+  {
+   "number": 101,
+   "title": "Add Atlas v5 lake UI slice with Cmd K command palette",
+   "state": "OPEN",
+   "labels": [
+    "Feature",
+    "launch"
+   ],
+   "updatedAt": "2026-10-29T19:47:56Z"
+  },
+  {
+   "number": 97,
+   "title": "Implement Dev OS UI against Cockpit v3 / Atlas v5 comps",
+   "state": "CLOSED",
+   "labels": [
+    "Factory Meta"
+   ],
+   "updatedAt": "2026-10-29T19:37:20Z"
+  },
+  {
+   "number": 96,
+   "title": "Lock Factory UI design direction (Cockpit v3 / Atlas v5)",
+   "state": "CLOSED",
+   "labels": [
+    "Factory Meta"
+   ],
+   "updatedAt": "2026-10-29T19:28:57Z"
+  },
+  {
+   "number": 95,
+   "title": "Add dry-run kit to verify CI branch-protection on main",
+   "state": "OPEN",
+   "labels": [
+    "Improvement",
+    "agent-ready"
+   ],
+   "updatedAt": "2026-10-29T18:18:58Z"
+  },
+  {
+   "number": 93,
+   "title": "Add assemble-first apply dry-run kit to verify ops safety",
+   "state": "OPEN",
+   "labels": [
+    "Improvement"
+   ],
+   "updatedAt": "2026-10-29T18:12:20Z"
+  },
+  {
+   "number": 91,
+   "title": "Add funnel remount checklist dry-run kit for ops",
+   "state": "CLOSED",
+   "labels": [
+    "Improvement"
+   ],
+   "updatedAt": "2026-10-29T18:05:47Z"
+  },
+  {
+   "number": 89,
+   "title": "Add factory-done queue mirror dry-run kit",
+   "state": "OPEN",
+   "labels": [
+    "Feature"
+   ],
+   "updatedAt": "2026-10-29T18:03:04Z"
+  },
+  {
+   "number": 87,
+   "title": "Add OpenAccess/OpenMCP well-known linkage dry-run smoke kit",
+   "state": "OPEN",
+   "labels": [
+    "Improvement",
+    "launch"
+   ],
+   "updatedAt": "2026-10-29T17:57:55Z"
+  },
+  {
+   "number": 86,
+   "title": "Add Meta Beads Dolt health offline dry-run kit",
+   "state": "OPEN",
+   "labels": [
+    "Factory Meta",
+    "Feature"
+   ],
+   "updatedAt": "2026-10-29T17:55:38Z"
+  },
+  {
+   "number": 83,
+   "title": "Add factory-gateway Dockerfile + /health ops dry-run kit",
+   "state": "OPEN",
+   "labels": [
+    "Improvement",
+    "launch"
+   ],
+   "updatedAt": "2026-10-29T17:50:56Z"
+  },
+  {
+   "number": 81,
+   "title": "Add BdMetaBeads offline readiness dry-run kit",
+   "state": "OPEN",
+   "labels": [
+    "Feature",
+    "launch"
+   ],
+   "updatedAt": "2026-10-29T17:45:39Z"
+  },
+  {
+   "number": 79,
+   "title": "Add sandbox-harness readiness dry-run kit for mornings",
+   "state": "OPEN",
+   "labels": [
+    "Improvement",
+    "agent-ready"
+   ],
+   "updatedAt": "2026-10-29T17:40:20Z"
+  },
+  {
+   "number": 77,
+   "title": "Add Rivet Compose + Tailscale Serve offline smoke kit",
+   "state": "OPEN",
+   "labels": [
+    "Feature",
+    "launch"
+   ],
+   "updatedAt": "2026-10-29T17:35:54Z"
+  },
+  {
+   "number": 75,
+   "title": "Add signed HMAC admit smoke ops kit using env vars only",
+   "state": "OPEN",
+   "labels": [
+    "Improvement"
+   ],
+   "updatedAt": "2026-10-29T17:23:17Z"
+  },
+  {
+   "number": 74,
+   "title": "Add Projects Manager Windows logon PM checklist runbook",
+   "state": "OPEN",
+   "labels": [
+    "needs-review",
+    "Improvement"
+   ],
+   "updatedAt": "2026-10-29T17:19:33Z"
+  },
+  {
+   "number": 72,
+   "title": "Add ops checklist to verify Port human sign-in on stable",
+   "state": "OPEN",
+   "labels": [
+    "Improvement",
+    "launch"
+   ],
+   "updatedAt": "2026-10-29T17:15:12Z"
+  },
+  {
+   "number": 70,
+   "title": "Add ProjectSupervisor admit dry-run kit for Projects Manager",
+   "state": "OPEN",
+   "labels": [
+    "Improvement",
+    "launch"
+   ],
+   "updatedAt": "2026-10-29T17:12:32Z"
+  },
+  {
+   "number": 67,
+   "title": "Harden Beads\u2192gateway unsigned admit dry-run kit",
+   "state": "OPEN",
+   "labels": [
+    "Improvement"
+   ],
+   "updatedAt": "2026-10-29T17:06:20Z"
+  },
+  {
+   "number": 65,
+   "title": "Add OmniRoute desktop install runbook and dry-run kit",
+   "state": "OPEN",
+   "labels": [
+    "Factory Meta"
+   ],
+   "updatedAt": "2026-10-29T16:50:47Z"
+  },
+  {
+   "number": 63,
+   "title": "Add Atlas BFF prod smoke operator guide",
+   "state": "OPEN",
+   "labels": [
+    "Improvement",
+    "deploy"
+   ],
+   "updatedAt": "2026-10-29T16:35:33Z"
+  },
+  {
+   "number": 61,
+   "title": "Autostart factory-gateway on Windows logon via Task Scheduler",
+   "state": "OPEN",
+   "labels": [
+    "Feature",
+    "launch"
+   ],
+   "updatedAt": "2026-10-29T16:30:04Z"
+  },
+  {
+   "number": 60,
+   "title": "Add gateway HMAC smoke script and beads admit path docs",
+   "state": "OPEN",
+   "labels": [
+    "Improvement",
+    "launch"
+   ],
+   "updatedAt": "2026-10-29T16:23:36Z"
+  },
+  {
+   "number": 56,
+   "title": "Document Meta Beads bootstrap dry-run and reversible execute",
+   "state": "OPEN",
+   "labels": [
+    "needs-review",
+    "Improvement"
+   ],
+   "updatedAt": "2026-10-29T15:39:22Z"
+  },
+  {
+   "number": 55,
+   "title": "Add safe Meta Beads bootstrap with dry-run gate",
+   "state": "OPEN",
+   "labels": [
+    "Improvement",
+    "launch"
+   ],
+   "updatedAt": "2026-10-29T15:35:54Z"
+  },
+  {
+   "number": 49,
+   "title": "Add offline admit entry and memory session spawn stub",
+   "state": "OPEN",
+   "labels": [
+    "Feature",
+    "agent-ready"
+   ],
+   "updatedAt": "2026-10-29T14:06:58Z"
+  },
+  {
+   "number": 47,
+   "title": "Add BdMetaBeads live adapter for Meta Beads gate",
+   "state": "OPEN",
+   "labels": [
+    "Factory Meta",
+    "Feature",
+    "launch"
+   ],
+   "updatedAt": "2026-10-29T13:55:35Z"
+  },
+  {
+   "number": 45,
+   "title": "Pin Port OAuth redirect_uri to stable Developer OS origin",
+   "state": "OPEN",
+   "labels": [
+    "bug"
+   ],
+   "updatedAt": "2026-10-29T08:40:25Z"
+  },
+  {
+   "number": 44,
+   "title": "Add factory-gateway Dockerfile and opt-in gateway compose profile",
+   "state": "OPEN",
+   "labels": [
+    "Feature",
+    "deploy"
+   ],
+   "updatedAt": "2026-10-29T08:36:00Z"
+  },
+  {
+   "number": 43,
+   "title": "Add gateway remount dry-run kit for Port remounts",
+   "state": "OPEN",
+   "labels": [
+    "Feature"
+   ],
+   "updatedAt": "2026-10-29T08:31:52Z"
+  },
+  {
+   "number": 37,
+   "title": "Document Vercel CI Hive checks blocker for public repos",
+   "state": "OPEN",
+   "labels": [
+    "Improvement",
+    "launch",
+    "blocked-external"
+   ],
+   "updatedAt": "2026-10-29T07:06:07Z"
+  },
+  {
+   "number": 36,
+   "title": "Disallow Ocean/MCP Meta-fenced blueprint bypass in gateway",
+   "state": "OPEN",
+   "labels": [
+    "Factory Meta",
+    "Feature"
+   ],
+   "updatedAt": "2026-10-29T07:03:22Z"
+  },
+  {
+   "number": 35,
+   "title": "Wire Meta self-service handlers through factory-gateway",
+   "state": "OPEN",
+   "labels": [
+    "Factory Meta",
+    "Feature"
+   ],
+   "updatedAt": "2026-10-29T07:01:13Z"
+  },
+  {
+   "number": 34,
+   "title": "Prove factory_* Port WEBHOOK enqueues via factory-gateway",
+   "state": "OPEN",
+   "labels": [
+    "Factory Meta",
+    "Improvement",
+    "launch"
+   ],
+   "updatedAt": "2026-10-29T06:53:36Z"
+  },
+  {
+   "number": 32,
+   "title": "Add catalogVersion to product and executionContract",
+   "state": "OPEN",
+   "labels": [
+    "Factory Meta",
+    "Feature"
+   ],
+   "updatedAt": "2026-10-29T06:51:07Z"
+  },
+  {
+   "number": 31,
+   "title": "Dev OS Port OAuth e2e: callback path + PKCE exchange + Vercel env",
+   "state": "CLOSED",
+   "labels": [
+    "Factory Meta",
+    "needs-review"
+   ],
+   "updatedAt": "2026-10-29T06:57:31Z"
+  },
+  {
+   "number": 26,
+   "title": "Bootstrap Meta Beads from Dolt history in fresh clones",
+   "state": "OPEN",
+   "labels": [
+    "Factory Meta",
+    "Feature"
+   ],
+   "updatedAt": "2026-10-29T06:38:40Z"
+  },
+  {
+   "number": 8,
+   "title": "Connect Claude / OpenCode / Grok apps into Linear review pool",
+   "state": "OPEN",
+   "labels": [
+    "Factory Meta"
+   ],
+   "updatedAt": "2026-10-29T03:03:48Z"
+  },
+  {
+   "number": 7,
+   "title": "Retarget ASDLC Issues Sync off painter-os (FE-57)",
+   "state": "CLOSED",
+   "labels": [
+    "Factory Meta"
+   ],
+   "updatedAt": "2026-10-30T19:22:50Z"
+  },
+  {
+   "number": 6,
+   "title": "Enable personal Code & reviews + Autolink STL-",
+   "state": "OPEN",
+   "labels": [
+    "Factory Meta"
+   ],
+   "updatedAt": "2026-10-29T02:43:28Z"
+  },
+  {
+   "number": 5,
+   "title": "Optional Loop: AI first-pass on factory PR open",
+   "state": "OPEN",
+   "labels": [
+    "Factory Meta"
+   ],
+   "updatedAt": "2026-10-29T02:43:27Z"
+  },
+  {
+   "number": 4,
+   "title": "ASDLC PR status automations \u2192 In Review / Done",
+   "state": "CLOSED",
+   "labels": [
+    "Factory Meta"
+   ],
+   "updatedAt": "2026-10-29T06:54:21Z"
+  },
+  {
+   "number": 3,
+   "title": "Confirm Linear + Linear Code App access to mplsjohnnycage/factory",
+   "state": "CLOSED",
+   "labels": [
+    "Factory Meta"
+   ],
+   "updatedAt": "2026-10-29T06:54:19Z"
+  },
+  {
+   "number": 2,
+   "title": "FE-61: Setup Linear auto-review for Factory Meta",
+   "state": "OPEN",
+   "labels": [
+    "Factory Meta"
+   ],
+   "updatedAt": "2026-10-29T02:43:09Z"
+  }
+ ]
+}
