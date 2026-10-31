@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Factory master spec §0.1 — unit of work (19-field typed contract)
+    url: https://github.com/mplsjohnnycage/factory/blob/main/docs/factory-master-spec.md
+    about: The single canonical source of truth for Factory. The PBI form derives from §0.1 — master first, then propagate.
+  - name: PBI seed pack (docs/linear-pbi-seed)
+    url: https://github.com/mplsjohnnycage/factory/tree/main/docs/linear-pbi-seed
+    about: Seed PBIs PBI-001…015 — the same units of work in their stock form; their Linear facet lives on the ASDLC (STL) board.
