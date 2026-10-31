@@ -2,17 +2,25 @@
 
 Index for coding agents working the **Factory Meta** repo (building the Factory kernel). Not a design dump.
 
+## Canonical source of truth
+
+**[`docs/factory-master-spec.md`](./docs/factory-master-spec.md)** is the **single canonical SoT** (master §0). Future edits: master first, then propagate. This file indexes Specs/ADRs/skills/docs only — it does not invent architecture.
+
+Derived companions (must match master): `docs/factory-workflow.md`, `docs/factory-meta-vs-product.md`, `docs/factory-coding-loop.md`, `docs/factory-architecture-map.md`.
+
 ## Mission
 
 Factory is an autonomous software-delivery control plane: Port (SoT) → thin `factory-gateway` → Rivet `ProjectSupervisor` → Sandbox Agent (Docker) → GitHub CI accept on exact SHA. This repository is the **meta-repo** for that kernel — Specs, ADRs, gateway, Developer OS shell.
 
-## Lane hard rules
+## Lane hard rules (master §0.2)
 
 - **Meta only** — never Product Beads / product Linear boards from this repo.
-- **Unit of work:** Linear ticket ≡ PBI ≡ typed contract ≡ bead ≡ GitHub issue.
-- **No Port OAuth create/delete/revoke** from this repo. ADR-005 is Accepted — live (dedicated Factory app). Do not mutate External Interface apps here.
+- **Unit of work:** Linear ticket ≡ PBI ≡ typed contract ≡ bead ≡ GitHub issue (19-field body — master §0.1).
+- **Agent types (field 7):** master §0.7 roster — Muse, ChatGPT regular, ChatGPT Work, Codex, Grok, Claude, Claude Code, Claude Design — plus task kind **personal-agent** *xor* **coding-agent**. Extensible via master-first edit.
+- **Coding loop:** task → standardize → PR → build → loop (no independent-review step).
+- **No Port OAuth create/delete/revoke** from this repo. ADR-005 is Accepted — **live** (dedicated Factory app; master §3 / §0.6). Do not mutate External Interface apps here.
 - Agents **build against** `/specs/{domain}/spec.md`, not against Project store scratch alone once Specs are green.
-- Agent “done” ≠ Port accept. Accept = green CI on exact SHA + Port governance.
+- Agent "done" ≠ Port accept. Accept = green CI on exact SHA + Port governance.
 
 ## Spec index
 
@@ -31,47 +39,35 @@ Factory is an autonomous software-delivery control plane: Port (SoT) → thin `f
 
 ## ADR index
 
-Full Nygard bodies: `docs/adrs/` ADR-001…ADR-011. Immutable after PBI-002; supersede, do not edit.
+Full Nygard bodies: `docs/adrs/` ADR-001…ADR-011. Immutable — supersede, never edit. Summaries in master §3. ADR-007 is **Superseded by ADR-011**.
 
-ADR-007 is **Superseded by ADR-011**.
+## Docs library index (`docs/`)
 
-## Toolchain (minimal)
+Imported from the JohnnyBox Project store (master spec §0: Project store `docs/` is the doc home; Notion is mirror only, never SoT).
 
-| Tool | Notes |
+| Need | Route |
+|------|-------|
+| Canonical architecture / PBIs / gates | `docs/factory-master-spec.md` (§§0–22) |
+| What the master links to | `docs/factory-master-spec-linked-docs.md` |
+| Workflow / coding loop / Meta XOR Product / map | `docs/factory-workflow.md` · `docs/factory-coding-loop.md` · `docs/factory-meta-vs-product.md` · `docs/factory-architecture-map.md` |
+| Rivet depth | `docs/rivet-engineering-spec.md` · `docs/rivet-sandbox-agent.md` · `docs/rivet-claim-fencing.md` · `docs/rivet-full-capacity.md` |
+| Port depth | `docs/port-factory-data-model.md` (§4.1 = §4.2.1 fence source) · `docs/port-capabilities.md` · `docs/port-full-capacity.md` · `docs/port/` |
+| Stack / standards evidence | `docs/factory-stack-audit.md` · `docs/factory-open-standards.md` · `docs/logicsrc-artifact-inventory.md` · `docs/iso-12207-overview.md` |
+| Research pack (master's sources) | `docs/factory-research-300-qa.md` · `docs/factory-research-reconciliation.md` · `docs/factory-spec-remaster-report.md` |
+| Ops runbooks | `docs/ops/` |
+| Meta Beads operator guide | `docs/meta-beads.md` · queue mirror: `docs/ops/factory-queue-mirror.md` |
+| Seed PBIs | `docs/linear-pbi-seed/` · `tasks/` |
+
+## Toolchain (index)
+
+| Tool | Route |
 |------|-------|
 | Linear project **Factory Meta** | Human tracker facet for seed PBIs |
-| Port | Catalog SoT; workflows as tools — bind live names only |
+| Port | Catalog SoT; workflows as tools — bind live names only (master §4.2) |
 | Rivet 2.x Compose + Tailscale Serve | Execution kernel — `compose/` + `docs/rivet-tailscale-serve.md` (PBI-004+) |
-| Beads (**Meta Beads**) | Ready/claim SoT for Meta coding admit (PBI-007). Prefix `factory-`. Instance `.beads/`. Never Product Beads. |
+| Beads (**Meta Beads**) | Ready/claim SoT for Meta coding admit (PBI-007). Prefix `factory-`. Instance `.beads/`. Never Product Beads. Operator detail: `docs/meta-beads.md` |
 | GitHub Actions | Accept path on exact SHA (PBI-011) |
 
-## Meta Beads (PBI-007 cutover)
-
-`ProjectSupervisor` (`apps/project-supervisor/`) admits coding work **only** when Meta Beads reports ready (`ReadyTaskEvent.beadId`) **or** Port `executionContract` carries an audited human bypass. Claim = `bd update --claim` before Rivet queue message that starts Sandbox Agent.
-
-Hybrid layout: track `.beads/config.yaml` + `metadata.json`; gitignore `embeddeddolt/` (Dolt SoT lives in `refs/dolt/data`, not source branches). Operator guide: `docs/meta-beads.md`.
-
-```bash
-# Install (bd is not on default cloud/agent PATH)
-curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash
-export PATH="$HOME/.local/bin:$PATH"
-
-# Preferred: backup + dry-run, then reversible local hydrate (no dolt push)
-./scripts/bd-bootstrap-safe.sh --dry-run
-./scripts/bd-bootstrap-safe.sh --execute   # only if gate PASS
-
-# Or direct hydrate (git clone does not fetch refs/dolt/data)
-bd bootstrap --dry-run
-bd bootstrap --yes
-bd where
-bd status
-bd ready
-bd update <bead-id> --claim
-```
-
-Linear remains human visibility; Meta Beads is ready/claim/parallel SoT for meta coding admit. Do not `bd init` per worktree. Sync: `bd dolt push` / `bd dolt pull` when authorized — do not commit Dolt DB blobs. Safe bootstrap/upgrade: `docs/meta-beads.md` § Safe bootstrap.
-
-**Queue mirror (factory-done loop):** each loop tick mirrors `bd ready` (else Linear Factory Meta Todo/Backlog) into Project store `notes.md` `### Queued` as FE-* rows — see `docs/ops/factory-queue-mirror.md` · `npm run dry-run:factory-queue-mirror`. Live notes write = coordinator tick only; kit dry-run never mutates Beads or writes notes.
 ## Judgment boundaries
 
 - **NEVER** call Sandbox Agent from the browser.
@@ -87,7 +83,7 @@ Linear remains human visibility; Meta Beads is ready/claim/parallel SoT for meta
 
 ## Layout (mandated §2)
 
-See `README.md` and master production plan. Apps: `apps/factory-gateway/`, `apps/sandbox-harness/`, `apps/project-supervisor/`, `apps/developer-os/` (Next.js → Vercel; PBI-008 shell).
+See `README.md` and `docs/factory-master-spec.md` §2. Apps: `apps/factory-gateway/`, `apps/sandbox-harness/`, `apps/project-supervisor/`, `apps/developer-os/` (Next.js → Vercel; PBI-008 shell).
 
 ## LogicSRC emits (index)
 
