@@ -17,6 +17,8 @@ export interface DockerLeaseOptions {
  *
  * Requires Docker Engine + optional peer deps (`dockerode`, `get-port`).
  * Claude credentials via ANTHROPIC_API_KEY env only — never git.
+ * Optional ANTHROPIC_BASE_URL points Claude Code at the OmniRoute gateway
+ * (default http://127.0.0.1:20128, rewritten to host.docker.internal).
  *
  * CI unit tests use MemorySandboxLease; this module is the operator live path.
  */
@@ -57,6 +59,10 @@ export class DockerSandboxLease implements SandboxLease {
         : undefined,
       this.#env.GITHUB_TOKEN
         ? `GITHUB_TOKEN=${this.#env.GITHUB_TOKEN}`
+        : undefined,
+      // LLM gateway (OmniRoute): Claude Code in the sandbox talks to the gateway.
+      this.#env.ANTHROPIC_BASE_URL
+        ? `ANTHROPIC_BASE_URL=${containerReachableUrl(this.#env.ANTHROPIC_BASE_URL)}`
         : undefined,
     ].filter((v): v is string => Boolean(v));
 
@@ -206,6 +212,14 @@ interface DockerSdkHandle {
     timeoutMs?: number;
   }): Promise<{ stdout?: string; stderr?: string; exitCode?: number | null }>;
   killSandbox(): Promise<void>;
+}
+
+/** Loopback on the host is not loopback inside the container. */
+export function containerReachableUrl(url: string): string {
+  return url.replace(
+    /^(https?:\/\/)(127\.0\.0\.1|localhost)(?=[:/]|$)/,
+    "$1host.docker.internal",
+  );
 }
 
 function shellQuote(value: string): string {

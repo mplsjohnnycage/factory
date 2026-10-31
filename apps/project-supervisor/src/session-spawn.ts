@@ -7,7 +7,8 @@ import type {
 } from "./types.js";
 
 /**
- * Thin ProjectSupervisor → AgentSession wiring stub (G10 offline).
+ * ProjectSupervisor → AgentSession wiring. `SandboxSessionSpawner`
+ * (sandbox-runner.ts) is the real runner; `SessionSpawnRegistry` is the test double.
  *
  * Injectable `SessionSpawner` keeps `@factory/sandbox-harness` out of the
  * supervisor package graph (CI typecheck has no `^build` dep). Tests wire

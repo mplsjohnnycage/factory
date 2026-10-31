@@ -8,6 +8,7 @@ import type {
   RecoverRequest,
   RecoverResult,
   WorkAttempt,
+  WorkAttemptStatus,
 } from "./types.js";
 
 /**
@@ -155,5 +156,25 @@ export class ProjectSupervisorActor {
     this.#attempts.set(attempt.workAttemptId, updated);
     await this.#projections.projectAttempt(updated);
     return { ok: true, attempt: updated };
+  }
+
+  /**
+   * Move an attempt through its lifecycle (running / completed / failed) and
+   * re-project to Port. Used by the sandbox runner; never creates attempts.
+   */
+  async markStatus(
+    workAttemptId: string,
+    status: WorkAttemptStatus,
+  ): Promise<WorkAttempt | undefined> {
+    const attempt = this.#attempts.get(workAttemptId);
+    if (!attempt) return undefined;
+    const updated: WorkAttempt = {
+      ...attempt,
+      status,
+      updatedAt: new Date().toISOString(),
+    };
+    this.#attempts.set(workAttemptId, updated);
+    await this.#projections.projectAttempt(updated);
+    return updated;
   }
 }

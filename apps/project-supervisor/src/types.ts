@@ -17,7 +17,8 @@ export type WorkAttemptStatus =
   | "running"
   | "recovered"
   | "cancelled"
-  | "completed";
+  | "completed"
+  | "failed";
 
 export type WorkAttempt = {
   workAttemptId: string;
