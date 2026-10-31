@@ -86,11 +86,19 @@ Scenario: PBI-009 reconnect fixture
 
 Scenario: Code Atlas four-overlay read projection
   Given the fixture atlas graph with Beads Polygraph Graft Langfuse overlays
-  When GET /api/atlas/subgraph is called with role anonymous
+  When GET /api/atlas/subgraph is called without a Port session
   Then proven join edges include sourceSystem sourceId target evidence observedAt
   And unknown joins remain status unknown with null provenance
   And restricted Langfuse cost nodes are redacted
   And Langfuse is not live session owner
+
+Scenario: Code Atlas access role comes from the Port session
+  Given the caller sends a factory_port_access_token cookie from the Factory External Interface login
+  When GET /api/atlas/subgraph or POST /api/atlas/tools is called
+  Then the role is operator only if Port accepts that token as the caller's own bearer token
+  And a role supplied in the query string or request body is ignored
+  And a missing token, a Port rejection, a timeout or a network error yields role anonymous
+  And Atlas never mutates Port
 
 Scenario: Code Atlas MCP tools
   Given POST /api/atlas/tools with atlas.find_node / expand_dependencies / get_task_impact / get_related_sessions / get_agent_traces

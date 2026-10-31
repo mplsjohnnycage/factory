@@ -3,7 +3,7 @@ import {
   parseOverlaysParam,
   projectSubgraph,
 } from "@/lib/atlas/projection";
-import type { AtlasAccessRole } from "@/lib/atlas/types";
+import { resolveAtlasRole } from "@/lib/atlas/session";
 
 export const runtime = "nodejs";
 
@@ -15,10 +15,6 @@ const NO_STORE_HEADERS = {
   "X-Content-Type-Options": "nosniff",
 } as const;
 
-function parseRole(value: string | null): AtlasAccessRole {
-  return value === "operator" ? "operator" : "anonymous";
-}
-
 function json(data: unknown, init?: { status?: number }): Response {
   return NextResponse.json(data, {
     status: init?.status,
@@ -28,7 +24,7 @@ function json(data: unknown, init?: { status?: number }): Response {
 
 /**
  * GET /api/atlas/subgraph — viewport-capped four-overlay read projection.
- * Query: level/overlays, focus, depth, role. Read-only; no Port mutations.
+ * Query: level/overlays, focus, depth. Role comes from the Port session, not the query. Read-only; no Port mutations.
  */
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
@@ -48,7 +44,7 @@ export async function GET(request: Request): Promise<Response> {
       }
       depth = Math.min(Math.floor(depth), MAX_DEPTH);
     }
-    const role = parseRole(url.searchParams.get("role"));
+    const role = await resolveAtlasRole(request);
     const { subgraph, redactions } = projectSubgraph({
       overlays,
       focus,
