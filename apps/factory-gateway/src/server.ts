@@ -30,6 +30,7 @@ import {
   type SelfServiceRequest,
 } from "./self-service-handlers.js";
 import type { ConvexManagementClient } from "./convex-management.js";
+import { createRivetAdmitForwarder } from "./rivet-admit.js";
 import { ProjectSupervisorQueue } from "./supervisor.js";
 import { applySyncWrite, isSyncSource } from "./sync-ingress.js";
 import type { CatalogWriteRequest, PortWebhookBody } from "./types.js";
@@ -60,7 +61,21 @@ export type GatewayDeps = {
   handlerToken: string;
   /** Convex Management API client; null when CONVEX_TEAM_TOKEN unset. */
   convex: ConvexManagementClient | null;
+  /**
+   * Bearer for the operator/service API (/catalog/*, /fleet/*, /accept/*).
+   * Fail closed: when empty, those routes always answer 401.
+   */
+  apiToken: string;
 };
+
+/** Routes that mutate or expose Factory state; never reachable without the API bearer. */
+function isProtectedApiPath(pathname: string): boolean {
+  return (
+    pathname.startsWith("/catalog/") ||
+    pathname.startsWith("/fleet/") ||
+    pathname.startsWith("/accept/")
+  );
+}
 
 async function readRawBody(req: IncomingMessage): Promise<string> {
   const chunks: Buffer[] = [];
@@ -120,6 +135,17 @@ export function createGatewayServer(deps: GatewayDeps) {
       if (req.method === "GET" && url.pathname === "/health") {
         sendJson(res, 200, { ok: true, service: "factory-gateway" });
         return;
+      }
+
+      if (isProtectedApiPath(url.pathname)) {
+        const ok = verifyHandlerBearer({
+          expectedToken: deps.apiToken,
+          authorizationHeader: String(req.headers.authorization ?? ""),
+        });
+        if (!ok) {
+          sendJson(res, 401, { ok: false, error: "unauthorized_api" });
+          return;
+        }
       }
 
       const webhookMatch =
@@ -570,11 +596,15 @@ export function buildDefaultDeps(env: NodeJS.ProcessEnv = process.env): GatewayD
     writer: new CatalogWriter(store),
     supervisor: new ProjectSupervisorQueue({
       rivetSupervisorUrl: env.RIVET_SUPERVISOR_URL || undefined,
+      ...(env.RIVET_ENDPOINT
+        ? { forwarder: createRivetAdmitForwarder({ endpoint: env.RIVET_ENDPOINT }) }
+        : {}),
     }),
     acceptLedger: new AcceptLedger(),
     openFleetLedger: buildOpenFleetLedger(env),
     rateLimiter: new SlidingWindowRateLimiter(rateLimitConfigFromEnv(env)),
     handlerToken: env.FACTORY_GATEWAY_HANDLER_TOKEN ?? "",
+    apiToken: env.FACTORY_GATEWAY_API_TOKEN ?? "",
     convex: convexClientFromEnv(env),
   };
 }

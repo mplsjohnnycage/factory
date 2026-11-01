@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { resolveFactoryActionIdentifier } from "./factory-workflows.js";
+import type { AdmitForwarder } from "./rivet-admit.js";
 import type { PortWebhookBody, SupervisorAdmit } from "./types.js";
 
 /**
@@ -11,9 +12,11 @@ import type { PortWebhookBody, SupervisorAdmit } from "./types.js";
 export class ProjectSupervisorQueue {
   readonly #admits: SupervisorAdmit[] = [];
   readonly #forwardUrl: string | undefined;
+  readonly #forwarder: AdmitForwarder | undefined;
 
-  constructor(opts?: { rivetSupervisorUrl?: string }) {
+  constructor(opts?: { rivetSupervisorUrl?: string; forwarder?: AdmitForwarder }) {
     this.#forwardUrl = opts?.rivetSupervisorUrl;
+    this.#forwarder = opts?.forwarder;
   }
 
   /** Ordered admits received this process lifetime (tests / local observability). */
@@ -41,7 +44,10 @@ export class ProjectSupervisorQueue {
 
     this.#admits.push(admit);
 
-    if (this.#forwardUrl) {
+    if (this.#forwarder) {
+      // Typed path: Rivet projectSupervisor actor queue (single writer, duplicate workKey fenced).
+      await this.#forwarder(admit);
+    } else if (this.#forwardUrl) {
       const res = await fetch(this.#forwardUrl, {
         method: "POST",
         headers: { "content-type": "application/json" },

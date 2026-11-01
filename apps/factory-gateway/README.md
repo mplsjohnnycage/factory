@@ -150,3 +150,11 @@ HTTP proof for all seven `factory_*` WEBHOOK admits (HMAC reject + 202 enqueue +
 - No dual-write Port bypass around this writer
 - Author ≠ reviewer
 
+
+## API auth (`/catalog/*`, `/fleet/*`, `/accept/*`)
+
+These routes require `Authorization: Bearer $FACTORY_GATEWAY_API_TOKEN` and fail closed (401) when the token is unset. `/health`, `/webhooks/port*` (HMAC) and `/handlers/self-service` (HMAC or handler bearer) keep their own auth.
+
+## Typed admit to Rivet
+
+When `RIVET_ENDPOINT` (`https://<namespace>:<token>@<host>/`, secret) is set, `enqueue` posts the admit to the Rivet `projectSupervisor` actor queue `admitFromPayload` via the documented HTTP queue API (stdlib `fetch`, token in `x-rivet-token`, never in the URL) and waits for the result. A timeout or refusal throws, so the webhook is not acked silently. `RIVET_SUPERVISOR_URL` remains the legacy raw-POST fallback.
