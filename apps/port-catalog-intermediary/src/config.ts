@@ -7,7 +7,11 @@ import { CatalogTranslator, type TranslatorMode } from "./translator.js";
  *
  *   PORT_CLIENT_ID / PORT_CLIENT_SECRET   Port API credential. Held ONLY by
  *                                         this process — never by the gateway.
- *   PORT_API_BASE_URL                     default https://api.getport.io
+ *   PORT_API_BASE_URL                     default https://api.port.io
+ *                                         (live-verified against the real
+ *                                         org 2026-10-31: api.getport.io does
+ *                                         NOT answer for this org; the env
+ *                                         override remains for other orgs)
  *   PORT_CATALOG_MODE                     "workflow" (default) | "entity"
  *   PORT_CATALOG_READ_WORKFLOW_ID         Port workflow/action id for reads
  *   PORT_CATALOG_UPSERT_WORKFLOW_ID       Port workflow/action id for upserts
@@ -50,7 +54,7 @@ function intOr(env: NodeJS.ProcessEnv, name: string, fallback: number): number {
 export function intermediaryFromEnv(env: NodeJS.ProcessEnv = process.env): IntermediaryConfig {
   const clientId = required(env, "PORT_CLIENT_ID");
   const clientSecret = required(env, "PORT_CLIENT_SECRET");
-  const baseUrl = (env.PORT_API_BASE_URL ?? "").trim() || "https://api.getport.io";
+  const baseUrl = (env.PORT_API_BASE_URL ?? "").trim() || "https://api.port.io";
 
   const modeRaw = (env.PORT_CATALOG_MODE ?? "").trim().toLowerCase() || "workflow";
   if (modeRaw !== "workflow" && modeRaw !== "entity") {
