@@ -16,5 +16,9 @@ dist/
 .dolt/
 *.db
 .beads-credential-key
+
+# Port intermediary credential files — NEVER commit (values live only on the host)
+keys.local
+port-intermediary.keys.local
 .beads/proxieddb/
 *.gate.lock*
