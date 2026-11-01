@@ -263,7 +263,7 @@ describe("HttpPortApiClient — auth + run endpoints (fake fetch)", () => {
     }) as typeof fetch;
 
     const client = new HttpPortApiClient({
-      baseUrl: "https://api.getport.io",
+      baseUrl: "https://api.port.io",
       clientId: "cid",
       clientSecret: "csecret",
       fetchImpl,
@@ -280,7 +280,7 @@ describe("HttpPortApiClient — auth + run endpoints (fake fetch)", () => {
     const fetchImpl = (async () =>
       jsonResponse({ error: "nope" }, 401)) as unknown as typeof fetch;
     const client = new HttpPortApiClient({
-      baseUrl: "https://api.getport.io",
+      baseUrl: "https://api.port.io",
       clientId: "cid",
       clientSecret: "csecret",
       fetchImpl,
