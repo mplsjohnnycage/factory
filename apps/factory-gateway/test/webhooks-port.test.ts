@@ -30,6 +30,9 @@ function testDeps(secret: string): GatewayDeps {
       limit: 10_000,
       windowMs: 60_000,
     }),
+    handlerToken: "",
+    apiToken: "api-token-for-tests",
+    convex: null,
   };
 }
 
@@ -157,5 +160,46 @@ describe("POST /webhooks/port (factory_* WEBHOOK→gateway proof)", () => {
     });
     assert.equal(res.status, 404);
     assert.equal(deps.supervisor.list().length, beforeCount);
+  });
+
+  it("protected API routes require the API bearer (fail closed)", async () => {
+    for (const [method, path] of [
+      ["POST", "/catalog/write"],
+      ["POST", "/catalog/sync-write"],
+      ["POST", "/catalog/claim-next"],
+      ["POST", "/fleet/spawn"],
+      ["GET", "/fleet/ledger"],
+      ["POST", "/accept/evaluate"],
+      ["POST", "/accept/record"],
+      ["GET", "/accept/status"],
+    ] as const) {
+      const none = await fetch(`${base}${path}`, { method, body: method === "POST" ? "{}" : undefined });
+      assert.equal(none.status, 401, `${method} ${path} without bearer`);
+      const bad = await fetch(`${base}${path}`, {
+        method,
+        headers: { authorization: "Bearer wrong" },
+        body: method === "POST" ? "{}" : undefined,
+      });
+      assert.equal(bad.status, 401, `${method} ${path} with wrong bearer`);
+      const good = await fetch(`${base}${path}`, {
+        method,
+        headers: { authorization: "Bearer api-token-for-tests" },
+        body: method === "POST" ? "{}" : undefined,
+      });
+      assert.notEqual(good.status, 401, `${method} ${path} with right bearer`);
+    }
+  });
+
+  it("an unset API token never authorizes", async () => {
+    const server = createGatewayServer({ ...deps, apiToken: "" });
+    const l = await listen(server);
+    try {
+      const res = await fetch(`${l.base}/fleet/ledger`, {
+        headers: { authorization: "Bearer " },
+      });
+      assert.equal(res.status, 401);
+    } finally {
+      await l.close();
+    }
   });
 });
