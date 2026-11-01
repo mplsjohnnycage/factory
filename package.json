@@ -16,7 +16,7 @@
   },
   "scripts": {
     "local-gate": "node scripts/local-gate.mjs",
-    "test": "node --test scripts/local-gate-refuse.test.mjs",
+    "test": "node --test scripts/local-gate-refuse.test.mjs scripts/factory-runner.test.mjs scripts/idea-to-issue.test.mjs",
     "test:local-gate": "node --test scripts/local-gate-refuse.test.mjs",
     "test:packages": "turbo run test",
     "typecheck": "turbo run typecheck",

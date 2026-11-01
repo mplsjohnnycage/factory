@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { resolveFactoryActionIdentifier } from "./factory-workflows.js";
+import type { RunnerDispatcher } from "./runner-dispatch.js";
 import type { PortWebhookBody, SupervisorAdmit } from "./types.js";
 
 /**
@@ -11,9 +12,14 @@ import type { PortWebhookBody, SupervisorAdmit } from "./types.js";
 export class ProjectSupervisorQueue {
   readonly #admits: SupervisorAdmit[] = [];
   readonly #forwardUrl: string | undefined;
+  readonly #runner: RunnerDispatcher | undefined;
 
-  constructor(opts?: { rivetSupervisorUrl?: string }) {
+  constructor(opts?: {
+    rivetSupervisorUrl?: string;
+    runnerDispatch?: RunnerDispatcher;
+  }) {
     this.#forwardUrl = opts?.rivetSupervisorUrl;
+    this.#runner = opts?.runnerDispatch;
   }
 
   /** Ordered admits received this process lifetime (tests / local observability). */
@@ -50,6 +56,10 @@ export class ProjectSupervisorQueue {
       if (!res.ok) {
         throw new Error(`ProjectSupervisor forward failed: HTTP ${res.status}`);
       }
+    }
+
+    if (this.#runner) {
+      await this.#runner.dispatch(admit);
     }
 
     return admit;

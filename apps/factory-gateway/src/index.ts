@@ -32,6 +32,11 @@ export type {
 export { catalogStoreFromEnv } from "./catalog-store.js";
 export type { CatalogStoreKind } from "./catalog-store.js";
 export { ProjectSupervisorQueue } from "./supervisor.js";
+export {
+  RUNNER_DISPATCH_EVENT,
+  RunnerDispatcher,
+  runnerDispatchFromEnv,
+} from "./runner-dispatch.js";
 export { createGatewayServer, buildDefaultDeps } from "./server.js";
 export { applySyncWrite, isSyncSource } from "./sync-ingress.js";
 export {
