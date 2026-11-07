@@ -1,0 +1,62 @@
+name: factory-autobuild
+run-name: "Codex task ${{ inputs.task_id }} — preview PR"
+
+on:
+  workflow_dispatch:
+    inputs:
+      task_id:
+        description: Approved task ID from the checked-in specification
+        type: string
+        required: true
+      spec_path:
+        description: Relative path to checked-in spec (no external URLs)
+        type: string
+        required: true
+      max_attempts:
+        description: Bounded coding/repair attempts
+        type: number
+        default: 2
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: factory-autobuild-${{ github.repository }}-${{ inputs.task_id }}
+  cancel-in-progress: false
+
+jobs:
+  codex-preview-pr:
+    # Do not enable until the protected Sprite runner and authenticated Codex CLI
+    # are verified. PRs remain drafts and production promotion is not performed.
+    if: ${{ vars.FACTORY_AUTOBUILD_ENABLED == 'true' }}
+    runs-on: [self-hosted, linux, factory-sprite]
+    timeout-minutes: 90
+    env:
+      TASK_ID: ${{ inputs.task_id }}
+      SPEC_PATH: ${{ inputs.spec_path }}
+      MAX_ATTEMPTS: ${{ inputs.max_attempts }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Build, test, and commit an isolated branch
+        shell: bash
+        run: bash scripts/factory-autobuild.sh
+
+      - name: Push branch and open draft PR (never merge)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh auth setup-git
+          git push --set-upstream origin HEAD
+          gh pr create \
+            --draft \
+            --base "${GITHUB_REF_NAME}" \
+            --head "$(git branch --show-current)" \
+            --title "build(factory): ${TASK_ID} [automated preview]" \
+            --body "Port dispatch → isolated Codex worker → bounded retries → npm test, typecheck and build. Requires independent PR CI, Vercel preview checks, review and explicit merge approval. Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
