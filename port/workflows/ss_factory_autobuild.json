@@ -1,0 +1,85 @@
+{
+  "identifier": "ss_factory_autobuild",
+  "title": "Factory autonomous task build (preview PR)",
+  "icon": "Code",
+  "description": "Unpublished pilot: dispatch one bounded Codex task to a repo-local self-hosted Sprite worker, verify locally, and create a draft pull request. Never merges or promotes production.",
+  "category": "Factory",
+  "allowAnyoneToViewRuns": false,
+  "nodes": [
+    {
+      "identifier": "trigger",
+      "config": {
+        "type": "SELF_SERVE_TRIGGER",
+        "published": false,
+        "userInputs": {
+          "properties": {
+            "repository": {
+              "title": "Repository name (mplsjohnnycage)",
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            "spec_path": {
+              "title": "Checked-in specification path",
+              "type": "string",
+              "default": "specs/factory-kernel/spec.md"
+            },
+            "task_id": {
+              "title": "Single approved task ID",
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$"
+            },
+            "max_attempts": {
+              "title": "Maximum repair attempts (1–3)",
+              "type": "number",
+              "minimum": 1,
+              "maximum": 3,
+              "default": 2
+            }
+          },
+          "required": [
+            "repository",
+            "spec_path",
+            "task_id"
+          ],
+          "order": [
+            "repository",
+            "spec_path",
+            "task_id",
+            "max_attempts"
+          ]
+        }
+      },
+      "variables": {},
+      "verbose": false
+    },
+    {
+      "identifier": "dispatch_build",
+      "title": "Dispatch Codex preview build on Sprite",
+      "config": {
+        "type": "INTEGRATION_ACTION",
+        "installationId": "REPLACE_WITH_LIVE_GITHUB_OCEAN_INSTALLATION_ID",
+        "integrationProvider": "github-ocean",
+        "integrationInvocationType": "dispatch_workflow",
+        "integrationActionExecutionProperties": {
+          "org": "mplsjohnnycage",
+          "repo": "{{ .outputs.trigger.repository }}",
+          "workflow": "factory-autobuild.yml",
+          "workflowInputs": {
+            "spec_path": "{{ .outputs.trigger.spec_path }}",
+            "task_id": "{{ .outputs.trigger.task_id }}",
+            "max_attempts": "{{ .outputs.trigger.max_attempts }}"
+          },
+          "reportWorkflowStatus": true
+        }
+      },
+      "variables": {},
+      "verbose": false
+    }
+  ],
+  "connections": [
+    {
+      "sourceIdentifier": "trigger",
+      "targetIdentifier": "dispatch_build"
+    }
+  ]
+}
